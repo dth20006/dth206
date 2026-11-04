@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-DTH Portal - Há»‡ Thá»‘ng Dá»‹ch Vá»¥ Tá»•ng Há»£p 3-in-1
+DTH Portal - Há»‡ Thá»‘ng Dá»‹ch Vá»¥ Tá»•ng Há»£p 4-in-1
 1. Chung Sá»©c LiÃªn QuÃ¢n Mobile (Má»Ÿ RÆ°Æ¡ng SS & SSS 2026 qua AutoNhanh)
 2. NÃ¢ng Cáº¥p Locket Gold (KÃ­ch Hoáº¡t & Cáº¥u HÃ¬nh Giá»¯ Gold iOS)
 3. Dá»‹ch Vá»¥ Máº¡ng XÃ£ Há»™i (TikTok, FaceBook, Instagram, YouTube qua TangTim API)
@@ -23,6 +23,7 @@ import queue
 import base64
 import urllib.request
 import threading
+import logging
 from datetime import datetime, timedelta
 from functools import wraps
 
@@ -41,6 +42,8 @@ from locket_api import LocketAPI, clean_locket_username, safe_print
 from config_manager import config_manager, decode_jwt_payload, format_currency_vnd, get_token_summary
 import secrets
 from utils import generate_order_id
+
+logger = logging.getLogger(__name__)
 
 # ==========================================
 # PATH CONSTANTS
@@ -186,12 +189,20 @@ app = Flask(
     template_folder=os.path.join(BASE_DIR, "templates"),
     static_folder=os.path.join(BASE_DIR, "static"),
 )
-app.secret_key = os.environ.get("SECRET_KEY", "dth_portal_gop3web_secret_2026_superkey")
+secret_key = os.environ.get("SECRET_KEY")
+if not secret_key:
+    if os.environ.get("VERCEL") == "1" or os.environ.get("FLASK_ENV") == "production":
+        raise RuntimeError("SECRET_KEY must be configured with a strong random value in production.")
+    secret_key = secrets.token_urlsafe(32)
+    logger.warning("SECRET_KEY is not configured; using an ephemeral development key.")
+app.secret_key = secret_key
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = os.environ.get("VERCEL") == "1" or os.environ.get("FLASK_ENV") == "production"
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=8)
 
 # ==========================================
 # DATABASE & MODULAR BLUEPRINTS REGISTRATION
@@ -202,11 +213,22 @@ models.migrate_legacy_json_to_db()
 
 from routes.orders import orders_bp
 from routes.payments import payments_bp
-from routes.admin import admin_bp
+from routes.admin import admin_bp, is_admin_authenticated
 
 app.register_blueprint(orders_bp)
 app.register_blueprint(payments_bp)
 app.register_blueprint(admin_bp)
+
+@app.before_request
+def require_admin_authentication():
+    if request.path in {"/admin", "/admin/"} and not is_admin_authenticated():
+        return render_template("admin_login.html")
+    if request.path.startswith("/api/admin/") and request.path not in {
+        "/api/admin/login",
+        "/api/admin/logout",
+        "/api/admin/check-auth",
+    } and not is_admin_authenticated():
+        return jsonify({"success": False, "msg": "YÃªu cáº§u Ä‘Äƒng nháº­p quáº£n trá»‹ viÃªn."}), 401
 
 @app.before_request
 def block_direct_video_access():
@@ -265,7 +287,7 @@ _file_locks = {
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if not session.get("is_admin"):
+        if not is_admin_authenticated():
             return jsonify({"success": False, "msg": "YÃªu cáº§u Ä‘Äƒng nháº­p quáº£n trá»‹ viÃªn."}), 401
         return f(*args, **kwargs)
     return decorated
@@ -1057,7 +1079,9 @@ def tangtim_fetch_balance():
     cfg = load_config()
     tt_cfg = cfg.get("tangtim", {})
     api_url = tt_cfg.get("api_url", "https://tangtim.vn/api/v2")
-    api_key = tt_cfg.get("api_key", "Vi9oKhH3Rs7XrytwK3GsaTqPQgl9AqHNDB2")
+    api_key = tt_cfg.get("api_key")
+    if not api_key:
+        return None, None, None
     usd_rate = float(tt_cfg.get("usd_rate", 25500))
     try:
         res = requests.post(api_url, data={"key": api_key, "action": "balance"}, timeout=8)
@@ -2185,6 +2209,8 @@ def index():
 
 @app.route("/admin")
 def admin_page():
+    if not is_admin_authenticated():
+        return render_template("admin_login.html")
     try:
         cfg = load_config()
         is_sale, sale_pct = is_sale_active()
@@ -2198,7 +2224,7 @@ def admin_page():
         )
     except Exception as e:
         logger.error(f"Error rendering admin: {e}", exc_info=True)
-        return render_template("admin.html")
+        return "Không thể tải bảng quản trị.", 500
 
 @app.route("/health")
 @app.route("/ping")
@@ -4117,26 +4143,15 @@ def admin_set_delivery_info():
     return jsonify({"success": True, "msg": f"ÄÃ£ bÃ n giao tÃ i khoáº£n vÃ  cáº­p nháº­t tráº¡ng thÃ¡i Ä‘Æ¡n #{oid}!"})
 
 
-@app.route("/api/admin/login", methods=["POST"])
-def admin_login():
-    data = request.get_json(silent=True) or {}
-    password = (data.get("password") or "").strip()
-    cfg = load_config()
-    current_pwd = cfg.get("admin_password", "admin")
-
-    if password == current_pwd:
-        session["is_admin"] = True
-        return jsonify({"success": True, "msg": "ÄÄƒng nháº­p thÃ nh cÃ´ng!"})
-    return jsonify({"success": False, "msg": "Máº­t kháº©u quáº£n trá»‹ viÃªn khÃ´ng chÃ­nh xÃ¡c."}), 401
-
 @app.route("/api/admin/check-auth")
 def admin_check_auth():
-    return jsonify({"is_admin": bool(session.get("is_admin"))})
-
-@app.route("/api/admin/logout", methods=["POST", "GET"])
-def admin_logout():
-    session.pop("is_admin", None)
-    return jsonify({"success": True, "msg": "ÄÃ£ Ä‘Äƒng xuáº¥t."})
+    if not is_admin_authenticated():
+        return jsonify({"is_admin": False, "success": False}), 401
+    return jsonify({
+        "is_admin": True,
+        "success": True,
+        "expires_at": session.get("admin_expires_at")
+    })
 
 @app.route("/api/admin/stats")
 @admin_required
@@ -4167,9 +4182,9 @@ def admin_stats():
                 today_rev += amt
 
     # TangTim balance
-    tt_bal_vnd, tt_bal_str, tt_usd = tangtim_fetch_balance()
+    tt_bal_vnd, tt_bal_str, tt_usd = None, None, None
     # AutoNhanh balance
-    an_bal, _ = autonhanh_fetch_balance()
+    an_bal = None
 
     return jsonify({
         "success": True,
@@ -4904,6 +4919,8 @@ def admin_update_password():
     new_pwd = (data.get("password") or "").strip()
     if not new_pwd:
         return jsonify({"success": False, "msg": "Máº­t kháº©u khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng"}), 400
+    if os.environ.get("ADMIN_PASSWORD"):
+        return jsonify({"success": False, "msg": "Máº­t kháº©u Ä‘Æ°á»£c quáº£n lÃ½ bá»Ÿi biáº¿n mÃ´i trÆ°á»ng ADMIN_PASSWORD."}), 400
     cfg = load_config()
     cfg["admin_password"] = new_pwd
     save_config(cfg)
@@ -5038,6 +5055,8 @@ def check_user_paid():
 @app.route("/api/admin/tangtim/balance")
 @admin_required
 def admin_tangtim_balance():
+    if not load_config().get("tangtim", {}).get("api_key"):
+        return jsonify({"success": False, "msg": "ChÆ°a cáº¥u hÃ¬nh API Key TangTim."}), 400
     bal_vnd, formatted, raw_usd = tangtim_fetch_balance()
     if bal_vnd is not None:
         cfg = load_config()
@@ -5051,7 +5070,18 @@ def admin_tangtim_balance():
             "balance_formatted": formatted,
             "balance_usd": raw_usd
         })
-    return jsonify({"success": False, "msg": "KhÃ´ng thá»ƒ káº¿t ná»‘i mÃ¡y chá»§ TangTim."}), 500
+    return jsonify({"success": False, "msg": "Lỗi kết nối máy chủ TangTim."}), 502
+
+@app.route("/api/admin/autonhanh/balance")
+@admin_required
+def admin_autonhanh_balance():
+    an_cfg = load_config().get("autonhanh", {})
+    if not (an_cfg.get("token") or (an_cfg.get("username") and an_cfg.get("password"))):
+        return jsonify({"success": False, "msg": "ChÆ°a cáº¥u hÃ¬nh tÃ i khoáº£n AutoNhanh."}), 400
+    balance, error = autonhanh_fetch_balance()
+    if balance is None:
+        return jsonify({"success": False, "msg": error or "Lỗi kết nối máy chủ AutoNhanh."}), 502
+    return jsonify({"success": True, "balance": balance})
 
 @app.route("/api/admin/autonhanh/status")
 @admin_required
@@ -5351,4 +5381,3 @@ if __name__ == "__main__":
     print(f" âš™ï¸ Quáº£n trá»‹ viÃªn: http://localhost:{port}/admin")
     print("=" * 65)
     app.run(host="0.0.0.0", port=port, debug=False)
-

@@ -429,6 +429,12 @@ button, a, input, select, textarea,
   vertical-align: middle;
 }
 
+.admin-table td.text-center {
+  padding: 30px;
+  color: var(--admin-muted);
+  text-align: center;
+}
+
 .admin-table tr:hover td {
   background: rgba(255, 255, 255, 0.02);
 }

@@ -1,6 +1,7 @@
 import os
 import json
 import base64
+import hmac
 import time
 import re
 from datetime import datetime
@@ -24,7 +25,6 @@ DEFAULT_TOKEN_SET = {
     "app_transaction": ""
 }
 DEFAULT_CONFIG = {
-    "admin_password": "admin",
     "payment": {
         "bank_id": "970454",
         "bank_name": "Ngân Hàng Bản Việt (BVBank - ZaloPay)",
@@ -546,7 +546,11 @@ class ConfigManager:
 
     # Admin Password
     def verify_password(self, password):
-        return str(password) == str(self.get_data().get("admin_password", "admin"))
+        configured_password = os.environ.get("ADMIN_PASSWORD") or self.get_data().get("admin_password")
+        return bool(configured_password) and hmac.compare_digest(
+            str(password).encode("utf-8"),
+            str(configured_password).encode("utf-8")
+        )
 
     def set_admin_password(self, new_password):
         if not new_password or not str(new_password).strip():

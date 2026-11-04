@@ -1,5 +1,4 @@
 {
-  "admin_password": "admin",
   "payment": {
     "bank_id": "970454",
     "bank_name": "Ngân Hàng Bản Việt (BVBank - ZaloPay)",
@@ -193,9 +192,9 @@
     "auto_buy_on_paid": true,
     "margin_percent": 167.0,
     "usd_rate": 25500,
-    "last_balance": 0.8684568470588235,
-    "last_check_time": "2026-11-01 14:36:05",
-    "last_balance_vnd": 22146,
+    "last_balance": 0.28884900392156865,
+    "last_check_time": "2026-11-05 00:27:21",
+    "last_balance_vnd": 7366,
     "deposit_bank": "MBBank",
     "deposit_account": "06667778880",
     "deposit_name": "NGO VAN TUAN HUNG",

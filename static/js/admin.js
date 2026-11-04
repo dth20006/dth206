@@ -11,6 +11,21 @@
 let gAdminConfig = {};
 
 let gOrdersList = [];
+let gAdminExpiryTimer = null;
+let gAdminRedirecting = false;
+
+const originalAdminFetch = window.fetch.bind(window);
+window.fetch = async (...args) => {
+  const response = await originalAdminFetch(...args);
+  const requestUrl = args[0] instanceof Request ? args[0].url : args[0];
+  const pathname = new URL(requestUrl, window.location.href).pathname;
+  if ((response.status === 401 || response.status === 403) &&
+      pathname.startsWith("/api/") &&
+      pathname !== "/api/admin/login") {
+    redirectToAdminLogin();
+  }
+  return response;
+};
 
 
 
@@ -50,119 +65,43 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================================
 
 async function checkAuth() {
-
   try {
-
     const res = await fetch("/api/admin/check-auth");
-
     const data = await res.json();
-
-    const overlay = document.getElementById("adminLoginOverlay");
-
-
-
-    if (data.is_admin) {
-
-      overlay.style.display = "none";
-
-      loadInitialData();
-
-    } else {
-
-      overlay.style.display = "flex";
-
+    if (!res.ok || !data.is_admin) {
+      redirectToAdminLogin();
+      return;
     }
-
+    if (gAdminExpiryTimer) clearTimeout(gAdminExpiryTimer);
+    const expiresIn = Math.max(0, data.expires_at * 1000 - Date.now());
+    gAdminExpiryTimer = setTimeout(redirectToAdminLogin, expiresIn);
+    const logoutButton = document.getElementById("btnAdminLogout");
+    if (logoutButton) logoutButton.addEventListener("click", async () => {
+      await fetch("/api/admin/logout", { method: "POST" });
+      window.location.replace("/admin");
+    });
+    loadInitialData();
   } catch (e) {
-
     console.error("Auth check failed:", e);
-
   }
-
-
-
-  // Handle Login Form
-
-  const loginForm = document.getElementById("loginForm");
-
-  const loginBtn = document.getElementById("btnAdminLogin");
-
-  const pwdInput = document.getElementById("adminPasswordInput");
-
-
-
-  loginBtn.addEventListener("click", async () => {
-
-    const pwd = pwdInput.value.trim();
-
-    if (!pwd) return;
-
-
-
-    loginBtn.disabled = true;
-
-    loginBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Äang Ä‘Äƒng nháº­p...`;
-
-
-
-    try {
-
-      const res = await fetch("/api/admin/login", {
-
-        method: "POST",
-
-        headers: { "Content-Type": "application/json" },
-
-        body: JSON.stringify({ password: pwd })
-
-      });
-
-      const data = await res.json();
-
-
-
-      if (data.success) {
-
-        document.getElementById("adminLoginOverlay").style.display = "none";
-
-        showToast("ÄÄƒng nháº­p thÃ nh cÃ´ng!", "success");
-
-        loadInitialData();
-
-      } else {
-
-        showToast(data.msg || "Máº­t kháº©u khÃ´ng Ä‘Ãºng.", "error");
-
-      }
-
-    } catch (e) {
-
-      showToast("Lá»—i Ä‘Äƒng nháº­p: " + e.message, "error");
-
-    } finally {
-
-      loginBtn.disabled = false;
-
-      loginBtn.innerHTML = `<i class="fa-solid fa-key"></i> ÄÄƒng Nháº­p`;
-
-    }
-
-  });
-
-
-
-  // Handle Logout
-
-  document.getElementById("btnAdminLogout").addEventListener("click", async () => {
-
-    await fetch("/api/admin/logout", { method: "POST" });
-
-    window.location.reload();
-
-  });
-
 }
 
+function redirectToAdminLogin() {
+  if (gAdminRedirecting) return;
+  gAdminRedirecting = true;
+  if (gAdminExpiryTimer) clearTimeout(gAdminExpiryTimer);
+  window.location.replace("/admin");
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
 
 function loadInitialData() {
@@ -172,9 +111,44 @@ function loadInitialData() {
   loadOrders();
 
   loadFullConfig();
+  checkPartnerBalance("autonhanh");
+  checkPartnerBalance("tangtim");
 
 }
 
+async function checkPartnerBalance(partner) {
+  const isAutoNhanh = partner === "autonhanh";
+  const element = document.getElementById(isAutoNhanh ? "balAutoNhanh" : "balTangTim");
+  if (!element) return;
+
+  element.classList.remove("text-danger");
+  element.style.color = "";
+  element.textContent = "Đang kiểm tra...";
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  try {
+    const endpoint = isAutoNhanh ? "/api/admin/autonhanh/balance" : "/api/admin/tangtim/balance";
+    const response = await fetch(endpoint, { signal: controller.signal });
+    const data = await response.json();
+    if (!response.ok || !data.success) {
+      throw new Error(data.msg || "Lỗi kết nối / Chưa cấu hình API");
+    }
+
+    element.textContent = isAutoNhanh
+      ? `${Number(data.balance).toLocaleString("vi-VN")} Xu`
+      : (data.balance_formatted || `${Number(data.balance_vnd).toLocaleString("vi-VN")}đ`);
+  } catch (error) {
+    element.classList.add("text-danger");
+    element.style.color = "#ef4444";
+    const message = error.name === "AbortError"
+      ? "quá thời gian chờ"
+      : (error.message || "không rõ nguyên nhân");
+    element.textContent = `Lỗi kết nối / Chưa cấu hình API: ${message}`;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
 
 // ==========================================
@@ -399,20 +373,6 @@ async function loadStats() {
 
 
 
-    // Partner Balances
-
-    const p = data.partner_balances || {};
-
-    document.getElementById("balAutoNhanh").textContent = p.autonhanh_xu !== null && p.autonhanh_xu !== undefined
-
-      ? `${Number(p.autonhanh_xu).toLocaleString("vi-VN")} Xu`
-
-      : "ChÆ°a káº¿t ná»‘i";
-
-
-
-    document.getElementById("balTangTim").textContent = p.tangtim_str || (p.tangtim_vnd ? `${p.tangtim_vnd.toLocaleString("vi-VN")}Ä‘` : "ChÆ°a káº¿t ná»‘i");
-
   } catch (e) {
 
     console.error("Error loading stats:", e);
@@ -549,6 +509,19 @@ function initOrders() {
 
 }
 
+function setOrdersTableMessage(scope, message) {
+  const tableIds = {
+    chungsuc: "csOrdersTableBody",
+    locket: "lkOrdersTableBody",
+    mxh: "mxhOrdersTableBody",
+    premium: "tbodyOrdersPremium"
+  };
+  const scopes = scope ? [scope] : Object.keys(tableIds);
+  scopes.forEach(key => {
+    const tbody = document.getElementById(tableIds[key]);
+    if (tbody) tbody.innerHTML = `<tr><td colspan="9" class="text-center">${message}</td></tr>`;
+  });
+}
 
 
 function copyToClipboard(text, msg) {
@@ -609,23 +582,28 @@ function addAdminDeletedOrder(oid) {
 
 async function loadOrders(targetScope = null, forceSync = false) {
 
+  setOrdersTableMessage(targetScope, '<i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách đơn hàng...');
+
   try {
 
     if (forceSync) {
 
       try {
 
-        await fetch("/api/admin/orders/sync-all?t=" + Date.now());
+        await fetchWithTimeout("/api/admin/orders/sync-all?t=" + Date.now());
 
       } catch (e) {}
 
     }
 
-    const res = await fetch("/api/admin/orders?service=all&status=all&t=" + Date.now());
+    const res = await fetchWithTimeout("/api/admin/orders?service=all&status=all&t=" + Date.now());
 
     const data = await res.json();
 
-    if (!data.success) return;
+    if (!res.ok || !data.success) {
+      setOrdersTableMessage(targetScope, "Không thể tải đơn hàng. Vui lòng thử lại.");
+      return;
+    }
 
 
 
@@ -870,6 +848,7 @@ async function loadOrders(targetScope = null, forceSync = false) {
   } catch (e) {
 
     console.error("Error loading separated orders:", e);
+    setOrdersTableMessage(targetScope, "Không thể tải đơn hàng. Vui lòng thử lại.");
 
   }
 
@@ -891,7 +870,7 @@ function renderCsOrdersTable(orders) {
 
   if (orders.length === 0) {
 
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 30px; color: var(--admin-muted);">ChÆ°a cÃ³ Ä‘Æ¡n hÃ ng Chung Sá»©c nÃ o phÃ¹ há»£p vá»›i bá»™ lá»c.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center">Không có đơn hàng nào</td></tr>`;
 
     return;
 
@@ -995,7 +974,7 @@ function renderLkOrdersTable(orders) {
 
   if (orders.length === 0) {
 
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 30px; color: var(--admin-muted);">ChÆ°a cÃ³ Ä‘Æ¡n hÃ ng Locket Gold nÃ o phÃ¹ há»£p vá»›i bá»™ lá»c.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center">Không có đơn hàng nào</td></tr>`;
 
     return;
 
@@ -1183,7 +1162,7 @@ function renderMxhOrdersTable(orders) {
 
   if (orders.length === 0) {
 
-    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 30px; color: var(--admin-muted);">ChÆ°a cÃ³ Ä‘Æ¡n hÃ ng Máº¡ng XÃ£ Há»™i nÃ o phÃ¹ há»£p vá»›i bá»™ lá»c.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center">Không có đơn hàng nào</td></tr>`;
 
     return;
 
@@ -1641,15 +1620,18 @@ async function testAutoNhanh() {
 
   btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Äang káº¿t ná»‘i...`;
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
 
 
   try {
 
-    const res = await fetch("/api/admin/stats");
+    const res = await fetch("/api/admin/autonhanh/balance", { signal: controller.signal });
 
     const data = await res.json();
 
-    const bal = data.partner_balances ? data.partner_balances.autonhanh_xu : null;
+    const bal = data.success ? data.balance : null;
 
     if (bal !== null && bal !== undefined) {
 
@@ -1667,6 +1649,7 @@ async function testAutoNhanh() {
 
   } finally {
 
+    clearTimeout(timeoutId);
     btn.disabled = false;
 
     btn.innerHTML = `<i class="fa-solid fa-key"></i> ÄÄƒng Nháº­p & Kiá»ƒm Tra Sá»‘ DÆ° Xu`;
@@ -2653,9 +2636,12 @@ function initMxhAdmin() {
 
       btnCheckBal.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Äang kiá»ƒm tra...';
 
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
       try {
 
-        const res = await fetch("/api/admin/tangtim/balance");
+        const res = await fetch("/api/admin/tangtim/balance", { signal: controller.signal });
 
         const data = await res.json();
 
@@ -2679,6 +2665,7 @@ function initMxhAdmin() {
 
       } finally {
 
+        clearTimeout(timeoutId);
         btnCheckBal.disabled = false;
 
         btnCheckBal.innerHTML = '<i class="fa-solid fa-wallet text-gold"></i> Kiá»ƒm Tra Sá»‘ DÆ° TangTim';
@@ -4361,7 +4348,7 @@ function renderPremiumOrdersTable(orders) {
 
   if (orders.length === 0) {
 
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding: 30px; color: var(--admin-muted);">ChÆ°a cÃ³ Ä‘Æ¡n hÃ ng Chá»£ Premium nÃ o phÃ¹ há»£p vá»›i bá»™ lá»c.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center">Không có đơn hàng nào</td></tr>`;
 
     return;
 

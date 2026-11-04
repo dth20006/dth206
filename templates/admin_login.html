@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng nhập quản trị - DTH Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: #090e1a; color: #f8fafc; font-family: "Be Vietnam Pro", sans-serif; }
+    .login-card { width: min(100%, 420px); padding: 32px; border: 1px solid rgba(255,255,255,.1); border-radius: 20px; background: #131d35; box-shadow: 0 24px 80px rgba(0,0,0,.35); }
+    .login-card h1 { margin: 0 0 8px; font-size: 1.4rem; }
+    .login-card p { margin: 0 0 24px; color: #94a3b8; }
+    .login-card label { display: block; margin-bottom: 8px; font-weight: 700; }
+    .login-card input { width: 100%; margin-bottom: 16px; }
+    .login-card button { width: 100%; justify-content: center; }
+    #loginError { min-height: 1.4em; margin: 0 0 12px; color: #f87171; }
+  </style>
+</head>
+<body>
+  <main class="login-card">
+    <h1>DTH PORTAL ADMIN</h1>
+    <p>Hệ Thống Quản Trị Hợp Nhất 4-in-1</p>
+    <form id="adminLoginForm">
+      <label for="adminPassword">Mật khẩu quản trị</label>
+      <input class="admin-input" type="password" id="adminPassword" name="password" autocomplete="current-password" required autofocus>
+      <p id="loginError" role="alert" aria-live="polite"></p>
+      <button class="btn-admin-primary" type="submit" id="loginButton">
+        <i class="fa-solid fa-key"></i> Đăng Nhập
+      </button>
+    </form>
+  </main>
+  <script>
+    document.getElementById("adminLoginForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const button = document.getElementById("loginButton");
+      const error = document.getElementById("loginError");
+      button.disabled = true;
+      error.textContent = "";
+      try {
+        const response = await fetch("/api/admin/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: document.getElementById("adminPassword").value })
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.msg || "Đăng nhập thất bại.");
+        window.location.replace("/admin");
+      } catch (err) {
+        error.textContent = err.message || "Không thể kết nối máy chủ.";
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

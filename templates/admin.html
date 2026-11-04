@@ -3894,7 +3894,7 @@ body {
 
         <h2>DTH PORTAL ADMIN</h2>
 
-        <p>Há»‡ Thá»‘ng Quáº£n Trá»‹ Há»£p Nháº¥t 3-in-1</p>
+        <p>Há»‡ Thá»‘ng Quáº£n Trá»‹ Há»£p Nháº¥t 4-in-1</p>
 
       </div>
 
@@ -4282,9 +4282,8 @@ body {
               <div class="partner-box">
 
                 <div class="partner-title">AutoNhanh.com (Chung Sá»©c)</div>
-
-                <div class="partner-bal" id="balAutoNhanh">Äang kiá»ƒm tra...</div>
-
+                <div class="partner-bal" id="balAutoNhanh">-</div>
+                <button type="button" class="btn-admin-action" onclick="checkPartnerBalance('autonhanh')">Thử lại</button>
                 <small>DÃ¹ng Ä‘á»ƒ tá»± Ä‘á»™ng buff lÆ°á»£t má»Ÿ rÆ°Æ¡ng sá»± kiá»‡n</small>
 
               </div>
@@ -4294,9 +4293,8 @@ body {
               <div class="partner-box">
 
                 <div class="partner-title">TangTim.vn (Máº¡ng XÃ£ Há»™i)</div>
-
-                <div class="partner-bal text-cyan" id="balTangTim">Äang kiá»ƒm tra...</div>
-
+                <div class="partner-bal text-cyan" id="balTangTim">-</div>
+                <button type="button" class="btn-admin-action" onclick="checkPartnerBalance('tangtim')">Thử lại</button>
                 <small>DÃ¹ng Ä‘á»ƒ tá»± Ä‘á»™ng tÄƒng tÆ°Æ¡ng tÃ¡c TikTok, FB, Insta, YT</small>
 
               </div>
@@ -4446,8 +4444,7 @@ body {
                 </thead>
 
                 <tbody id="csOrdersTableBody">
-
-                  <!-- Injected via JS -->
+                  <tr><td colspan="9" class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách đơn hàng...</td></tr>
 
                 </tbody>
 
@@ -4598,8 +4595,7 @@ body {
                 </thead>
 
                 <tbody id="lkOrdersTableBody">
-
-                  <!-- Injected via JS -->
+                  <tr><td colspan="9" class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách đơn hàng...</td></tr>
 
                 </tbody>
 
@@ -4772,8 +4768,7 @@ body {
                 </thead>
 
                 <tbody id="mxhOrdersTableBody">
-
-                  <!-- Injected via JS -->
+                  <tr><td colspan="9" class="text-center"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách đơn hàng...</td></tr>
 
                 </tbody>
 
@@ -4847,7 +4842,7 @@ body {
 
               <div style="display: flex; gap: 8px;">
 
-                <button type="button" class="btn-admin-secondary" onclick="loadAdminOrders()">
+                <button type="button" class="btn-admin-secondary" onclick="loadOrders('premium', true)">
 
                   <i class="fa-solid fa-rotate"></i> LÃ m Má»›i
 
@@ -4867,14 +4862,11 @@ body {
 
               <select id="filterStatusPremium" class="admin-input" style="width: 170px;" onchange="filterOrdersPremium()">
 
-                <option value="ALL">Táº¥t Cáº£ Tráº¡ng ThÃ¡i</option>
-
-                <option value="PAID">ÄÃ£ Thanh ToÃ¡n</option>
-
-                <option value="COMPLETED">ÄÃ£ HoÃ n Táº¥t</option>
-
+                <option value="all">Táº¥t Cáº£ Tráº¡ng ThÃ¡i</option>
                 <option value="PENDING">Chá» Thanh ToÃ¡n</option>
-
+                <option value="PAID">ÄÃ£ Thanh ToÃ¡n</option>
+                <option value="PROCESSING">⚡ Đang Xử Lý</option>
+                <option value="COMPLETED">ÄÃ£ HoÃ n Táº¥t</option>
                 <option value="FAILED">Tháº¥t Báº¡i / Há»§y</option>
 
               </select>
@@ -4914,16 +4906,7 @@ body {
                 </thead>
 
                 <tbody id="tbodyOrdersPremium">
-
-                  <tr>
-
-                    <td colspan="9" style="text-align: center; color: var(--admin-muted); padding: 30px;">
-
-                      Äang táº£i danh sÃ¡ch Ä‘Æ¡n hÃ ng Premium...
-
-                    </td>
-
-                  </tr>
+                  <tr><td colspan="9" class="text-center">Không có đơn hàng nào</td></tr>
 
                 </tbody>
 
@@ -7204,5 +7187,3 @@ body {
 </body>
 
 </html>
-
-

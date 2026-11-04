@@ -45,14 +45,14 @@ Khi triển khai trên **Vercel** (`Project Settings -> Environment Variables`) 
 | Biến Môi Trường | Ý Nghĩa / Mục Đích | Giá Trị Mẫu |
 | :--- | :--- | :--- |
 | `DATABASE_URL` | Kết nối PostgreSQL (Supabase / Neon) với `NullPool` | `postgresql+pg8000://user:pass@ep-cool.ap-southeast-1.aws.neon.tech/neondb` |
-| `SECRET_KEY` | Khóa bí mật mã hóa Session Cookie Admin | `dth_super_secret_session_key_2026` |
-| `ADMIN_PASSWORD` | Mật khẩu đăng nhập Admin Dashboard (`/admin`) | `admin` (hoặc mật khẩu tùy chỉnh) |
+| `SECRET_KEY` | Khóa ngẫu nhiên mạnh để ký Session Cookie Admin; bắt buộc trên production | Sinh bằng `python -c "import secrets; print(secrets.token_hex(32))"` |
+| `ADMIN_PASSWORD` | Mật khẩu Admin Dashboard (`/admin`); được ưu tiên hơn mật khẩu trong config | Đặt một mật khẩu mạnh, duy nhất trong Vercel/VPS Secrets |
 | `CRON_SECRET` | Header `X-Cron-Secret` xác thực Endpoint Cron | `dth_cron_sync_secret_token_99` |
 | `BANK_WEBHOOK_SECRET` | Chữ ký / Token xác thực Webhook Ngân hàng | `DTH_SECURE_WEBHOOK_KEY_2026` |
 | `TELEGRAM_BOT_TOKEN` | Token Bot Telegram nhận thông báo | `7714154848:AAE...` |
 | `TELEGRAM_CHAT_ID` | ID Chat Telegram của Admin | `7114174347` |
 
-> *Ghi chú:* Nếu không cấu hình `DATABASE_URL`, hệ thống sẽ tự động sử dụng SQLite fallback (`dth_services.db` trên local hoặc `/tmp/dth_services.db` trên Vercel).
+> *Ghi chú:* Nếu không cấu hình `DATABASE_URL`, hệ thống sẽ tự động sử dụng SQLite fallback (`dth_services.db` trên local hoặc `/tmp/dth_services.db` trên Vercel). Production sẽ từ chối khởi động nếu thiếu `SECRET_KEY`; hãy cấu hình cả `ADMIN_PASSWORD` trước khi đăng nhập lần đầu. Session quản trị hết hạn sau 8 giờ.
 
 ---
 

@@ -1,6 +1,8 @@
 ﻿import os
-import io
-import csv
+import hmac
+import io
+import csv
+import time
 from datetime import datetime, timedelta
 from functools import wraps
 from flask import Blueprint, request, jsonify, session, Response
@@ -9,31 +11,52 @@ import models
 from utils import now_gmt7, format_currency_vnd
 
 admin_bp = Blueprint("admin_bp", __name__)
-
-def admin_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if not session.get("is_admin"):
-            return jsonify({"success": False, "msg": "YÃªu cáº§u Ä‘Äƒng nháº­p quáº£n trá»‹ viÃªn."}), 401
-        return f(*args, **kwargs)
+
+ADMIN_SESSION_TTL = 8 * 60 * 60
+
+def is_admin_authenticated():
+    expires_at = session.get("admin_expires_at")
+    if not session.get("is_admin") or not isinstance(expires_at, (int, float)) or time.time() >= expires_at:
+        session.clear()
+        return False
+    return True
+
+def get_admin_password():
+    env_password = os.environ.get("ADMIN_PASSWORD")
+    if env_password:
+        return env_password
+    password = config_manager.get_data().get("admin_password")
+    return password if isinstance(password, str) and password else None
+
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not is_admin_authenticated():
+            return jsonify({"success": False, "msg": "YÃªu cáº§u Ä‘Äƒng nháº­p quáº£n trá»‹ viÃªn."}), 401
+        return f(*args, **kwargs)
     return decorated
 
 @admin_bp.route("/api/admin/login", methods=["POST"])
 def admin_login():
     data = request.get_json(silent=True) or {}
-    pwd = (data.get("password") or "").strip()
-    cfg = config_manager.load_config()
-    correct_pwd = cfg.get("admin_password") or os.environ.get("ADMIN_PASSWORD") or "admin"
-    
-    if pwd == correct_pwd:
-        session["is_admin"] = True
-        return jsonify({"success": True, "msg": "ÄÄƒng nháº­p thÃ nh cÃ´ng!"})
-    return jsonify({"success": False, "msg": "Máº­t kháº©u quáº£n trá»‹ viÃªn khÃ´ng chÃ­nh xÃ¡c."}), 401
-
-@admin_bp.route("/api/admin/logout", methods=["POST", "GET"])
-def admin_logout():
-    session.pop("is_admin", None)
-    return jsonify({"success": True, "msg": "ÄÃ£ Ä‘Äƒng xuáº¥t."})
+    password = data.get("password")
+    pwd = password.strip() if isinstance(password, str) else ""
+    correct_pwd = get_admin_password()
+    if correct_pwd is None:
+        return jsonify({"success": False, "msg": "ChÆ°a cáº¥u hÃ¬nh ADMIN_PASSWORD."}), 503
+
+    if hmac.compare_digest(pwd.encode("utf-8"), correct_pwd.encode("utf-8")):
+        session.clear()
+        session.permanent = True
+        session["is_admin"] = True
+        session["admin_expires_at"] = time.time() + ADMIN_SESSION_TTL
+        return jsonify({"success": True, "msg": "ÄÄƒng nháº­p thÃ nh cÃ´ng!"})
+    return jsonify({"success": False, "msg": "Máº­t kháº©u quáº£n trá»‹ viÃªn khÃ´ng chÃ­nh xÃ¡c."}), 401
+
+@admin_bp.route("/api/admin/logout", methods=["POST"])
+def admin_logout():
+    session.clear()
+    return jsonify({"success": True, "msg": "ÄÃ£ Ä‘Äƒng xuáº¥t."})
 
 @admin_bp.route("/api/system/health", methods=["GET"])
 def system_health_status():
@@ -314,11 +337,33 @@ def admin_get_stats():
     try:
         total_orders = db.query(models.Order).count()
         paid_orders = db.query(models.Order).filter(models.Order.status.in_(["PAID", "PROCESSING", "COMPLETED"])).all()
-        
+
         total_revenue = sum(o.amount for o in paid_orders)
-        by_service = {
-            "chungsuc": sum(1 for o in paid_orders if o.service_type == "chungsuc"),
-            "locket": sum(1 for o in paid_orders if o.service_type == "locket"),
+        service_keys = ("chungsuc", "locket", "mxh", "premium")
+        counts = {
+            "all": total_orders,
+            **{
+                service: db.query(models.Order).filter_by(service_type=service).count()
+                for service in service_keys
+            },
+        }
+        rev_by_type = {
+            service: sum(o.amount for o in paid_orders if o.service_type == service)
+            for service in service_keys
+        }
+        status_keys = ("PENDING", "PAID", "PROCESSING", "COMPLETED", "FAILED")
+        status_counts = {
+            status: db.query(models.Order).filter_by(status=status).count()
+            for status in status_keys
+        }
+        today = now_gmt7().date()
+        today_revenue = sum(
+            o.amount for o in paid_orders
+            if o.created_at and o.created_at.date() == today
+        )
+        by_service = {
+            "chungsuc": sum(1 for o in paid_orders if o.service_type == "chungsuc"),
+            "locket": sum(1 for o in paid_orders if o.service_type == "locket"),
             "mxh": sum(1 for o in paid_orders if o.service_type == "mxh"),
             "premium": sum(1 for o in paid_orders if o.service_type == "premium"),
         }
@@ -329,8 +374,13 @@ def admin_get_stats():
             "paid_orders_count": len(paid_orders),
             "total_revenue": total_revenue,
             "total_revenue_formatted": format_currency_vnd(total_revenue),
-            "by_service": by_service
-        })
+            "today_revenue": today_revenue,
+            "today_revenue_formatted": format_currency_vnd(today_revenue),
+            "counts": counts,
+            "status_counts": status_counts,
+            "rev_by_type": rev_by_type,
+            "by_service": by_service,
+        })
     finally:
         db.close()
 
@@ -449,7 +499,8 @@ def admin_manual_match_transaction():
         db.close()
 
 @admin_bp.route("/api/admin/orders", methods=["GET"])
-def admin_get_orders():
+@admin_required
+def admin_get_orders():
     service_filter = (request.args.get("service") or "all").strip().lower()
     status_filter = (request.args.get("status") or "all").strip().upper()
     q = (request.args.get("query") or request.args.get("q") or "").strip().lower()
@@ -489,7 +540,8 @@ def admin_get_orders():
 
 
 @admin_bp.route("/api/admin/orders/sync-all", methods=["GET", "POST"])
-def admin_sync_all_orders():
+@admin_required
+def admin_sync_all_orders():
     """Äá»“ng bá»™ táº¥t cáº£ Ä‘Æ¡n hÃ ng tá»« Web Máº¹ vÃ  orders.json vÃ o Database."""
     models.migrate_legacy_json_to_db()
     db = models.SessionLocal()
