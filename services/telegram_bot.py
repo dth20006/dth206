@@ -61,6 +61,22 @@ def notify_new_order(order):
     send_telegram_msg(msg)
 
 def notify_payment_success(order, trans_id=None):
+    if not order:
+        return
+    s_tid = str(trans_id or "").strip()
+    try:
+        import models
+        if s_tid and s_tid in models.KNOWN_PROCESSED_TRANSACTIONS:
+            if order.get("status") in ("paid", "completed", "PAID", "COMPLETED") and (order.get("is_notified") is True or order.get("telegram_paid_notified") is True):
+                return
+    except Exception:
+        pass
+
+    if order.get("telegram_paid_notified") is True and order.get("status") in ("paid", "completed", "PAID", "COMPLETED"):
+        return
+
+    order["telegram_paid_notified"] = True
+    order["is_notified"] = True
     oid = order.get("order_id")
     stype = order.get("service_type")
     amt_str = order.get("amount_formatted") or format_currency_vnd(order.get("amount", 0))

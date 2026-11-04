@@ -590,7 +590,10 @@ def notify_new_order(order):
 def notify_payment_success(order, trans_id=None, force=False):
     if not order:
         return
-    if order.get("telegram_paid_notified") and not force:
+    s_tid = str(trans_id or "").strip()
+    if s_tid and s_tid in models.KNOWN_PROCESSED_TRANSACTIONS and not force:
+        return
+    if (order.get("telegram_paid_notified") or order.get("is_notified")) and not force:
         return
     order["telegram_paid_notified"] = True
     order["notified_paid"] = True
@@ -2023,8 +2026,18 @@ def check_and_process_zalopay_history(force=False):
                 tx = item["transaction"]
 
         trans_id = str(tx.get("trans_id") or tx.get("app_trans_id") or tx.get("transaction_id") or tx.get("id") or "").strip()
-        if trans_id and (trans_id in processed_ids or models.is_transaction_processed(trans_id)):
+        if trans_id and (trans_id in models.KNOWN_PROCESSED_TRANSACTIONS or trans_id in processed_ids or models.is_transaction_processed(trans_id)):
             continue
+
+        # Tầng 4: Bộ lọc thời gian giao dịch (<= 60 phút)
+        raw_tx_time = tx.get("trans_time") or tx.get("transactionDate") or tx.get("created_time")
+        if raw_tx_time and isinstance(raw_tx_time, str) and "T" in raw_tx_time:
+            try:
+                tx_dt = datetime.fromisoformat(raw_tx_time.replace("Z", "+00:00")).astimezone(models.VN_TZ)
+                if (models.now_gmt7() - tx_dt).total_seconds() > 3600:
+                    continue
+            except Exception:
+                pass
         raw_amt = tx.get("transferAmount") or tx.get("trans_amount") or tx.get("amount") or tx.get("charge_amount") or tx.get("subtotal_amount") or tx.get("price") or 0
         try:
             amount = int(abs(float(str(raw_amt).replace(",", "").replace(".", "").replace("Ä‘", "") or 0)))

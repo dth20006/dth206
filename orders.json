@@ -585,7 +585,7 @@
     "package_name": "Giữ Gold",
     "amount": 30000,
     "amount_formatted": "30.000đ",
-    "status": "PENDING",
+    "status": "EXPIRED",
     "zalo": "0787593116",
     "content": "LKMNLFIN",
     "qr_url": "https://img.vietqr.io/image/970454-99ZP24261M43061759-compact2.png?amount=30000&addInfo=LKMNLFIN&accountName=ZALOPAY_DINH TUAN HUNG",
@@ -595,7 +595,8 @@
     "created_at": 1793710789,
     "created_time": "2026-11-03 12:59:49",
     "paid_at": null,
-    "gold_status": null
+    "gold_status": null,
+    "is_notified": false
   },
   "LK46K80R": {
     "order_id": "LK46K80R",
@@ -675,7 +676,7 @@
     "turns": 1200,
     "amount": 70000,
     "amount_formatted": "70.000đ",
-    "status": "PENDING",
+    "status": "COMPLETED",
     "zalo": "0343817944",
     "content": "CS8IMCWT",
     "qr_url": "https://img.vietqr.io/image/970454-99ZP24261M43061759-compact2.png?amount=70000&addInfo=CS8IMCWT&accountName=ZALOPAY_DINH TUAN HUNG",
@@ -684,8 +685,14 @@
     "account_name": "ZALOPAY_DINH TUAN HUNG",
     "created_at": 1793777500,
     "created_time": "2026-11-04 07:31:40",
-    "paid_at": null,
-    "autonhanh_status": null,
-    "autonhanh_batch_id": null
+    "paid_at": "2026-11-04 18:47:00",
+    "autonhanh_status": "COMPLETED",
+    "autonhanh_batch_id": null,
+    "completed_at": "2026-11-04 18:47:00",
+    "is_notified": true,
+    "notified_paid": true,
+    "telegram_paid_notified": true,
+    "bank_trans_id": "261104002753031",
+    "transaction_id": "261104002753031"
   }
 }
