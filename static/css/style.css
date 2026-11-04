@@ -3881,6 +3881,25 @@ canvas {
   }
 }
 
+@media (min-width: 992px) {
+  .service-nav-bar {
+    width: fit-content;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .service-nav-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .service-tab-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
 /* Canvas Receipt VIP responsive */
 #receiptCanvas {
   max-width: 100% !important;

@@ -3724,7 +3724,6 @@ function initSecondaryHooks() {
   try { initVipTierCheckers(); } catch (e) {}
   try { initSmmSmartTools(); } catch (e) {}
   try { initFreeTools(); } catch (e) {}
-  try { checkAndShowAnnouncement(); } catch (e) {}
 }
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initSecondaryHooks);
@@ -3773,39 +3772,45 @@ window.addEventListener("focus", () => {
 // 15. POPUP ANNOUNCEMENT MODAL SYSTEM (TECH-CUTE CYBER-KAWAII)
 // ========================================================
 let gAnnouncementData = null;
+let gAnnouncementCheckPromise = null;
 
 async function checkAndShowAnnouncement() {
-  try {
-    const res = await fetch("/api/announcement");
-    if (!res.ok) return;
-    const data = await res.json();
-    if (!data || !data.success) return;
-    
-    const ann = data.data || data;
-    if (!ann.enabled) return;
-    if (!ann.content || !ann.content.trim()) return;
+  if (gAnnouncementCheckPromise) return gAnnouncementCheckPromise;
 
-    gAnnouncementData = ann;
+  gAnnouncementCheckPromise = (async () => {
+    try {
+      const res = await fetch("/api/announcement", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data || !data.success) return;
 
-    // Check sessionStorage
-    const lastSeenTs = sessionStorage.getItem("dth_announcement_seen_ts");
-    if (lastSeenTs && parseInt(lastSeenTs, 10) >= (ann.updated_at || 0)) {
-      return; // Already seen this announcement in this session
+      const ann = data.data || data;
+      if (!ann.enabled || !ann.content || !ann.content.trim()) return;
+
+      gAnnouncementData = ann;
+
+      const lastSeenTs = sessionStorage.getItem("dth_announcement_seen_ts");
+      if (lastSeenTs && parseInt(lastSeenTs, 10) >= (ann.updated_at || 0)) {
+        return;
+      }
+
+      const modal = document.getElementById("popupAnnouncementModal");
+      const titleEl = document.getElementById("announcementModalTitle");
+      const contentEl = document.getElementById("announcementModalContent");
+
+      if (modal && titleEl && contentEl) {
+        titleEl.textContent = ann.title || "🎉 THÔNG BÁO TỪ HỆ THỐNG";
+        contentEl.textContent = ann.content || "";
+        modal.style.display = "flex";
+      }
+    } catch (err) {
+      console.debug("[Announcement] Check error:", err);
+    } finally {
+      gAnnouncementCheckPromise = null;
     }
+  })();
 
-    // Populate modal
-    const modal = document.getElementById("popupAnnouncementModal");
-    const titleEl = document.getElementById("announcementModalTitle");
-    const contentEl = document.getElementById("announcementModalContent");
-
-    if (modal && titleEl && contentEl) {
-      titleEl.textContent = ann.title || "🎉 THÔNG BÁO TỪ HỆ THỐNG";
-      contentEl.textContent = ann.content || "";
-      modal.style.display = "flex";
-    }
-  } catch (err) {
-    console.debug("[Announcement] Check error:", err);
-  }
+  return gAnnouncementCheckPromise;
 }
 
 function closePopupAnnouncement() {
