@@ -104,7 +104,7 @@
     <!-- Top Service Navigation Tabs -->
     <nav class="service-nav-bar" id="mainServiceNav" aria-label="Thanh điều hướng dịch vụ chính" role="tablist">
       {% if services_enabled.get('chungsuc', True) %}
-      <button type="button" class="service-tab-btn active" data-tab="chungsuc" role="tab" aria-selected="true" aria-controls="panel-chungsuc" aria-label="Dịch vụ Chung Sức Liên Quân">
+      <button type="button" class="service-tab-btn active" id="tab-chungsuc" data-tab="chungsuc" role="tab" aria-selected="true" aria-controls="panel-chungsuc" aria-label="Dịch vụ Chung Sức Liên Quân">
         <i class="fa-solid fa-gamepad"></i> <span>Chung Sức Liên Quân</span>
       </button>
       {% endif %}
@@ -140,7 +140,7 @@
     <!-- TAB 1: CHUNG SỨC LIÊN QUÂN MOBILE 2026      -->
     <!-- ========================================== -->
     {% if services_enabled.get('chungsuc', True) %}
-<section class="tab-content-panel active" id="panel-chungsuc" role="tabpanel" aria-labelledby="mainServiceNav">
+    <section class="tab-content-panel active" id="panel-chungsuc" role="tabpanel" aria-labelledby="tab-chungsuc">
       <div class="hero-section">
         <div class="hero-badge"><i class="fa-solid fa-trophy"></i> SỰ KIỆN CHUNG SỨC LIÊN QUÂN 2026</div>
         <h1 class="hero-title">Mở Rương SS & SSS Siêu Tốc</h1>
@@ -357,7 +357,7 @@
             <ul class="policy-list">
               <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bước 1:</strong> Điền Username Locket và bấm <strong>Kiểm Tra</strong> để hệ thống nhận diện UID tài khoản.</li>
               <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bước 2:</strong> Chọn gói <strong>Giữ Gold (Vĩnh Viễn)</strong> và thanh toán VietQR tự động.</li>
-              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bước 3:</strong> Sau khi thanh toán, nhận <strong>Link Module Shadowrocket (dth.sgmodule)</strong> & <strong>File DNS Profile riêng</strong>: Cài app Shadowrocket ➔ Thêm link Module VIP <code>dth.sgmodule</code> ➔ Bật DNS/HTTPS Decryption ➔ Hoàn tất mở khóa tính năng Gold độc quyền trọn đời (xem chi tiết tại 2 video hướng dẫn VIP)!</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bước 3:</strong> Sau khi thanh toán, cài đặt <strong>Shadowrocket</strong>, thêm Module VIP <code>dth.sgmodule</code> và cài <strong>DNS Profile chống thu hồi</strong> theo hướng dẫn. Sau đó bật kết nối Shadowrocket để sử dụng Locket Gold trọn đời (xem chi tiết tại 2 video hướng dẫn VIP).</li>
             </ul>
           </div>
 
@@ -918,7 +918,7 @@
               </button>
             </div>
           </form>
-          <div id="toolUidResult" class="hidden" style="display: none; margin-top: 16px; background: rgba(37, 99, 235, 0.05); border: 1.5px solid var(--border-blue); border-radius: 12px; padding: 16px;">
+          <div id="toolUidResult" class="hidden" hidden style="display: none; margin-top: 16px; background: rgba(37, 99, 235, 0.05); border: 1.5px solid var(--border-blue); border-radius: 12px; padding: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
               <div>
                 <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">KẾT QUẢ TRÍCH XUẤT:</div>
@@ -943,11 +943,11 @@
               </button>
             </div>
           </form>
-          <div id="toolTiktokLoading" style="display: none; text-align: center; padding: 20px;">
+          <div id="toolTiktokLoading" class="hidden" hidden style="display: none; text-align: center; padding: 20px;">
             <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--blue-primary);"></i>
             <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;">Đang bóc tách video HD không logo & trích xuất MP3...</p>
           </div>
-          <div id="toolTiktokResult" class="hidden" style="display: none; margin-top: 16px; background: rgba(16, 185, 129, 0.05); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 16px;">
+          <div id="toolTiktokResult" class="hidden" hidden style="display: none; margin-top: 16px; background: rgba(16, 185, 129, 0.05); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 16px;">
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
               <img id="toolTiktokCover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Video Cover" style="width: 80px; height: 110px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);" width="80" height="110" loading="lazy">
               <div style="flex: 1; min-width: 200px;">

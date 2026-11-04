@@ -2324,12 +2324,11 @@ function switchVideoGuideTab(tab) {
       const vidType = isModuleTab ? "module" : "shadowrocket";
       const token = vipOrder.video_token || vipOrder.token;
       const videoUrl = `/api/video/guide?type=${vidType}&order_id=${encodeURIComponent(vipOrder.order_id)}&token=${encodeURIComponent(token)}`;
-      
-      const fullUrl = window.location.origin + videoUrl;
-      if (player.src !== fullUrl && player.getAttribute("data-current-src") !== videoUrl) {
+
+      if (player.getAttribute("data-current-src") !== videoUrl) {
         player.pause();
         player.setAttribute("data-current-src", videoUrl);
-        player.src = videoUrl;
+        player.setAttribute("src", videoUrl);
         player.load();
       }
     }
@@ -2339,6 +2338,7 @@ function switchVideoGuideTab(tab) {
       player.pause();
       player.removeAttribute("src");
       player.removeAttribute("data-current-src");
+      player.load();
       player.style.display = "none";
     }
     if (lockOverlay) lockOverlay.style.display = "flex";
@@ -3414,6 +3414,7 @@ async function handleGetUID(e) {
   const btn = document.getElementById("btnToolGetUid");
 
   if (resBox) {
+    resBox.hidden = true;
     resBox.classList.add("hidden");
     resBox.style.display = "none";
   }
@@ -3424,6 +3425,7 @@ async function handleGetUID(e) {
     const data = await res.json();
     if (data.success && data.object_id) {
       if (resBox && valEl && metaEl) {
+        resBox.hidden = false;
         resBox.classList.remove("hidden");
         resBox.style.display = "block";
         valEl.textContent = data.object_id;
@@ -3432,6 +3434,7 @@ async function handleGetUID(e) {
       showToast("Đã trích xuất UID thành công!", "success");
     } else {
       if (resBox) {
+        resBox.hidden = true;
         resBox.classList.add("hidden");
         resBox.style.display = "none";
       }
@@ -3439,6 +3442,7 @@ async function handleGetUID(e) {
     }
   } catch (err) {
     if (resBox) {
+      resBox.hidden = true;
       resBox.classList.add("hidden");
       resBox.style.display = "none";
     }
@@ -3499,8 +3503,13 @@ async function handleGetTikTokNoWatermark(e) {
   const author = document.getElementById("toolTiktokAuthor");
   const btn = document.getElementById("btnToolGetTiktok");
 
-  if (loading) loading.style.display = "block";
+  if (loading) {
+    loading.hidden = false;
+    loading.classList.remove("hidden");
+    loading.style.display = "block";
+  }
   if (result) {
+    result.hidden = true;
     result.classList.add("hidden");
     result.style.display = "none";
   }
@@ -3535,12 +3544,14 @@ async function handleGetTikTokNoWatermark(e) {
         }
       }
       if (result) {
+        result.hidden = false;
         result.classList.remove("hidden");
         result.style.display = "block";
       }
       showToast("Đã lấy video không logo thành công!", "success");
     } else {
       if (result) {
+        result.hidden = true;
         result.classList.add("hidden");
         result.style.display = "none";
       }
@@ -3548,12 +3559,17 @@ async function handleGetTikTokNoWatermark(e) {
     }
   } catch (err) {
     if (result) {
+      result.hidden = true;
       result.classList.add("hidden");
       result.style.display = "none";
     }
     showToast("Lỗi tải video: " + err.message, "error");
   } finally {
-    if (loading) loading.style.display = "none";
+    if (loading) {
+      loading.hidden = true;
+      loading.classList.add("hidden");
+      loading.style.display = "none";
+    }
     if (btn) btn.disabled = false;
   }
 }
