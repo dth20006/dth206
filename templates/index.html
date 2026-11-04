@@ -1011,7 +1011,7 @@
       <!-- ======================================================= -->
   <!-- 📢 TECH-CUTE CYBER-KAWAII POPUP ANNOUNCEMENT MODAL      -->
   <!-- ======================================================= -->
-  <div class="modal-backdrop announcement-backdrop" id="popupAnnouncementModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="announcementModalTitle">
+  <div class="modal-backdrop announcement-backdrop" id="popupAnnouncementModal" style="display: {% if popup_announcement.enabled and popup_announcement.content %}flex{% else %}none{% endif %};" role="dialog" aria-modal="true" aria-labelledby="announcementModalTitle">
     <div class="modal-card announcement-card">
       <button type="button" class="modal-close-btn" onclick="closePopupAnnouncement()" aria-label="Đóng thông báo">&times;</button>
       
@@ -1024,14 +1024,14 @@
           <span class="pulse-dot"></span> THÔNG BÁO TỪ HỆ THỐNG
         </div>
         <h3 class="announcement-title" id="announcementModalTitle">
-          🎉 THÔNG BÁO TỪ HỆ THỐNG
+          {{ popup_announcement.title or '🎉 THÔNG BÁO TỪ HỆ THỐNG' }}
         </h3>
       </div>
 
       <!-- Content Area with Cyber Kawaii Glass Styling -->
       <div class="announcement-body">
         <div class="announcement-content-box" id="announcementModalContent">
-          Chào mừng bạn đến với DTH Services! Chúc bạn một ngày tốt lành.
+          {{ popup_announcement.content }}
         </div>
       </div>
 
@@ -1043,6 +1043,19 @@
       </div>
     </div>
   </div>
+  <script>
+    (function () {
+      const announcement = {{ popup_announcement | tojson }};
+      const modal = document.getElementById("popupAnnouncementModal");
+      if (!modal || !announcement.enabled || !announcement.content) return;
+      try {
+        const lastSeen = Number(sessionStorage.getItem("dth_announcement_seen_ts") || 0);
+        if (lastSeen >= Number(announcement.updated_at || 0)) modal.style.display = "none";
+      } catch (error) {
+        console.debug("[Announcement] Session storage unavailable:", error);
+      }
+    })();
+  </script>
 
   <!-- Modal Thông Báo Khách Cũ Locket Gold -->
   <div class="modal-backdrop" id="modalExistingCustomerLocket" style="display: none;">
@@ -1345,7 +1358,10 @@
     </button>
   </nav>
 
-  <script>window.gServicesEnabled = {{ services_enabled | tojson }};</script>
+  <script>
+    window.gServicesEnabled = {{ services_enabled | tojson }};
+    window.dthPopupAnnouncement = {{ popup_announcement | tojson }};
+  </script>
   <!-- Frontend Logic -->
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 

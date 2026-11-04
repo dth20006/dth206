@@ -2165,12 +2165,14 @@ def index():
     cfg = load_config()
     is_sale, sale_pct = is_sale_active()
     services_enabled = get_services_enabled(cfg.get("services_enabled"))
+    popup_announcement = config_manager.get_popup_announcement()
     return render_template(
         "index.html",
         cfg=cfg,
         is_sale=is_sale,
         sale_pct=sale_pct,
-        services_enabled=services_enabled
+        services_enabled=services_enabled,
+        popup_announcement=popup_announcement
     )
 
 @app.route("/admin")
@@ -2441,10 +2443,11 @@ def get_locket_user_info():
     api = LocketAPI()
     try:
         profile = None
-        if username:
+        direct_uid = username if re.fullmatch(r"[A-Za-z0-9_-]{28}", username) else ""
+        if username and not direct_uid:
             profile = api.get_full_profile(username)
         
-        uid_val = (profile.get("uid") if profile else None) or uid_in
+        uid_val = direct_uid or (profile.get("uid") if profile else None) or uid_in
         has_gold = api.check_subscriber_gold(uid_val) if uid_val else False
 
         # Kiểm tra Database Single Source of Truth

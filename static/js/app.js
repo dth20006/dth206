@@ -767,10 +767,8 @@ function initLocket() {
     } catch (e) {
       showToast("Lỗi kiểm tra Locket: " + e.message, "error");
     } finally {
-      setTimeout(() => {
-        checkBtn.disabled = false;
-        checkBtn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra`;
-      }, 3000);
+      checkBtn.disabled = false;
+      checkBtn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra`;
     }
   });
 
@@ -3779,12 +3777,14 @@ async function checkAndShowAnnouncement() {
 
   gAnnouncementCheckPromise = (async () => {
     try {
-      const res = await fetch("/api/announcement", { cache: "no-store" });
-      if (!res.ok) return;
-      const data = await res.json();
-      if (!data || !data.success) return;
-
-      const ann = data.data || data;
+      let ann = window.dthPopupAnnouncement;
+      if (!ann) {
+        const res = await fetch("/api/announcement", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data || !data.success) return;
+        ann = data.data || data;
+      }
       if (!ann.enabled || !ann.content || !ann.content.trim()) return;
 
       gAnnouncementData = ann;
