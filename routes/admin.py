@@ -181,10 +181,28 @@ def normalize_service_key(key_raw: str) -> str:
         "prem": "premium",
     }
     return mapping.get(k, k)
-
-@admin_bp.route("/api/admin/feature-flags", methods=["POST"])
-@admin_required
-def update_feature_flags():
+
+
+def get_services_enabled(config_fallback=None):
+    fallback = config_fallback if isinstance(config_fallback, dict) else {}
+    enabled = {
+        key: bool(fallback.get(key, True))
+        for key in ("chungsuc", "locket", "mxh", "premium")
+    }
+
+    db = models.SessionLocal()
+    try:
+        for service in db.query(models.ServiceConfig).all():
+            if service.service_key in enabled:
+                enabled[service.service_key] = bool(service.is_active)
+        return enabled
+    finally:
+        db.close()
+
+
+@admin_bp.route("/api/admin/feature-flags", methods=["POST"])
+@admin_required
+def update_feature_flags():
     """
     Cập nhật cờ tính năng bảo trì và hẹn giờ reopen_at.
     """
@@ -209,9 +227,12 @@ def update_feature_flags():
             cfg = models.ServiceConfig(service_key=key)
             db.add(cfg)
 
-        if "is_active" in data or "active" in data or "enabled" in data:
-            val = data.get("is_active") if "is_active" in data else (data.get("active") if "active" in data else data.get("enabled"))
-            cfg.is_active = bool(val)
+        has_manual_status = any(field in data for field in ("is_active", "active", "enabled"))
+        if has_manual_status:
+            val = data.get("is_active") if "is_active" in data else (data.get("active") if "active" in data else data.get("enabled"))
+            cfg.is_active = bool(val)
+            if "reopen_at" not in data:
+                cfg.reopen_at = None
         if "status_state" in data or "state" in data:
             cfg.status_state = str(data.get("status_state") or data.get("state") or "OPERATIONAL")
         if "maintenance_msg" in data or "message" in data:
@@ -232,19 +253,12 @@ def update_feature_flags():
 
         db.commit()
 
-        # Sync to config.json
-        full_cfg = config_manager.load_config()
-        se = full_cfg.get("services_enabled", {"chungsuc": True, "locket": True, "mxh": True, "premium": True})
-        se[key] = cfg.is_active
-        full_cfg["services_enabled"] = se
-        config_manager.save_config(full_cfg, sync_github=False)
-
-        return jsonify({
-            "success": True,
-            "msg": f"Đã cập nhật trạng thái {key.upper()}.",
-            "service": cfg.to_dict(),
-            "services_enabled": se
-        })
+        return jsonify({
+            "success": True,
+            "msg": f"Đã cập nhật trạng thái {key.upper()}.",
+            "service": cfg.to_dict(),
+            "services_enabled": get_services_enabled()
+        })
     finally:
         db.close()
 
@@ -254,29 +268,27 @@ def update_feature_flags():
 @admin_required
 def admin_services_toggle_bp():
     full_cfg = config_manager.load_config()
-    se = full_cfg.get("services_enabled", {"chungsuc": True, "locket": True, "mxh": True, "premium": True})
+    se = get_services_enabled(full_cfg.get("services_enabled"))
 
     if request.method == "POST":
         data = request.get_json(silent=True) or {}
         updated = {}
 
         # 1. Hỗ trợ dạng nested { "services": { ... } } hoặc { "services_enabled": { ... } }
-        nested = data.get("services") or data.get("services_enabled")
-        if isinstance(nested, dict):
-            for rk, rv in nested.items():
-                nk = normalize_service_key(rk)
-                if nk in ("chungsuc", "locket", "mxh", "premium"):
-                    se[nk] = bool(rv)
-                    updated[nk] = se[nk]
+        nested = data.get("services") or data.get("services_enabled")
+        if isinstance(nested, dict):
+            for rk, rv in nested.items():
+                nk = normalize_service_key(rk)
+                if nk in ("chungsuc", "locket", "mxh", "premium"):
+                    updated[nk] = bool(rv)
 
         # 2. Hỗ trợ dạng phẳng direct keys { "chungsuc": false, "locket": true, ... }
         for k_candidate, v_candidate in data.items():
             if k_candidate in ("services", "services_enabled", "service", "key", "service_key", "id", "enabled", "active", "is_active", "status"):
                 continue
-            nk = normalize_service_key(k_candidate)
-            if nk in ("chungsuc", "locket", "mxh", "premium"):
-                se[nk] = bool(v_candidate)
-                updated[nk] = se[nk]
+            nk = normalize_service_key(k_candidate)
+            if nk in ("chungsuc", "locket", "mxh", "premium"):
+                updated[nk] = bool(v_candidate)
 
         # 3. Hỗ trợ dạng single service { "service": "chungsuc", "enabled": false }
         single_key_raw = data.get("service") or data.get("key") or data.get("service_key") or data.get("id")
@@ -284,39 +296,37 @@ def admin_services_toggle_bp():
             nk = normalize_service_key(single_key_raw)
             if nk in ("chungsuc", "locket", "mxh", "premium"):
                 val = True
-                for val_field in ("enabled", "active", "is_active", "status"):
-                    if val_field in data:
-                        val = bool(data[val_field])
-                        break
-                se[nk] = val
-                updated[nk] = val
+                for val_field in ("enabled", "active", "is_active", "status"):
+                    if val_field in data:
+                        val = bool(data[val_field])
+                        break
+                updated[nk] = val
             elif not updated:
                 return jsonify({"success": False, "msg": "Dịch vụ không hợp lệ."}), 400
 
         if not updated and not isinstance(nested, dict) and not any(k in data for k in ("chungsuc", "locket", "mxh", "premium")):
             return jsonify({"success": False, "msg": "Dữ liệu dịch vụ không hợp lệ hoặc thiếu tên dịch vụ."}), 400
 
-        full_cfg["services_enabled"] = se
-        config_manager.save_config(full_cfg, sync_github=False)
-
-        # Sync to DB ServiceConfig
-        try:
-            db = models.SessionLocal()
-            for sk, s_active in se.items():
-                cfg_row = db.query(models.ServiceConfig).filter_by(service_key=sk).first()
-                if not cfg_row:
-                    cfg_row = models.ServiceConfig(service_key=sk)
-                    db.add(cfg_row)
-                cfg_row.is_active = bool(s_active)
-                cfg_row.status_state = "OPERATIONAL" if s_active else "MAINTENANCE"
-                if s_active:
-                    cfg_row.reopen_at = None
-            db.commit()
-            db.close()
-        except Exception as dbe:
-            print(f"[admin_services_toggle sync db error]: {dbe}")
-
-        return jsonify({
+        db = models.SessionLocal()
+        try:
+            for sk, s_active in updated.items():
+                cfg_row = db.query(models.ServiceConfig).filter_by(service_key=sk).first()
+                if not cfg_row:
+                    cfg_row = models.ServiceConfig(service_key=sk)
+                    db.add(cfg_row)
+                cfg_row.is_active = bool(s_active)
+                cfg_row.status_state = "OPERATIONAL" if s_active else "MAINTENANCE"
+                cfg_row.reopen_at = None
+            db.commit()
+            se.update(updated)
+            se = get_services_enabled(se)
+        except Exception:
+            db.rollback()
+            raise
+        finally:
+            db.close()
+
+        return jsonify({
             "success": True,
             "services_enabled": se,
             "msg": "✅ Đã lưu trạng thái hiển thị dịch vụ thành công!"

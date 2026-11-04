@@ -213,7 +213,7 @@ models.migrate_legacy_json_to_db()
 
 from routes.orders import orders_bp
 from routes.payments import payments_bp
-from routes.admin import admin_bp, is_admin_authenticated
+from routes.admin import admin_bp, get_services_enabled, is_admin_authenticated
 
 app.register_blueprint(orders_bp)
 app.register_blueprint(payments_bp)
@@ -2164,7 +2164,7 @@ if os.environ.get("VERCEL") != "1":
 def index():
     cfg = load_config()
     is_sale, sale_pct = is_sale_active()
-    services_enabled = cfg.get("services_enabled", {"chungsuc": True, "locket": True, "mxh": True, "premium": True})
+    services_enabled = get_services_enabled(cfg.get("services_enabled"))
     return render_template(
         "index.html",
         cfg=cfg,
@@ -2180,7 +2180,7 @@ def admin_page():
     try:
         cfg = load_config()
         is_sale, sale_pct = is_sale_active()
-        services_enabled = cfg.get("services_enabled", {"chungsuc": True, "locket": True, "mxh": True, "premium": True})
+        services_enabled = get_services_enabled(cfg.get("services_enabled"))
         return render_template(
             "admin.html",
             cfg=cfg,
@@ -2244,7 +2244,7 @@ def public_config():
         "is_sale": is_sale,
         "sale_discount": sale_pct,
         "sale_campaign": cfg.get("sale_campaign", {}),
-        "services_enabled": cfg.get("services_enabled", {"chungsuc": True, "locket": True, "mxh": True, "premium": True})
+        "services_enabled": get_services_enabled(cfg.get("services_enabled"))
     })
 
 @app.route("/api/announcement", methods=["GET"])
@@ -2862,7 +2862,7 @@ def create_mxh_order():
 @app.route("/api/premium/services")
 def get_premium_services():
     cfg = load_config()
-    services_enabled = cfg.get("services_enabled", {})
+    services_enabled = get_services_enabled(cfg.get("services_enabled"))
     market_enabled = services_enabled.get("premium", True)
     services = cfg.get("premium_services", {})
     return jsonify({
@@ -2881,7 +2881,7 @@ def create_premium_order():
     note = (data.get("note") or "").strip()
 
     cfg = load_config()
-    services_enabled = cfg.get("services_enabled", {})
+    services_enabled = get_services_enabled(cfg.get("services_enabled"))
     if not services_enabled.get("premium", True):
         return jsonify({"success": False, "msg": "Chợ Dịch Vụ Premium hiện đang tạm đóng để bảo trì."}), 400
 
@@ -3828,26 +3828,6 @@ def merge_preserving_existing(existing, updates):
         else:
             merged[key] = value
     return merged
-
-@app.route("/api/admin/services-toggle", methods=["GET", "POST"])
-@admin_required
-def admin_services_toggle():
-    cfg = load_config()
-    if request.method == "POST":
-        data = request.get_json(silent=True) or {}
-        se = cfg.get("services_enabled", {"chungsuc": True, "locket": True, "mxh": True, "premium": True})
-        if "chungsuc" in data:
-            se["chungsuc"] = bool(data["chungsuc"])
-        if "locket" in data:
-            se["locket"] = bool(data["locket"])
-        if "mxh" in data:
-            se["mxh"] = bool(data["mxh"])
-        if "premium" in data:
-            se["premium"] = bool(data["premium"])
-        cfg["services_enabled"] = se
-        save_config(cfg)
-        return jsonify({"success": True, "services_enabled": se, "msg": "Đã lưu cài đặt bật/tắt dịch vụ!"})
-    return jsonify({"success": True, "services_enabled": cfg.get("services_enabled", {"chungsuc": True, "locket": True, "mxh": True, "premium": True})})
 
 @app.route("/api/admin/premium/save-config", methods=["POST"])
 @admin_required

@@ -190,8 +190,8 @@ def match_and_process_transactions(trans_list):
                     continue
 
                 # Regex bóc tách mã đơn chuẩn hóa: Prefix (CS, LK, TT, PR) + 4-10 ký tự [A-Z0-9]
-                extracted_oids = [m.group(0).upper() for m in re.finditer(r'(CS|LK|TT|PR)[A-Z0-9]{4,10}', raw_desc, re.IGNORECASE)]
-                is_matched = bool((oid in extracted_oids) or (clean_oid in extracted_oids))
+                extracted_oids = [m.group(0).strip().upper() for m in re.finditer(r'(?:^|\s)(CS|LK|TT|PR)[A-Z0-9]{4,10}(?:\s|$)', raw_desc, re.IGNORECASE)]
+                is_matched = bool((oid in extracted_oids) or (clean_oid in extracted_oids) or (oid in clean_desc) or (clean_oid in clean_desc))
 
                 if is_matched:
                     matched_this_item = True

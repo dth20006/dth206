@@ -6,6 +6,11 @@ def test_service_active_check():
     models.init_db()
     db = models.SessionLocal()
     try:
+        p_cfg = db.query(models.ServiceConfig).filter_by(service_key="premium").first()
+        if p_cfg:
+            p_cfg.is_active = False
+            db.commit()
+
         # Premium is set to maintenance by default
         is_active, msg = check_service_active("premium")
         assert is_active == False
@@ -16,4 +21,3 @@ def test_service_active_check():
         assert is_active == True
     finally:
         db.close()
-
