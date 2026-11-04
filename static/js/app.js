@@ -329,6 +329,7 @@ function switchTab(tabName) {
   panels.forEach(p => {
     const isActive = (p.id === `panel-${tabName}`);
     p.classList.toggle("active", isActive);
+    p.style.display = isActive ? "block" : "none";
     p.setAttribute("aria-hidden", isActive ? "false" : "true");
   });
 
@@ -1926,7 +1927,6 @@ function closePaymentModal() {
   closeModal("paymentModal");
 }
 
-let gPaymentEndTime = 0;
 function startPaymentTimer(duration) {
   gPaymentEndTime = Date.now() + ((duration || 15 * 60) * 1000);
   const display = document.getElementById("payModalCountdown");
