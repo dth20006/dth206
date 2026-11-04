@@ -237,43 +237,9 @@ def block_direct_video_access():
 
 @app.after_request
 def add_cache_headers(response):
-    """
-    Tối ưu tài nguyên Vercel & trình duyệt:
-    - Static files: Cache 1 năm (immutable)
-    - Public APIs (bảng giá, dịch vụ): Cache Edge CDN Vercel 3 phút, stale-while-revalidate 10 phút
-    - Ticker recent history: Cache Edge CDN 1 phút, stale-while-revalidate 3 phút
-    - Payment/Order/Admin/Webhook: no-store, no-cache
-    """
-    path = request.path
-    if path.startswith("/static/") and not path.startswith("/static/videos/"):
-        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
-        response.headers.pop("Pragma", None)
-        response.headers.pop("Expires", None)
-    elif path in [
-        "/api/packages",
-        "/api/chungsuc/packages",
-        "/api/services",
-        "/api/mxh/services",
-        "/api/premium/services",
-        "/api/public/config",
-        "/manifest.json",
-        "/favicon.ico",
-        "/favicon.png",
-        "/apple-touch-icon.png",
-    ]:
-        if request.method == "GET" and response.status_code == 200:
-            response.headers["Cache-Control"] = "public, s-maxage=180, stale-while-revalidate=600"
-            response.headers.pop("Pragma", None)
-            response.headers.pop("Expires", None)
-    elif path == "/api/public/recent-history":
-        if request.method == "GET" and response.status_code == 200:
-            response.headers["Cache-Control"] = "public, s-maxage=60, stale-while-revalidate=180"
-            response.headers.pop("Pragma", None)
-            response.headers.pop("Expires", None)
-    else:
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate, max-age=0"
-        response.headers["Pragma"] = "no-cache"
-        response.headers["Expires"] = "0"
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
     return response
 
 # Rate limit cooldown globals
@@ -3851,6 +3817,18 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated
 
+def merge_preserving_existing(existing, updates):
+    if not isinstance(existing, dict) or not isinstance(updates, dict):
+        return updates
+
+    merged = dict(existing)
+    for key, value in updates.items():
+        if isinstance(merged.get(key), dict) and isinstance(value, dict):
+            merged[key] = merge_preserving_existing(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
 @app.route("/api/admin/services-toggle", methods=["GET", "POST"])
 @admin_required
 def admin_services_toggle():
@@ -3886,7 +3864,8 @@ def admin_save_premium_config():
         cfg["premium_services"] = {}
 
     if platform in cfg["premium_services"]:
-        cfg["premium_services"][platform]["packages"] = packages
+        current_packages = cfg["premium_services"][platform].get("packages", {})
+        cfg["premium_services"][platform]["packages"] = merge_preserving_existing(current_packages, packages)
         save_config(cfg)
         return jsonify({"success": True, "msg": f"Đã cập nhật bảng giá gói {cfg['premium_services'][platform].get('name')} thành công!"})
 
@@ -3972,10 +3951,11 @@ def admin_save_all_premium_services():
             package["name"] = str(package["name"]).strip()
             package["price"] = price
             package["price_formatted"] = format_currency_vnd(price)
-            package["desc"] = str(package.get("desc", "")).strip()[:500]
+            if "desc" in package:
+                package["desc"] = str(package["desc"]).strip()[:500]
 
     cfg = load_config()
-    cfg["premium_services"] = services
+    cfg["premium_services"] = merge_preserving_existing(cfg.get("premium_services", {}), services)
     if "market_enabled" in data:
         if "services_enabled" not in cfg:
             cfg["services_enabled"] = {}
@@ -4434,9 +4414,11 @@ def admin_get_config():
 @admin_required
 def admin_update_chungsuc_config():
     data = request.get_json(silent=True) or {}
+    if "packages" in data and not isinstance(data["packages"], dict):
+        return jsonify({"success": False, "msg": "Danh sách gói Chung Sức không hợp lệ."}), 400
     cfg = load_config()
     if "packages" in data:
-        cfg["chungsuc_packages"] = data["packages"]
+        cfg["chungsuc_packages"] = merge_preserving_existing(cfg.get("chungsuc_packages", {}), data["packages"])
     if "autonhanh" in data:
         an = cfg.setdefault("autonhanh", {})
         for k, v in data["autonhanh"].items():
@@ -4703,13 +4685,15 @@ def admin_manual_grant_gold():
 @admin_required
 def admin_update_mxh_config():
     data = request.get_json(silent=True) or {}
+    if "sale_campaign" in data and not isinstance(data["sale_campaign"], dict):
+        return jsonify({"success": False, "msg": "Cấu hình khuyến mãi không hợp lệ."}), 400
     cfg = load_config()
     if "tangtim" in data:
         tt = cfg.setdefault("tangtim", {})
         for k, v in data["tangtim"].items():
             tt[k] = v
     if "sale_campaign" in data:
-        cfg["sale_campaign"] = data["sale_campaign"]
+        cfg["sale_campaign"] = merge_preserving_existing(cfg.get("sale_campaign", {}), data["sale_campaign"])
     save_config(cfg)
     return jsonify({"success": True, "msg": "Cập nhật cấu hình MXH thành công!"})
 

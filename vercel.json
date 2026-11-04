@@ -2,38 +2,11 @@
   "version": 2,
   "headers": [
     {
-      "source": "/static/(.*)",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/(favicon.ico|favicon.png|apple-touch-icon.png|manifest.json)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        }
-      ]
-    },
-    {
-      "source": "/api/public/recent-history",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, s-maxage=60, stale-while-revalidate=180"
-        }
-      ]
-    },
-    {
-      "source": "/api/(packages|services|chungsuc/packages|mxh/services|premium/services|public/config)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, s-maxage=180, stale-while-revalidate=600"
+          "value": "no-store, no-cache, must-revalidate, max-age=0"
         }
       ]
     }

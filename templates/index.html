@@ -35,7 +35,7 @@
   <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
   
   <!-- Main Stylesheet (Blue - White - Black Theme) -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ range(1000, 9999) | random }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
@@ -1347,7 +1347,7 @@
 
   <script>window.gServicesEnabled = {{ services_enabled | tojson }};</script>
   <!-- Frontend Logic -->
-  <script src="{{ url_for('static', filename='js/app.js') }}?v={{ range(1000, 9999) | random }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
   <!-- Receipt Card Modal (Biên lai điện tử) -->
   <div class="modal-backdrop" id="receiptModal" style="display: none;">
