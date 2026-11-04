@@ -104,34 +104,34 @@
     <!-- Top Service Navigation Tabs -->
     <nav class="service-nav-bar" id="mainServiceNav" aria-label="Thanh điều hướng dịch vụ chính" role="tablist">
       {% if services_enabled.get('chungsuc', True) %}
-      <button type="button" class="service-tab-btn active" id="tab-chungsuc" data-tab="chungsuc" role="tab" aria-selected="true" aria-controls="panel-chungsuc" aria-label="Dịch vụ Chung Sức Liên Quân">
+      <button type="button" class="service-tab-btn active" id="tab-chungsuc" data-tab="chungsuc" onclick="switchTab('chungsuc')" role="tab" aria-selected="true" aria-controls="panel-chungsuc" aria-label="Dịch vụ Chung Sức Liên Quân">
         <i class="fa-solid fa-gamepad"></i> <span>Chung Sức Liên Quân</span>
       </button>
       {% endif %}
 
       {% if services_enabled.get('locket', True) %}
-      <button type="button" class="service-tab-btn tab-locket {% if not services_enabled.get('chungsuc', True) %}active{% endif %}" data-tab="locket" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) %}true{% else %}false{% endif %}" aria-controls="panel-locket" aria-label="Dịch vụ Nâng Cấp Locket Gold">
+      <button type="button" class="service-tab-btn tab-locket {% if not services_enabled.get('chungsuc', True) %}active{% endif %}" id="tab-locket" data-tab="locket" onclick="switchTab('locket')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) %}true{% else %}false{% endif %}" aria-controls="panel-locket" aria-label="Dịch vụ Nâng Cấp Locket Gold">
         <i class="fa-solid fa-heart"></i> <span>Nâng Cấp Locket Gold</span>
       </button>
       {% endif %}
 
       {% if services_enabled.get('mxh', True) %}
-      <button type="button" class="service-tab-btn tab-mxh {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}active{% endif %}" data-tab="mxh" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}true{% else %}false{% endif %}" aria-controls="panel-mxh" aria-label="Dịch vụ Mạng Xã Hội">
+      <button type="button" class="service-tab-btn tab-mxh {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}active{% endif %}" id="tab-mxh" data-tab="mxh" onclick="switchTab('mxh')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}true{% else %}false{% endif %}" aria-controls="panel-mxh" aria-label="Dịch vụ Mạng Xã Hội">
         <i class="fa-solid fa-chart-line"></i> <span>Mạng Xã Hội (MXH)</span>
       </button>
       {% endif %}
 
       {% if services_enabled.get('premium', True) %}
-      <button type="button" class="service-tab-btn tab-premium {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}active{% endif %}" data-tab="premium" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-premium" aria-label="Chợ Dịch Vụ Premium">
+      <button type="button" class="service-tab-btn tab-premium {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}active{% endif %}" id="tab-premium" data-tab="premium" onclick="switchTab('premium')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-premium" aria-label="Chợ Dịch Vụ Premium">
         <i class="fa-solid fa-crown text-gold"></i> <span>Chợ Premium</span> <span class="badge-maintenance">Bảo trì</span>
       </button>
       {% endif %}
 
-      <button type="button" class="service-tab-btn tab-tools" data-tab="tools" role="tab" aria-selected="false" aria-controls="panel-tools" aria-label="Bộ Công Cụ Sáng Tạo Nội Dung Miễn Phí">
+      <button type="button" class="service-tab-btn tab-tools" id="tab-tools" data-tab="tools" onclick="switchTab('tools')" role="tab" aria-selected="false" aria-controls="panel-tools" aria-label="Bộ Công Cụ Sáng Tạo Nội Dung Miễn Phí">
         <i class="fa-solid fa-wand-magic-sparkles text-pink"></i>
         <span>Free Tools</span>
       </button>
-      <button type="button" class="service-tab-btn tab-lookup {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}active{% endif %}" data-tab="lookup" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}true{% else %}false{% endif %}" aria-controls="panel-lookup" aria-label="Tra Cứu Đơn Hàng">
+      <button type="button" class="service-tab-btn tab-lookup {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}active{% endif %}" id="tab-lookup" data-tab="lookup" onclick="switchTab('lookup')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}true{% else %}false{% endif %}" aria-controls="panel-lookup" aria-label="Tra Cứu Đơn Hàng">
         <i class="fa-solid fa-magnifying-glass"></i> <span>Tra Cứu Đơn</span>
       </button>
     </nav>
@@ -1306,38 +1306,38 @@
     <!-- Mobile Sticky Bottom Navigation -->
   <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Thanh điều hướng di động" role="tablist">
     {% if services_enabled.get('chungsuc', True) %}
-    <button type="button" class="mobile-bottom-nav-btn active" data-tab="chungsuc" role="tab" aria-selected="true" aria-controls="panel-chungsuc" aria-label="Dịch vụ Chung Sức Liên Quân">
+    <button type="button" class="mobile-bottom-nav-btn active" id="mobile-tab-chungsuc" data-tab="chungsuc" onclick="switchTab('chungsuc')" role="tab" aria-selected="true" aria-controls="panel-chungsuc" aria-label="Dịch vụ Chung Sức Liên Quân">
       <i class="fa-solid fa-gamepad"></i>
       <span>Chung Sức</span>
     </button>
     {% endif %}
 
     {% if services_enabled.get('locket', True) %}
-    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) %}active{% endif %}" data-tab="locket" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) %}true{% else %}false{% endif %}" aria-controls="panel-locket" aria-label="Dịch vụ Nâng Cấp Locket Gold">
+    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) %}active{% endif %}" id="mobile-tab-locket" data-tab="locket" onclick="switchTab('locket')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) %}true{% else %}false{% endif %}" aria-controls="panel-locket" aria-label="Dịch vụ Nâng Cấp Locket Gold">
       <i class="fa-solid fa-heart"></i>
       <span>Locket Gold</span>
     </button>
     {% endif %}
 
     {% if services_enabled.get('mxh', True) %}
-    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}active{% endif %}" data-tab="mxh" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}true{% else %}false{% endif %}" aria-controls="panel-mxh" aria-label="Dịch vụ Mạng Xã Hội">
+    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}active{% endif %}" id="mobile-tab-mxh" data-tab="mxh" onclick="switchTab('mxh')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}true{% else %}false{% endif %}" aria-controls="panel-mxh" aria-label="Dịch vụ Mạng Xã Hội">
       <i class="fa-solid fa-chart-line"></i>
       <span>Dịch Vụ MXH</span>
     </button>
     {% endif %}
 
     {% if services_enabled.get('premium', True) %}
-    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}active{% endif %}" data-tab="premium" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-premium" aria-label="Chợ Dịch Vụ Premium">
+    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}active{% endif %}" id="mobile-tab-premium" data-tab="premium" onclick="switchTab('premium')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-premium" aria-label="Chợ Dịch Vụ Premium">
       <i class="fa-solid fa-crown"></i>
       <span>Chợ Premium</span> <span class="badge-maintenance">Bảo trì</span>
     </button>
     {% endif %}
 
-    <button type="button" class="mobile-bottom-nav-btn" data-tab="tools" role="tab" aria-selected="false" aria-controls="panel-tools" aria-label="Bộ Công Cụ Sáng Tạo Nội Dung Miễn Phí">
+    <button type="button" class="mobile-bottom-nav-btn" id="mobile-tab-tools" data-tab="tools" onclick="switchTab('tools')" role="tab" aria-selected="false" aria-controls="panel-tools" aria-label="Bộ Công Cụ Sáng Tạo Nội Dung Miễn Phí">
       <i class="fa-solid fa-wand-magic-sparkles text-pink"></i>
       <span>Free Tools</span>
     </button>
-    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}active{% endif %}" data-tab="lookup" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-lookup" aria-label="Tra Cứu Đơn Hàng">
+    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}active{% endif %}" id="mobile-tab-lookup" data-tab="lookup" onclick="switchTab('lookup')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-lookup" aria-label="Tra Cứu Đơn Hàng">
       <i class="fa-solid fa-magnifying-glass"></i>
       <span>Tra Cứu</span>
     </button>

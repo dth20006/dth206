@@ -264,83 +264,191 @@ function isCommentService(s) {
 
 
 // ==========================================
-// INITIALIZATION
+// BULLETPROOF TAB SWITCHER & DEEP LINKING
 // ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
-  checkInAppBrowser();
-  initUrlRouting();
+function normalizeTabKey(tabId) {
+  if (!tabId || typeof tabId !== "string") return "chungsuc";
+  let key = tabId.trim().toLowerCase();
+  key = key.replace(/^#+/, "");
+  key = key.replace(/^panel-/, "").replace(/^tab-/, "").replace(/^mobile-tab-/, "");
+  key = key.replace(/-panel$/, "").replace(/-tab$/, "");
+  if (key === "cs" || key === "lienquan" || key === "chung-suc") key = "chungsuc";
+  if (key === "locketgold" || key === "gold") key = "locket";
+  if (key === "social" || key === "mangxahoi") key = "mxh";
+  if (key === "market" || key === "chopremium") key = "premium";
+  if (key === "freetools" || key === "tool") key = "tools";
+  if (key === "donhang" || key === "order" || key === "orders" || key === "tracuu") key = "lookup";
+  return key;
+}
 
-  initTabs();
-  initChungSuc();
-  initLocket();
-  initMxh();
-  initPremium();
-  initLookup();
-  initPaymentModal();
-  initLiveTicker();
-  checkAndRestorePendingOrder();
+function switchTab(tabId) {
+  try {
+    const tabKey = normalizeTabKey(tabId);
+    if (!tabKey) return;
 
-  // Handle URL hash on load
-  const hash = window.location.hash.replace("#", "");
-  const se = window.gServicesEnabled || { chungsuc: true, locket: true, mxh: true, premium: true };
-  const firstEnabledTab = se.chungsuc ? "chungsuc" : (se.locket ? "locket" : (se.mxh ? "mxh" : (se.premium ? "premium" : "lookup")));
-  if (hash && ["chungsuc", "locket", "mxh", "premium", "lookup"].includes(hash)) {
-    if (hash === "chungsuc" && !se.chungsuc) {
-      switchTab(firstEnabledTab);
-    } else if (hash === "locket" && !se.locket) {
-      switchTab(firstEnabledTab);
-    } else if (hash === "mxh" && !se.mxh) {
-      switchTab(firstEnabledTab);
-    } else if (hash === "premium" && !se.premium) {
-      switchTab(firstEnabledTab);
-    } else {
-      switchTab(hash);
+    // 1. Quản lý hiển thị Panels an toàn tuyệt đối
+    const panels = document.querySelectorAll(".tab-content-panel");
+    let targetPanel = document.getElementById(`panel-${tabKey}`);
+    if (!targetPanel && tabKey === "premium") {
+      targetPanel = document.getElementById("panel-premium-maintenance");
     }
-  } else {
-    if (!se.chungsuc) {
-      switchTab(firstEnabledTab);
+    if (!targetPanel) {
+      targetPanel = document.getElementById(tabKey) ||
+                    document.getElementById(`tab-${tabKey}`) ||
+                    document.querySelector(`[data-tab-panel="${tabKey}"]`);
     }
+    if (!targetPanel && panels.length > 0) {
+      targetPanel = panels[0];
+    }
+
+    panels.forEach(p => {
+      const isTarget = (p === targetPanel);
+      if (isTarget) {
+        p.classList.add("active");
+        p.style.setProperty("display", "block", "important");
+        p.setAttribute("aria-hidden", "false");
+      } else {
+        p.classList.remove("active");
+        p.style.setProperty("display", "none", "important");
+        p.setAttribute("aria-hidden", "true");
+      }
+    });
+
+    // 2. Quản lý Buttons (Cả Desktop Navbar lẫn Mobile Bottom Nav)
+    const allBtns = document.querySelectorAll(".service-tab-btn, .mobile-bottom-nav-btn, [role='tab'][data-tab]");
+    allBtns.forEach(btn => {
+      if (btn.classList.contains("btn-video-tab") || btn.classList.contains("btn-tool-tab")) return;
+      const rawTab = btn.dataset.tab || btn.getAttribute("data-tab") || "";
+      const bTab = normalizeTabKey(rawTab);
+      const isAct = (bTab === tabKey);
+      btn.classList.toggle("active", isAct);
+      btn.setAttribute("aria-selected", isAct ? "true" : "false");
+    });
+
+    // 3. Cập nhật URL (?tab=... và history state) mượt mà, không giật trang
+    try {
+      if (window.history && window.history.replaceState) {
+        const u = new URL(window.location.href);
+        u.searchParams.set("tab", tabKey);
+        window.history.replaceState({ tab: tabKey }, "", u.toString());
+      }
+    } catch (e) {
+      try {
+        window.location.hash = tabKey;
+      } catch (err) {}
+    }
+
+    // 4. Cuộn mượt lên đầu trang
+    try {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (e) {
+      window.scrollTo(0, 0);
+    }
+  } catch (err) {
+    console.error("switchTab critical error:", err);
   }
+}
+
+// Gắn toàn cục ngay lập tức vào window để hỗ trợ cả inline HTML onclick
+window.switchTab = switchTab;
+
+function initTabs() {
+  try {
+    const tabBtns = document.querySelectorAll(".service-tab-btn, .mobile-bottom-nav-btn, [role='tab'][data-tab]");
+    tabBtns.forEach(btn => {
+      if (btn.classList.contains("btn-video-tab") || btn.classList.contains("btn-tool-tab")) return;
+      btn.addEventListener("click", (e) => {
+        try {
+          e.preventDefault();
+          const tabName = btn.dataset.tab || btn.getAttribute("data-tab");
+          if (tabName) switchTab(tabName);
+        } catch (err) {
+          console.error("Tab click error:", err);
+        }
+      });
+    });
+  } catch (e) {
+    console.error("initTabs error:", e);
+  }
+}
+
+// Bổ sung Event Delegation toàn cục bảo vệ cấp 2 (Bulletproof Layer)
+document.addEventListener("click", (e) => {
+  try {
+    const btn = e.target.closest(".service-tab-btn, .mobile-bottom-nav-btn, [data-tab]");
+    if (btn && !btn.classList.contains("btn-video-tab") && !btn.classList.contains("btn-tool-tab")) {
+      const tab = btn.dataset.tab || btn.getAttribute("data-tab");
+      if (tab) {
+        e.preventDefault();
+        switchTab(tab);
+      }
+    }
+  } catch (err) {}
 });
 
 // ==========================================
-// TABS SWITCHER & DEEP LINKING
+// INITIALIZATION BOOTSTRAP (Zero-Freeze & Fault-Tolerant)
 // ==========================================
-function initTabs() {
-  const tabBtns = document.querySelectorAll(".service-tab-btn, .mobile-bottom-nav-btn");
-  tabBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const tabName = btn.dataset.tab;
-      switchTab(tabName);
-    });
-  });
+function bootstrapApp() {
+  // 1. Khởi tạo Tabs & Routing trước tiên để UI luôn tương tác được
+  try { initTabs(); } catch (e) { console.error("initTabs error:", e); }
+  try { initUrlRouting(); } catch (e) { console.error("initUrlRouting error:", e); }
+
+  // 2. Khởi tạo Theme & Banner
+  try { initTheme(); } catch (e) { console.error("initTheme error:", e); }
+  try { checkInAppBrowser(); } catch (e) { console.error("checkInAppBrowser error:", e); }
+
+  // 3. Khởi tạo các module dịch vụ độc lập (Lỗi module này không làm ảnh hưởng module khác)
+  try { initChungSuc(); } catch (e) { console.error("initChungSuc error:", e); }
+  try { initLocket(); } catch (e) { console.error("initLocket error:", e); }
+  try { initMxh(); } catch (e) { console.error("initMxh error:", e); }
+  try { initPremium(); } catch (e) { console.error("initPremium error:", e); }
+  try { initLookup(); } catch (e) { console.error("initLookup error:", e); }
+  try { initPaymentModal(); } catch (e) { console.error("initPaymentModal error:", e); }
+  try { initLiveTicker(); } catch (e) { console.error("initLiveTicker error:", e); }
+  try { checkAndRestorePendingOrder(); } catch (e) { console.error("checkAndRestorePendingOrder error:", e); }
+
+  try { initVipTierCheckers(); } catch (e) { console.error("initVipTierCheckers error:", e); }
+  try { initSmmSmartTools(); } catch (e) { console.error("initSmmSmartTools error:", e); }
+  try { initFreeTools(); } catch (e) { console.error("initFreeTools error:", e); }
+  try { checkAndShowAnnouncement(); } catch (e) { console.error("checkAndShowAnnouncement error:", e); }
+
+  // 4. Kích hoạt đúng tab ban đầu dựa trên tham số URL hoặc trạng thái dịch vụ
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const rawReq = params.get("tab") || window.location.hash;
+    const reqTab = rawReq ? normalizeTabKey(rawReq) : "";
+    const se = window.gServicesEnabled || { chungsuc: true, locket: true, mxh: true, premium: true };
+    const firstEnabledTab = se.chungsuc ? "chungsuc" : (se.locket ? "locket" : (se.mxh ? "mxh" : (se.premium ? "premium" : "lookup")));
+
+    if (reqTab && ["chungsuc", "locket", "mxh", "premium", "lookup", "tools"].includes(reqTab)) {
+      if (reqTab === "chungsuc" && !se.chungsuc) {
+        switchTab(firstEnabledTab);
+      } else if (reqTab === "locket" && !se.locket) {
+        switchTab(firstEnabledTab);
+      } else if (reqTab === "mxh" && !se.mxh) {
+        switchTab(firstEnabledTab);
+      } else if (reqTab === "premium" && !se.premium) {
+        switchTab(firstEnabledTab);
+      } else {
+        switchTab(reqTab);
+      }
+    } else {
+      if (!se.chungsuc) {
+        switchTab(firstEnabledTab);
+      } else {
+        switchTab("chungsuc");
+      }
+    }
+  } catch (e) {
+    console.error("Initial tab resolution error:", e);
+  }
 }
 
-function switchTab(tabName) {
-  const allBtns = document.querySelectorAll(".service-tab-btn, .mobile-bottom-nav-btn");
-  const panels = document.querySelectorAll(".tab-content-panel");
-
-  allBtns.forEach(b => {
-    const isActive = (b.dataset.tab === tabName);
-    b.classList.toggle("active", isActive);
-    b.setAttribute("aria-selected", isActive ? "true" : "false");
-  });
-  panels.forEach(p => {
-    const isActive = (p.id === `panel-${tabName}`);
-    p.classList.toggle("active", isActive);
-    p.style.display = isActive ? "block" : "none";
-    p.setAttribute("aria-hidden", isActive ? "false" : "true");
-  });
-
-  try {
-    const u = new URL(window.location);
-    u.searchParams.set("tab", tabName);
-    window.history.replaceState({}, "", u);
-  } catch (e) {
-    window.location.hash = tabName;
-  }
-  window.scrollTo({ top: 0, behavior: "smooth" });
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootstrapApp);
+} else {
+  bootstrapApp();
 }
 
 // ==========================================
@@ -350,6 +458,7 @@ function initChungSuc() {
   const codeInput = document.getElementById("csCodeInput");
   const btnPaste = document.getElementById("btnPasteCS");
   const btnSubmit = document.getElementById("btnSubmitCS");
+  if (!codeInput || !btnSubmit) return;
 
   // Load packages from API
   fetch("/api/chungsuc/packages")
@@ -581,6 +690,7 @@ function initLocket() {
   const userInput = document.getElementById("locketUserInput");
   const checkBtn = document.getElementById("btnCheckLocketUser");
   const submitBtn = document.getElementById("btnSubmitLocket");
+  if (!userInput || !checkBtn) return;
 
   // Auto clean Locket input on blur / paste / enter
   if (userInput) {
@@ -1270,21 +1380,24 @@ function initLookup() {
   const input = document.getElementById("lookupInput");
   const btn = document.getElementById("btnLookup");
   const trackBtn = document.getElementById("btnTrackOrder");
+  if (!input || !btn) return;
 
   btn.addEventListener("click", performLookup);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") performLookup();
   });
-  trackBtn.addEventListener("click", () => {
-    const s = document.getElementById("order-tracking-status") || document.getElementById("orderTrackingStatus");
-    if (s) s.style.display = "block";
-    enableOrderTracking();
-  });
+  if (trackBtn) {
+    trackBtn.addEventListener("click", () => {
+      const s = document.getElementById("order-tracking-status") || document.getElementById("orderTrackingStatus");
+      if (s) s.style.display = "block";
+      enableOrderTracking();
+    });
+  }
   input.addEventListener("input", () => {
     if (input.value.trim() === "") renderRecentOrdersSuggestion();
   });
-  restoreOrderTracking();
-  renderRecentOrdersSuggestion();
+  try { restoreOrderTracking(); } catch (e) {}
+  try { renderRecentOrdersSuggestion(); } catch (e) {}
 }
 
 async function performLookup() {
@@ -2813,19 +2926,28 @@ async function submitPremiumOrder() {
 
 // 1. Light / Dark Mode Toggle
 function initTheme() {
-  const saved = localStorage.getItem("dth_theme") || "light";
-  document.documentElement.setAttribute("data-theme", saved);
-  updateThemeIcon(saved);
+  try {
+    let saved = "light";
+    try {
+      saved = localStorage.getItem("dth_theme") || "light";
+    } catch (e) {}
+    document.documentElement.setAttribute("data-theme", saved);
+    updateThemeIcon(saved);
 
-  const btn = document.getElementById("btnThemeToggle");
-  if (btn) {
-    btn.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme") || "light";
-      const next = current === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("dth_theme", next);
-      updateThemeIcon(next);
-    });
+    const btn = document.getElementById("btnThemeToggle");
+    if (btn) {
+      btn.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme") || "light";
+        const next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try {
+          localStorage.setItem("dth_theme", next);
+        } catch (e) {}
+        updateThemeIcon(next);
+      });
+    }
+  } catch (e) {
+    console.warn("initTheme error:", e);
   }
 }
 
@@ -3101,23 +3223,37 @@ function saveUserOrderLocal(order) {
   } catch (e) {}
 }
 
-// 7. URL Routing with #hash (#chungsuc, #locket, #mxh, #premium, #lookup)
+// 7. URL Routing with #hash (#chungsuc, #locket, #mxh, #premium, #lookup, #tools)
 function initUrlRouting() {
-  const params = new URLSearchParams(window.location.search);
-  const tabParam = (params.get("tab") || window.location.hash.replace("#", "")).toLowerCase();
-  const validTabs = ["chungsuc", "locket", "mxh", "premium", "lookup", "tools"];
-  if (validTabs.includes(tabParam)) {
-    switchTab(tabParam);
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get("tab") || window.location.hash;
+    if (tabParam) {
+      const normalized = normalizeTabKey(tabParam);
+      const validTabs = ["chungsuc", "locket", "mxh", "premium", "lookup", "tools"];
+      if (validTabs.includes(normalized)) {
+        switchTab(normalized);
+      }
+    }
+  } catch (e) {
+    console.warn("initUrlRouting searchParams error:", e);
   }
 
   window.addEventListener("hashchange", () => {
-    const h = window.location.hash.replace("#", "").toLowerCase();
-    if (validTabs.includes(h)) switchTab(h);
+    try {
+      const h = normalizeTabKey(window.location.hash);
+      const validTabs = ["chungsuc", "locket", "mxh", "premium", "lookup", "tools"];
+      if (validTabs.includes(h)) switchTab(h);
+    } catch (e) {}
   });
-  window.addEventListener("popstate", () => {
-    const p = new URLSearchParams(window.location.search);
-    const t = (p.get("tab") || window.location.hash.replace("#", "")).toLowerCase();
-    if (validTabs.includes(t)) switchTab(t);
+
+  window.addEventListener("popstate", (e) => {
+    try {
+      const p = new URLSearchParams(window.location.search);
+      const t = normalizeTabKey(p.get("tab") || (e.state && e.state.tab) || window.location.hash);
+      const validTabs = ["chungsuc", "locket", "mxh", "premium", "lookup", "tools"];
+      if (validTabs.includes(t)) switchTab(t);
+    } catch (e) {}
   });
 }
 
@@ -3616,14 +3752,19 @@ function downloadQRImage() {
 }
 
 // ========================================================
-// 14. AUTO INIT HOOK
+// 14. AUTO INIT HOOK (Safe Fault-Tolerant)
 // ========================================================
-document.addEventListener("DOMContentLoaded", () => {
-  initVipTierCheckers();
-  initSmmSmartTools();
-  initFreeTools();
-  checkAndShowAnnouncement();
-});
+function initSecondaryHooks() {
+  try { initVipTierCheckers(); } catch (e) {}
+  try { initSmmSmartTools(); } catch (e) {}
+  try { initFreeTools(); } catch (e) {}
+  try { checkAndShowAnnouncement(); } catch (e) {}
+}
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initSecondaryHooks);
+} else {
+  initSecondaryHooks();
+}
 
 // Tự động kiểm tra và cập nhật thời gian đếm ngược khi quay lại Safari từ App Ngân Hàng
 function recheckPaymentOnForeground() {
