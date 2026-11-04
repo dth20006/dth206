@@ -1,0 +1,12 @@
+#!name=Locket 15s Photo Only - v12 Config Refresh
+# Author: Nguyen Tien Thuong
+#!desc=Loads four scripts from the public Thuong404-lab/Locket_15s_Full_Source GitHub repository. Not verified on iPhone.
+
+[Script]
+revenuecat = type=http-response, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/[^/]+$), script-path=https://raw.githubusercontent.com/Thuong404-lab/Locket_15s_Full_Source/main/Locket.js?v=12, requires-body=true, max-size=-1, timeout=60, argument="enabled=true"
+deleteHeader = type=http-request, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts|subscribers), script-path=https://raw.githubusercontent.com/Thuong404-lab/Locket_15s_Full_Source/main/del_header.js?v=12, timeout=60, argument="enabled=true"
+locket_rc = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/.+, script-path=https://raw.githubusercontent.com/Thuong404-lab/Locket_15s_Full_Source/main/Locket_Unlocked_Clean.js?v=12, requires-body=true, max-size=-1, timeout=60, argument="enabled=true"
+locket_rc_us = type=http-request, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/locket-4252a\/namespaces\/firebase:fetch, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/Thuong404-lab/Locket_15s_Full_Source/main/Locket_rc_us.js?v=12, timeout=10, argument="enabled=true"
+
+[MITM]
+hostname = api.revenuecat.com, firebaseremoteconfig.googleapis.com

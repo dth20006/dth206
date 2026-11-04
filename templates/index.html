@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>{{ cfg.site_title or 'DTH Services - Chung Sức Liên Quân • Locket Gold • Dịch Vụ MXH' }}</title>
+  
+  <meta name="description" content="Hệ thống dịch vụ nạp tự động 24/7: Sự kiện Chung Sức Liên Quân 2026 mở rương SS/SSS, Nâng cấp Locket Gold giữ vĩnh viễn, Tăng tương tác TikTok, Facebook, Instagram, YouTube uy tín hàng đầu.">
+  <link rel="icon" type="image/png" href="/static/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/favicon.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DTH Services">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ cfg.site_title or 'DTH Services - Chung Sức Liên Quân • Locket Gold • Dịch Vụ MXH' }}">
+  <meta property="og:description" content="Hệ thống nạp tự động 24/7: Chung Sức Liên Quân mở rương SS/SSS, Nâng Locket Gold VIP vĩnh viễn, Tăng tương tác MXH an toàn.">
+  <meta property="og:image" content="https://dth206.vercel.app/static/favicon.png">
+  <meta property="og:url" content="https://dth206.vercel.app">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://img.vietqr.io">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Main Stylesheet (Blue - White - Black Theme) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ range(1000, 9999) | random }}">
+</head>
+<body>
+
+  <!-- In-App Browser Warning (Zalo / TikTok / Messenger) -->
+  <div id="inAppBrowserWarning" class="in-app-banner hidden">
+    <div class="container in-app-flex">
+      <span><i class="fa-solid fa-triangle-exclamation"></i> <strong>Bạn đang mở trong Zalo/TikTok:</strong> Vui lòng bấm dấu <strong>( ... )</strong> góc trên và chọn <strong>"Mở bằng Safari"</strong> để cài đặt Locket Gold một chạm!</span>
+      <button type="button" class="btn-copy-url" onclick="copyCurrentUrl()" aria-label="Sao chép liên kết trang"><i class="fa-regular fa-copy"></i> Sao Chép Link</button>
+    </div>
+  </div>
+
+  <!-- System Health Bar -->
+  <div class="system-health-banner">
+    <div class="container health-flex">
+      {% if services_enabled.get('chungsuc', True) %}
+      <span class="health-pill"><span class="dot-online"></span> Chung Sức: <b>Ổn định</b></span>
+      {% endif %}
+      <span class="health-pill"><span class="dot-online"></span> Locket API: <b>Hoạt động</b></span>
+      <span class="health-pill"><span class="dot-online"></span> Duyệt đơn tự động: <b>10 - 30 Giây</b></span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="brand-wrapper">
+        <a href="/" class="brand-link">
+          <div class="brand-icon">
+            <i class="fa-solid fa-bolt-lightning"></i>
+          </div>
+          <div class="brand-text">
+            <div class="brand-title">DTH SERVICES</div>
+            <div class="brand-badge"><span class="pulse-dot"></span> HỆ THỐNG TỰ ĐỘNG 24/7</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="header-actions">
+        <a href="{{ cfg.shop_info.support_zalo or 'https://zalo.me/0899195660' }}" target="_blank" rel="noopener noreferrer" class="action-btn zalo-btn">
+          <i class="fa-solid fa-comment-dots"></i> <span>Zalo Hỗ Trợ</span>
+        </a>
+        <a href="{{ cfg.shop_info.support_telegram or 'https://t.me/dth260106' }}" target="_blank" rel="noopener noreferrer" class="action-btn tele-btn">
+          <i class="fa-brands fa-telegram"></i> <span>Telegram</span>
+        </a>
+        <a href="https://locket.cam/dth206" target="_blank" rel="noopener noreferrer" class="action-btn locket-header-btn" title="Kết bạn Locket với chủ shop nha <3">
+          <i class="fa-solid fa-heart" style="color: #ff3366; animation: heartbeat 1.5s infinite; display: inline-block;"></i> <span>Locket Chủ Shop</span>
+        </a>
+        <button type="button" class="action-btn theme-toggle-btn" id="btnThemeToggle" title="Chuyển đổi Sáng/Tối">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Marquee -->
+  <div class="announcement-bar">
+    <div class="container announcement-content">
+      <div class="announcement-icon"><i class="fa-solid fa-bullhorn"></i></div>
+      <div class="announcement-marquee">
+        <span id="announcementText">{% if cfg.shop_info.announcement %}{{ cfg.shop_info.announcement }}{% elif services_enabled.get('chungsuc', True) %}🔥 Khuyến mãi hôm nay: Tăng Tim TikTok, Follow Facebook, Locket Gold & Chung Sức Liên Quân siêu tốc 24/7 • Hoàn tiền 100% nếu có lỗi!{% else %}🔥 Khuyến mãi hôm nay: Tăng Tim TikTok, Follow Facebook & Nâng Cấp Locket Gold iOS siêu tốc 24/7 • Hoàn tiền 100% nếu có lỗi!{% endif %}</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content container">
+
+    <!-- Top Service Navigation Tabs -->
+    <nav class="service-nav-bar" id="mainServiceNav" aria-label="Thanh điều hướng dịch vụ chính" role="tablist">
+      {% if services_enabled.get('chungsuc', True) %}
+      <button type="button" class="service-tab-btn active" data-tab="chungsuc" role="tab" aria-selected="true" aria-controls="panel-chungsuc" aria-label="Dịch vụ Chung Sức Liên Quân">
+        <i class="fa-solid fa-gamepad"></i> <span>Chung Sức Liên Quân</span>
+      </button>
+      {% endif %}
+
+      {% if services_enabled.get('locket', True) %}
+      <button type="button" class="service-tab-btn tab-locket {% if not services_enabled.get('chungsuc', True) %}active{% endif %}" data-tab="locket" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) %}true{% else %}false{% endif %}" aria-controls="panel-locket" aria-label="Dịch vụ Nâng Cấp Locket Gold">
+        <i class="fa-solid fa-heart"></i> <span>Nâng Cấp Locket Gold</span>
+      </button>
+      {% endif %}
+
+      {% if services_enabled.get('mxh', True) %}
+      <button type="button" class="service-tab-btn tab-mxh {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}active{% endif %}" data-tab="mxh" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}true{% else %}false{% endif %}" aria-controls="panel-mxh" aria-label="Dịch vụ Mạng Xã Hội">
+        <i class="fa-solid fa-chart-line"></i> <span>Mạng Xã Hội (MXH)</span>
+      </button>
+      {% endif %}
+
+      {% if services_enabled.get('premium', True) %}
+      <button type="button" class="service-tab-btn tab-premium {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}active{% endif %}" data-tab="premium" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-premium" aria-label="Chợ Dịch Vụ Premium">
+        <i class="fa-solid fa-crown text-gold"></i> <span>Chợ Premium</span> <span class="badge-maintenance">Bảo trì</span>
+      </button>
+      {% endif %}
+
+      <button type="button" class="service-tab-btn tab-tools" data-tab="tools" role="tab" aria-selected="false" aria-controls="panel-tools" aria-label="Bộ Công Cụ Sáng Tạo Nội Dung Miễn Phí">
+        <i class="fa-solid fa-wand-magic-sparkles text-pink"></i>
+        <span>Free Tools</span>
+      </button>
+      <button type="button" class="service-tab-btn tab-lookup {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}active{% endif %}" data-tab="lookup" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}true{% else %}false{% endif %}" aria-controls="panel-lookup" aria-label="Tra Cứu Đơn Hàng">
+        <i class="fa-solid fa-magnifying-glass"></i> <span>Tra Cứu Đơn</span>
+      </button>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: CHUNG SỨC LIÊN QUÂN MOBILE 2026      -->
+    <!-- ========================================== -->
+    {% if services_enabled.get('chungsuc', True) %}
+<section class="tab-content-panel active" id="panel-chungsuc" role="tabpanel" aria-labelledby="mainServiceNav">
+      <div class="hero-section">
+        <div class="hero-badge"><i class="fa-solid fa-trophy"></i> SỰ KIỆN CHUNG SỨC LIÊN QUÂN 2026</div>
+        <h1 class="hero-title">Mở Rương SS & SSS Siêu Tốc</h1>
+        <p class="hero-desc">Hệ thống buff lượt Chung Sức Liên Quân tự động 100% siêu tốc. Chỉ cần nhập link hoặc mã mời là nhận lượt sau 1-3 phút.</p>
+      </div>
+
+      <div class="order-grid">
+        <!-- Form Column -->
+        <div class="order-form-card">
+          <h2 class="card-title"><i class="fa-solid fa-paper-plane text-gold"></i> Tạo Đơn Chung Sức</h2>
+          
+          <form id="chungsucForm" onsubmit="return false;">
+            <!-- Step 1: Invite Code / Link -->
+            <div class="form-group">
+              <label for="csCodeInput">
+                <span class="step-num">1</span> Link Sự Kiện hoặc Mã Mời Liên Quân <span class="req">*</span>
+              </label>
+              <div class="input-with-action">
+                <input type="text" id="csCodeInput" class="form-input" placeholder="Dán link hoặc mã chia sẻ (vd: cCdjaJpazt hoặc --CfWH4gsBQ6--)..." aria-label="Link sự kiện hoặc mã mời Chung Sức Liên Quân" required>
+                <button type="button" class="btn-paste" id="btnPasteCS" aria-label="Dán mã mời hoặc link Chung Sức"><i class="fa-regular fa-paste"></i> Dán</button>
+              </div>
+              <div class="detected-code-badge" id="csDetectedBadge" style="display:none;">
+                <i class="fa-solid fa-check"></i> Đã nhận diện mã: <strong id="csCleanCodeText"></strong>
+              </div>
+            </div>
+
+            <!-- Step 2: Zalo Phone -->
+            <div class="form-group">
+              <label for="csZaloInput">
+                <span class="step-num">2</span> Số Điện Thoại Zalo (Bảo hiểm & Hỗ trợ) <span class="req">*</span>
+              </label>
+              <input type="tel" id="csZaloInput" class="form-input" placeholder="Nhập số Zalo nhận thông báo bảo hiểm hoàn tiền..." aria-label="Số điện thoại Zalo nhận thông báo bảo hiểm hoàn tiền" required>
+              <div id="csVipBadge" class="vip-tier-badge" style="display:none; margin-top:6px;"></div>
+            </div>
+
+            <!-- Step 3: Packages Selection -->
+            <div class="form-group">
+              <label>
+                <span class="step-num">3</span> Chọn Gói Sự Kiện Chung Sức <span class="req">*</span>
+              </label>
+              <div class="packages-grid" id="csPackagesList">
+                <!-- Fallback / Server-rendered packages -->
+                {% for pkg_id, pkg in cfg.chungsuc_packages.items() %}
+                <div class="pkg-card cs-pkg-card {% if pkg_id == 'full_3_ruong' %}active{% endif %}" data-id="{{ pkg_id }}">
+                  {% if pkg.badge %}<div class="pkg-badge">{{ pkg.badge }}</div>{% endif %}
+                  <div class="pkg-name">{{ pkg.name }}</div>
+                  <div class="pkg-price">{{ pkg.price_formatted or (pkg.price ~ 'đ') }}</div>
+                  {% if pkg.turns %}<div class="pkg-turns text-cyan">{{ pkg.turns }} Lượt Buff</div>{% endif %}
+                  <div class="pkg-desc">{{ pkg.desc or '' }}</div>
+                  {% if pkg.refund_policy %}<div class="pkg-refund-note"><i class="fa-solid fa-shield"></i> {{ pkg.refund_policy }}</div>{% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Custom Pack Counter (Only shows if goi_tuy_chon selected) -->
+            <div class="custom-pack-box" id="csCustomPackBox" style="display: none;">
+              <div class="custom-pack-header">
+                <label>Số Gói Muốn Mua (38 lượt / gói):</label>
+                <span class="custom-pack-calc"><strong id="csCustomTurns" class="text-cyan">152</strong> lượt buff</span>
+              </div>
+              <div class="counter-control">
+                <button type="button" class="counter-btn" id="btnCsMinus" aria-label="Giảm số gói"><i class="fa-solid fa-minus"></i></button>
+                <input type="number" id="csCustomQty" class="counter-input" value="4" min="4" max="200" aria-label="Số gói Chung Sức tùy chọn">
+                <button type="button" class="counter-btn" id="btnCsPlus" aria-label="Tăng số gói"><i class="fa-solid fa-plus"></i></button>
+              </div>
+            </div>
+
+            <!-- Summary Box -->
+            <div class="order-summary-box">
+              <div class="summary-row">
+                <span>Gói dịch vụ:</span>
+                <strong id="csSummaryPkgName">Full 3 Rương</strong>
+              </div>
+              <div class="summary-row">
+                <span>Số lượt buff:</span>
+                <strong id="csSummaryTurns" class="text-cyan">340 Lượt</strong>
+              </div>
+              <div class="summary-row total-row">
+                <span>Tổng thanh toán:</span>
+                <strong id="csSummaryTotal" class="text-gold">20.000đ</strong>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="button" id="btnSubmitCS" class="btn-primary-gradient">
+              <i class="fa-solid fa-bolt"></i> <span>Tạo Đơn & Thanh Toán Ngay</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Guarantee & Guide Column -->
+        <div class="order-info-column">
+          <div class="info-card">
+            <h3 class="info-card-title"><i class="fa-solid fa-shield-halved text-gold"></i> Chính Sách & Cam Kết</h3>
+            <ul class="policy-list">
+              
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bảo hiểm Gói 1k2:</strong> Nếu không ra skin SSS, hoàn 20.000đ ngay qua Zalo!</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>An toàn tuyệt đối:</strong> Không yêu cầu tài khoản hay mật khẩu Garena.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Xử lý nhanh:</strong> Lượt buff hoàn thành trọn gói chỉ trong 1 - 3 phút.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endif %}
+
+    <!-- ========================================== -->
+    <!-- TAB 2: NÂNG CẤP LOCKET GOLD VĨNH VIỄN      -->
+    <!-- ========================================== -->
+    {% if services_enabled.get('locket', True) %}
+<section class="tab-content-panel {% if not services_enabled.get('chungsuc', True) %}active{% endif %}" id="panel-locket" role="tabpanel" aria-labelledby="mainServiceNav">
+      <div class="hero-section hero-locket">
+        <div class="hero-badge gold-badge"><i class="fa-solid fa-crown"></i> LOCKET GOLD UNLOCKER</div>
+        <h2 class="hero-title">Nâng Cấp Locket Gold Vĩnh Viễn</h2>
+        <p class="hero-desc">Kích hoạt Locket Gold chính chủ trên iOS tiện lợi qua 1-chạm Safari hoặc tích hợp cấu hình Shadowrocket (Module VIP <code>dth.sgmodule</code> & File DNS Profile chống quét trọn đời) – Mở khóa full tính năng Gold đặc quyền!</p>
+        <div class="locket-friend-cta" style="margin: 16px 0; text-align: center;">
+          <a href="https://locket.cam/dth206" target="_blank" rel="noopener noreferrer" class="btn-locket-friend">
+            <i class="fa-solid fa-heart" style="color: #ff3366; animation: heartbeat 1.5s infinite; display: inline-block;"></i> 
+            <span>Kết bạn Locket với chủ shop nha &lt;3</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="order-grid">
+        <div class="order-form-card">
+          <h2 class="card-title"><i class="fa-solid fa-heart text-gold"></i> Đăng Ký Locket Gold</h2>
+
+          <form id="locketForm" onsubmit="return false;">
+            <!-- Username input with Check Profile Button -->
+            <div class="form-group">
+              <label for="locketUserInput">
+                <span class="step-num">1</span> Username hoặc Link Locket Profile <span class="req">*</span>
+              </label>
+              <div class="input-with-action">
+                <input type="text" id="locketUserInput" class="form-input" placeholder="Ví dụ: locket.cam/username hoặc @username..." aria-label="Tên người dùng hoặc link Locket Profile" required>
+                <button type="button" class="btn-paste" id="btnCheckLocketUser" aria-label="Kiểm tra thông tin tài khoản Locket">
+                  <i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra
+                </button>
+              </div>
+            </div>
+
+            <!-- Profile Preview Box (Auto loaded) -->
+            <div class="locket-profile-box" id="locketProfilePreview" style="display: none;">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" id="locketAvatarImg" class="locket-avatar" alt="Locket Avatar">
+              <div class="locket-meta">
+                <h4 id="locketDisplayName">---</h4>
+                <p>Username: <strong id="locketUsernameText">@---</strong></p>
+                <p>UID: <code id="locketUidText">---</code></p>
+                <span id="locketStatusBadge" class="locket-badge">---</span>
+              </div>
+            </div>
+
+            <!-- Locket Package Selection -->
+            <div class="form-group" style="margin-top: 18px;">
+              <label><span class="step-num">2</span> Chọn Gói Nâng Cấp <span class="req">*</span></label>
+              <div class="locket-packages-grid">
+                {% set lpkgs = cfg.get('locket_packages', {}) if cfg else {} %}
+                {% set p_no = lpkgs.get('no_dns', {}) %}
+                {% set p_with = lpkgs.get('with_dns', {}) %}
+                <!-- Package 1: No DNS -->
+                <div class="pkg-card locket-pkg-item" data-pkg="no_dns" data-price="{{ p_no.get('price', 10000) }}" data-name="{{ p_no.get('name', 'Không Giữ Gold') }}">
+                  <div class="pkg-badge text-dim">{{ p_no.get('badge', 'Tiết Kiệm') }}</div>
+                  <div class="pkg-name">{{ p_no.get('name', 'Không Giữ Gold') }}</div>
+                  <div class="pkg-price text-gold">{{ p_no.get('price_formatted') or (p_no.get('price', 10000) ~ 'đ') }}</div>
+                  <div class="pkg-desc">{{ p_no.get('desc', 'Kích hoạt nhanh 1 lần. Không kèm cấu hình DNS chống quét, có thể bị mất khi Locket quét.') }}</div>
+                </div>
+
+                <!-- Package 2: With DNS (Recommended) -->
+                <div class="pkg-card locket-pkg-item active" data-pkg="with_dns" data-price="{{ p_with.get('price', 30000) }}" data-name="{{ p_with.get('name', 'Giữ Gold (Vĩnh Viễn)') }}">
+                  <div class="pkg-badge badge-popular">{{ p_with.get('badge', 'Khuyên Dùng ⭐') }}</div>
+                  <div class="pkg-name">{{ p_with.get('name', 'Giữ Gold (Vĩnh Viễn)') }}</div>
+                  <div class="pkg-price text-gold">{{ p_with.get('price_formatted') or (p_with.get('price', 30000) ~ 'đ') }}</div>
+                  <div class="pkg-desc">{{ p_with.get('desc', 'Kèm cấu hình DNS VIP + Module Shadowrocket (dth.sgmodule) chống quét trọn đời. Nâng 1 lần dùng mãi mãi trên iOS.') }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Zalo Phone -->
+            <div class="form-group">
+              <label for="locketZaloInput">
+                <span class="step-num">3</span> Số Zalo Nhận Hỗ Trợ Kích Hoạt <span class="req">*</span>
+              </label>
+              <input type="tel" id="locketZaloInput" class="form-input" placeholder="Nhập số Zalo nhận hỗ trợ cài đặt..." aria-label="Số điện thoại Zalo nhận hỗ trợ Locket Gold" required>
+            </div>
+
+            <!-- Summary -->
+            <div class="order-summary-box">
+              <div class="summary-row">
+                <span>Tài khoản:</span>
+                <strong id="locketSummaryTarget">Chưa kiểm tra</strong>
+              </div>
+              <div class="summary-row">
+                <span>Gói nâng cấp:</span>
+                <strong id="locketSummaryPkg" class="text-gold">Giữ Gold (Vĩnh Viễn)</strong>
+              </div>
+              <div class="summary-row total-row">
+                <span>Tổng thanh toán:</span>
+                <strong id="locketSummaryTotal" class="text-gold">30.000đ</strong>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="button" id="btnSubmitLocket" class="btn-primary-gradient btn-gold">
+              <i class="fa-solid fa-crown"></i> <span>Kích Hoạt Locket Gold Ngay</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Locket Guide & Features -->
+        <div class="order-info-column">
+          <div class="info-card">
+            <h3 class="info-card-title"><i class="fa-solid fa-shield-halved text-gold"></i> Quy Trình Nâng Cấp VIP</h3>
+            <ul class="policy-list">
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bước 1:</strong> Điền Username Locket và bấm <strong>Kiểm Tra</strong> để hệ thống nhận diện UID tài khoản.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bước 2:</strong> Chọn gói <strong>Giữ Gold (Vĩnh Viễn)</strong> và thanh toán VietQR tự động.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bước 3:</strong> Sau khi thanh toán, nhận <strong>Link Module Shadowrocket (dth.sgmodule)</strong> & <strong>File DNS Profile riêng</strong>: Cài app Shadowrocket ➔ Thêm link Module VIP <code>dth.sgmodule</code> ➔ Bật DNS/HTTPS Decryption ➔ Hoàn tất mở khóa tính năng Gold độc quyền trọn đời (xem chi tiết tại 2 video hướng dẫn VIP)!</li>
+            </ul>
+          </div>
+
+          <div class="info-card">
+            <h3 class="info-card-title"><i class="fa-solid fa-crown text-gold"></i> Đặc Quyền Locket Gold</h3>
+            <ul class="policy-list">
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Module Shadowrocket VIP:</strong> Mở khóa video dài 60s, 280+ caption và khung widget Shin-chan & Doraemon độc quyền.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Huy Hiệu Gold:</strong> Khẳng định đẳng cấp trên trang cá nhân.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Ảnh Sắc Nét HD:</strong> Tải và xem ảnh ở chất lượng cao nhất.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bảo Hành Trọn Đời:</strong> Hỗ trợ giữ Gold vĩnh viễn không lo mất.</li>
+            </ul>
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-subtle);">
+              <button type="button" class="btn-vip-video" onclick="openVideoGuideModal('shadowrocket')" style="width: 100%; justify-content: center; background: #eff6ff; border: 1.5px solid #93c5fd; color: #1d4ed8; padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-circle-play text-blue" style="font-size: 1.15rem;"></i>
+                <span>Xem 2 Video Hướng Dẫn Cài Đặt (VIP)</span>
+              </button>
+            </div>
+            <div class="locket-friend-cta" style="margin-top: 12px; text-align: center;">
+              <a href="https://locket.cam/dth206" target="_blank" rel="noopener noreferrer" class="btn-locket-friend" style="width: 100%; box-sizing: border-box;">
+                <i class="fa-solid fa-heart" style="color: #ff3366; animation: heartbeat 1.5s infinite; display: inline-block;"></i> 
+                <span>Kết bạn Locket với chủ shop nha &lt;3</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endif %}
+
+    <!-- ========================================== -->
+    <!-- TAB 3: DỊCH VỤ MẠNG XÃ HỘI (MXH VIP)       -->
+    <!-- ========================================== -->
+    {% if services_enabled.get('mxh', True) %}
+<section class="tab-content-panel {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}active{% endif %}" id="panel-mxh" role="tabpanel" aria-labelledby="mainServiceNav">
+      <div class="hero-section hero-mxh">
+        <div class="hero-badge blue-badge"><i class="fa-solid fa-rocket"></i> DỊCH VỤ MẠNG XÃ HỘI 24/7</div>
+        <h2 class="hero-title">Tăng Tương Tác TikTok • Facebook • Instagram</h2>
+        <p class="hero-desc">Tăng Like, Tim, Follower, View, Comment người dùng thật. Tốc độ cao, bảo hành dài hạn, hệ thống tự động hóa 100%.</p>
+      </div>
+
+      <!-- Sale Campaign Banner (if active) -->
+      {% if is_sale and sale_pct > 0 %}
+      <div class="sale-countdown-banner">
+        <div>
+          <i class="fa-solid fa-fire"></i> <strong>FLASH SALE GIẢM GIÁ ĐẾN {{ sale_pct }}%!</strong> Áp dụng tự động cho toàn bộ dịch vụ MXH.
+        </div>
+        <div style="background: var(--blue-primary); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 800;">Đang Áp Dụng</div>
+      </div>
+      {% endif %}
+
+      <!-- Platform Filter Pills (Toàn Bộ 8 Nền Tảng MXH) -->
+      <div class="platform-pill-group" id="mxhPlatformFilter">
+        <button type="button" class="platform-pill active" data-platform="tiktok">
+          <i class="fa-brands fa-tiktok"></i> <span>TikTok</span>
+        </button>
+        <button type="button" class="platform-pill" data-platform="facebook">
+          <i class="fa-brands fa-facebook"></i> <span>Facebook</span>
+        </button>
+        <button type="button" class="platform-pill" data-platform="instagram">
+          <i class="fa-brands fa-instagram"></i> <span>Instagram</span>
+        </button>
+        <button type="button" class="platform-pill" data-platform="youtube">
+          <i class="fa-brands fa-youtube"></i> <span>YouTube</span>
+        </button>
+        <button type="button" class="platform-pill" data-platform="telegram">
+          <i class="fa-brands fa-telegram text-cyan"></i> <span>Telegram</span>
+        </button>
+        <button type="button" class="platform-pill" data-platform="threads">
+          <i class="fa-brands fa-threads"></i> <span>Threads</span>
+        </button>
+        <button type="button" class="platform-pill" data-platform="twitter">
+          <i class="fa-brands fa-x-twitter"></i> <span>Twitter (X)</span>
+        </button>
+        <button type="button" class="platform-pill" data-platform="shopee">
+          <i class="fa-solid fa-bag-shopping text-gold"></i> <span>Shopee</span>
+        </button>
+      </div>
+
+      <!-- Action Type Filter Pills -->
+      <div class="mxh-action-filter-group" id="mxhActionFilter">
+        <button type="button" class="action-pill active" data-action="all">
+          <i class="fa-solid fa-sparkles"></i> Tất Cả
+        </button>
+        <button type="button" class="action-pill" data-action="like">
+          <i class="fa-solid fa-heart text-pink"></i> Tim / Like
+        </button>
+        <button type="button" class="action-pill" data-action="follow">
+          <i class="fa-solid fa-user-plus text-cyan"></i> Follow / Sub
+        </button>
+        <button type="button" class="action-pill" data-action="view">
+          <i class="fa-solid fa-eye text-gold"></i> View / Xem
+        </button>
+        <button type="button" class="action-pill" data-action="share">
+          <i class="fa-solid fa-share text-green"></i> Share / Chia Sẻ
+        </button>
+        <button type="button" class="action-pill" data-action="comment">
+          <i class="fa-solid fa-comment-dots"></i> Comment
+        </button>
+      </div>
+
+      <!-- BỘ LỌC TÀI NGUYÊN: LỌC TÂY RA TÂY, VIỆT RA VIỆT -->
+      <div class="mxh-origin-filter-group" id="mxhOriginFilter">
+        <button type="button" class="origin-pill active" data-origin="all">
+          <i class="fa-solid fa-layer-group"></i> Tất Cả Tài Nguyên
+        </button>
+        <button type="button" class="origin-pill btn-orig-viet" data-origin="viet">
+          <i class="fa-solid fa-flag text-red"></i> 🇻🇳 Tài Nguyên Việt
+        </button>
+        <button type="button" class="origin-pill btn-orig-tay" data-origin="tay">
+          <i class="fa-solid fa-earth-americas text-cyan"></i> 🌍 Quốc Tế (Tây)
+        </button>
+      </div>
+
+      <div class="order-grid">
+        <!-- Order Form Card -->
+        <div class="order-form-card">
+          <h2 class="card-title"><i class="fa-solid fa-cart-plus text-cyan"></i> Đặt Đơn Tăng Tương Tác</h2>
+
+          <form id="mxhForm" onsubmit="return false;">
+            <!-- Single Direct Service Selector -->
+            <div class="form-group">
+              <label for="mxhCatalogSelect"><span class="step-num">1</span> Chọn Dịch Vụ Cần Tăng <span class="req">*</span></label>
+              <select id="mxhCatalogSelect" class="form-input form-select" style="font-size: 0.95rem; font-weight: 600; padding: 12px 14px;" aria-label="Chọn dịch vụ Mạng Xã Hội cần tăng">
+                <option value="">-- Đang tải danh sách dịch vụ --</option>
+              </select>
+            </div>
+
+            <div class="service-detail-box" id="mxhServiceDetailBox" style="display: none;">
+              <div class="service-detail-desc" id="mxhServiceDesc">---</div>
+              <div class="service-detail-meta">
+                <span>Tối thiểu: <strong id="mxhMinQty" class="text-cyan">1.000</strong></span>
+                <span>Tối đa: <strong id="mxhMaxQty" class="text-cyan">50.000</strong></span>
+                <span>Đơn giá: <strong id="mxhUnitPrice" class="text-gold">0đ</strong> / lượt</span>
+              </div>
+            </div>
+
+            <!-- Target Link -->
+            <div class="form-group" style="margin-top: 14px;">
+              <label for="mxhLinkInput">
+                <span class="step-num">2</span> Link Bài Viết / Video / Trang Cá Nhân <span class="req">*</span>
+              </label>
+              <div class="input-with-action">
+                <input type="url" id="mxhLinkInput" class="form-input" placeholder="Dán link video TikTok, bài viết FB, kênh YouTube..." aria-label="Đường dẫn liên kết mạng xã hội cần tăng tương tác" required>
+                <button type="button" class="btn-paste" id="btnPasteMXH" aria-label="Dán link bài viết hoặc video"><i class="fa-regular fa-paste"></i> Dán</button>
+              </div>
+              <div id="mxhDetectedUidBadge" style="display: none; margin-top: 6px; font-size: 0.84rem; color: var(--blue-primary); font-weight: 700; background: rgba(37, 99, 235, 0.08); padding: 5px 12px; border-radius: 8px;">
+                <i class="fa-solid fa-id-card"></i> Object ID/UID: <code id="mxhDetectedUidText" class="font-mono"></code>
+              </div>
+              <div id="mxhPublicWarning" style="display: none; margin-top: 6px; font-size: 0.84rem; color: #ef4444; font-weight: 700; background: rgba(239, 68, 68, 0.1); padding: 7px 12px; border-radius: 8px;">
+                <i class="fa-solid fa-triangle-exclamation"></i> Link này đang ở chế độ Riêng tư (Private) hoặc không tồn tại! Vui lòng mở công khai trước khi tạo đơn.
+              </div>
+            </div>
+
+            <!-- Comment Input Box (Tự động hiển thị khi chọn dịch vụ bình luận) -->
+            <div class="form-group" id="mxhCommentGroup" style="display: none; margin-top: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <label for="mxhCommentsInput" style="margin: 0; font-weight: 700; color: #0f172a;">
+                  <span class="step-num"><i class="fa-solid fa-comments"></i></span> Nội dung bình luận: <strong id="mxhCommentCount" style="color: var(--blue-primary); font-size: 1.05rem;">0</strong>
+                </label>
+                <button type="button" class="btn-ai-comments" id="btnOpenAiComments" onclick="openAiCommentsPicker()" style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: #fff; border: none; padding: 4px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Tạo Comment Tự Nhiên Bằng AI
+                </button>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">(Nhập nội dung bình luận mỗi dòng 1 bình luận)</span>
+              </div>
+              <textarea id="mxhCommentsInput" class="form-input" rows="5" placeholder="Nhập nội dung bình luận mỗi dòng 1 bình luận..." style="font-family: inherit; line-height: 1.5; resize: vertical;" aria-label="Nội dung bình luận mẫu mỗi dòng một bình luận"></textarea>
+            </div>
+
+            <!-- Quantity -->
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <label for="mxhQtyInput" style="margin:0;"><span class="step-num">3</span> Số Lượng Cần Tăng <span class="req">*</span></label>
+                <span style="font-size:0.8rem; color:var(--text-muted);" id="mxhQtyHint">Tối thiểu: 1.000</span>
+              </div>
+              <input type="number" id="mxhQtyInput" class="form-input" value="1000" min="1000" step="100" aria-label="Số lượng tương tác cần tăng" required>
+            </div>
+
+            <!-- Zalo Phone -->
+            <div class="form-group">
+              <label for="mxhZaloInput">
+                <span class="step-num">4</span> Số Zalo Nhận Thông Báo <span class="req">*</span>
+              </label>
+              <input type="tel" id="mxhZaloInput" class="form-input" placeholder="Nhập số Zalo để theo dõi đơn..." aria-label="Số điện thoại Zalo nhận thông báo đơn hàng MXH" required>
+              <div id="mxhVipBadge" class="vip-tier-badge" style="display:none; margin-top:6px;"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="order-summary-box">
+              <div class="summary-row">
+                <span>Dịch vụ:</span>
+                <strong id="mxhSummaryName">1.000 Tim TikTok Việt</strong>
+              </div>
+              <div class="summary-row">
+                <span>Số lượng:</span>
+                <strong id="mxhSummaryQty" class="text-cyan">1.000</strong>
+              </div>
+              <div class="summary-row" id="mxhBasePriceRow">
+                <span>Số tiền phải trả:</span>
+                <strong id="mxhSummaryBaseAmount">8.500đ</strong>
+              </div>
+              <div class="summary-row" id="mxhSaleDiscountRow" style="display: none;">
+                <span>Khuyến mãi giảm giá:</span>
+                <strong id="mxhSummaryDiscount" class="text-green">-0đ</strong>
+              </div>
+              <div class="summary-row total-row">
+                <span>Tổng thanh toán:</span>
+                <strong id="mxhSummaryTotal" class="text-gold">8.500đ</strong>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="button" id="btnSubmitMXH" class="btn-primary-gradient btn-blue">
+              <i class="fa-solid fa-cart-shopping"></i> <span>Tạo Đơn Tương Tác Ngay</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Info Column -->
+        <div class="order-info-column">
+          <!-- LƯU Ý TRƯỚC KHI MUA HÀNG -->
+          <div class="info-card" style="border: 1.5px solid #fecaca; background: #ffffff;">
+            <h3 class="info-card-title" style="color: #dc2626; margin-bottom: 14px;">
+              <i class="fa-solid fa-triangle-exclamation" style="color: #ef4444;"></i> LƯU Ý TRƯỚC KHI MUA HÀNG
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; line-height: 1.55;">
+              <div style="background: #fef2f2; border: 1px solid #fee2e2; border-radius: 8px; padding: 10px 12px;">
+                <div style="font-weight: 800; color: #b91c1c; display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+                  <i class="fa-solid fa-ban"></i> Cảnh báo
+                </div>
+                <div style="color: #7f1d1d;">Nghiêm cấm hành vi vi phạm pháp luật</div>
+              </div>
+
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px;">
+                <div style="font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+                  <i class="fa-solid fa-earth-americas text-blue"></i> Chế độ công khai
+                </div>
+                <div style="color: var(--text-sub);">Bài viết hoặc tài khoản phải ở chế độ Công khai (Public). Hệ thống báo lỗi nếu không quét được.</div>
+              </div>
+
+              <div style="background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 10px 12px;">
+                <div style="font-weight: 800; color: #92400e; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                  <i class="fa-solid fa-layer-group text-gold"></i> Không mua đè đơn kể cả ở server khác hay web khác
+                </div>
+                <div style="color: #78350f; font-size: 0.83rem;">
+                  • Không đặt nhiều đơn và đè cùng link khi đơn cũ chưa hoàn thành.<br>
+                  • Không mua thêm ở web khác khi đơn ở web chúng tôi chưa hoàn thành.<br>
+                  • Các trường hợp mua đè đơn ở web khác và server khác khi đơn chưa hoàn thành chúng tôi có quyền không hỗ trợ vì đã vi phạm quy tắc.<br>
+                  • Tài nguyên của chúng tôi check báo hoàn thành các web khác có thể ăn theo và gian lận đơn hàng của bạn vậy nên hãy tuân thủ quy tắc.
+                </div>
+              </div>
+
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px;">
+                <div style="font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+                  <i class="fa-solid fa-link text-blue"></i> Đúng định dạng link
+                </div>
+                <div style="color: var(--text-sub);">Sai link vẫn bị trừ tiền và không hoàn lại — kiểm tra kỹ trước khi gửi.</div>
+              </div>
+
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px;">
+                <div style="font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+                  <i class="fa-solid fa-clock text-blue"></i> Thời gian xử lý
+                </div>
+                <div style="color: var(--text-sub);">Tốc độ phụ thuộc máy chủ và hệ thống, có thể chênh lệch so với ước tính.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3 class="info-card-title"><i class="fa-solid fa-shield-check text-cyan"></i> Cam Kết Dịch Vụ MXH</h3>
+            <ul class="policy-list">
+              <li><i class="fa-solid fa-circle-check text-green"></i> <span><strong>Người dùng thật:</strong> Đảm bảo tương tác thật, tăng độ trust tài khoản.</span></li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <span><strong>Bật Live & TikTok Shop:</strong> Gói 1k Follower hỗ trợ đủ điều kiện mở giỏ hàng.</span></li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <span><strong>Đẩy xu hướng FYP:</strong> Tăng view, tim video cắn thuật toán For You Page.</span></li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <span><strong>Bảo hành tự động:</strong> Hỗ trợ bù tương tác hoặc hoàn tiền nếu có sự cố.</span></li>
+            </ul>
+          </div>
+        
+          <!-- KHUNG GIỜ VÀNG FYP & BỘ HASHTAG THỊNH HÀNH -->
+          <div class="info-card fyp-hashtag-widget" style="border: 1.5px solid #e0e7ff; background: #ffffff; border-radius: var(--radius-md); padding: 18px; margin-top: 14px;">
+            <h3 class="info-card-title" style="color: var(--blue-primary); margin-bottom: 12px; font-size: 0.98rem; display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-clock-rotate-left text-gold"></i> KHUNG GIỜ VÀNG FYP & BỘ HASHTAG XU HƯỚNG
+            </h3>
+
+            <!-- Giờ Vàng FYP -->
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 0.82rem; font-weight: 800; color: #475569; margin-bottom: 8px; text-transform: uppercase;">
+                <i class="fa-solid fa-fire text-pink"></i> 3 Khung Giờ Vàng Đăng Bài Dễ Lên Xu Hướng:
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; font-size: 0.8rem; text-align: center;">
+                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 6px 4px;">
+                  <div style="font-weight: 800; color: #d97706;">Trưa</div>
+                  <div style="font-weight: 700; color: #0f172a;">11h30 - 13h30</div>
+                </div>
+                <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 8px; padding: 6px 4px;">
+                  <div style="font-weight: 800; color: #2563eb;">Tối</div>
+                  <div style="font-weight: 700; color: #0f172a;">18h00 - 20h30</div>
+                </div>
+                <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 6px 4px;">
+                  <div style="font-weight: 800; color: #9333ea;">Đêm</div>
+                  <div style="font-weight: 700; color: #0f172a;">22h00 - 00h00</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hashtag Collection -->
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 800; color: #475569; margin-bottom: 8px; text-transform: uppercase;">
+                <i class="fa-solid fa-hashtag text-cyan"></i> Bộ Hashtag Thịnh Hành Theo Chủ Đề:
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem;">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #0f172a;">😂 Hài hước:</strong>
+                    <span style="color: #64748b; margin-left: 4px;">#xuhuong #fyp #haihuoc #giaitri</span>
+                  </div>
+                  <button type="button" class="btn-copy-small" onclick="copyHashtags('#xuhuong #fyp #haihuoc #giaitri #trending #videovui')" style="padding: 4px 10px; font-size: 0.76rem; border: none; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #0f172a;">🛍️ Bán hàng:</strong>
+                    <span style="color: #64748b; margin-left: 4px;">#xuhuong #sanphamhot #review #dealhot</span>
+                  </div>
+                  <button type="button" class="btn-copy-small" onclick="copyHashtags('#xuhuong #sanphamhot #muasamthongminh #review #giare #dealhot')" style="padding: 4px 10px; font-size: 0.76rem; border: none; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #0f172a;">💭 Tâm trạng:</strong>
+                    <span style="color: #64748b; margin-left: 4px;">#tamtrang #buon #chill #xuhuongtiktok #stt</span>
+                  </div>
+                  <button type="button" class="btn-copy-small" onclick="copyHashtags('#tamtrang #buon #chill #xuhuongtiktok #stt #lofi')" style="padding: 4px 10px; font-size: 0.76rem; border: none; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong style="color: #0f172a;">🔥 Trend mới:</strong>
+                    <span style="color: #64748b; margin-left: 4px;">#viral #trendmoi #foryou #thinhhanh #capcut</span>
+                  </div>
+                  <button type="button" class="btn-copy-small" onclick="copyHashtags('#viral #trendmoi #foryou #hotnews #thinhhanh #capcut')" style="padding: 4px 10px; font-size: 0.76rem; border: none; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endif %}
+
+    <!-- ========================================== -->
+    <!-- TAB: CHỢ PREMIUM (YOUTUBE, SPOTIFY, NETFLIX)-->
+    <!-- ========================================== -->
+        {% if services_enabled.get('premium', True) %}
+    <!-- ========================================== -->
+    <!-- TAB: CHỢ ỨNG DỤNG & TÀI KHOẢN PREMIUM       -->
+    <!-- ========================================== -->
+    <section class="tab-content-panel {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}active{% endif %}" id="panel-premium" role="tabpanel" aria-labelledby="mainServiceNav">
+      <div class="hero-section hero-premium">
+        <div class="hero-badge gold-badge"><i class="fa-solid fa-crown"></i> CHỢ ỨNG DỤNG BẢN QUYỀN 24/7</div>
+        <h2 class="hero-title">Mua Bản Quyền YouTube • Spotify • Netflix • AI</h2>
+        <p class="hero-desc">Hệ thống phân phối tài khoản & nâng cấp bản quyền tự động 24/7. Giá hạt dẻ sinh viên, quét mã VietQR tự động duyệt, bảo hành 1 đổi 1 suốt thời gian sử dụng.</p>
+      </div>
+
+      <!-- Platform / Service Navigation Pills (Horizontal Touch Track) -->
+      <div class="platform-pill-group" id="premPlatformFilter" style="margin-bottom: 24px;">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <div class="order-grid">
+        <!-- Order Form Card -->
+        <div class="order-form-card">
+          <h2 class="card-title">
+            <i class="fa-solid fa-cart-shopping text-gold"></i>
+            <span id="premFormTitle">Đăng Ký Bản Quyền YouTube Premium</span>
+          </h2>
+
+          <form id="premiumOrderForm" onsubmit="event.preventDefault(); submitPremiumOrder();">
+            <!-- Step 1: Chọn Gói Thời Hạn -->
+            <div class="form-group">
+              <label>
+                <span class="step-num">1</span> Chọn Gói Thời Hạn <span class="req">*</span>
+              </label>
+              <div class="packages-grid" id="premPackagesGrid">
+                <!-- Rendered dynamically by JS -->
+              </div>
+            </div>
+
+            <!-- Step 2: Nhập Tài Khoản / Email Nhận Bản Quyền -->
+            <div class="form-group">
+              <label for="premTargetInput" id="premTargetLabel">
+                <span class="step-num">2</span> Email / Tài Khoản Nhận Bản Quyền <span class="req">*</span>
+              </label>
+              <div class="input-with-action">
+                <input type="text" id="premTargetInput" class="form-input" placeholder="Nhập Email hoặc Tài khoản của bạn..." aria-label="Email hoặc tài khoản nhận bản quyền" required>
+                <button type="button" class="btn-paste" id="btnPastePremTarget" aria-label="Dán tài khoản hoặc email"><i class="fa-regular fa-paste"></i> Dán</button>
+              </div>
+              <small class="form-text-hint" id="premTargetHint">
+                <i class="fa-solid fa-shield-halved text-green"></i> Chỉ cần gửi Email/Tài khoản, tuyệt đối KHÔNG cần mật khẩu.
+              </small>
+            </div>
+
+            <!-- Step 3: Số Zalo Nhận Bàn Giao -->
+            <div class="form-group">
+              <label for="premZaloInput">
+                <span class="step-num">3</span> Số Điện Thoại Zalo Nhận Bàn Giao <span class="req">*</span>
+              </label>
+              <input type="tel" id="premZaloInput" class="form-input" placeholder="Nhập số Zalo nhận thông tin bàn giao..." aria-label="Số điện thoại Zalo nhận thông tin bàn giao" required>
+            </div>
+
+            <!-- Step 4: Ghi Chú Đơn Hàng (Nếu Có) -->
+            <div class="form-group">
+              <label for="premNoteInput">
+                <span class="step-num">4</span> Ghi Chú Đơn Hàng (Nếu Có)
+              </label>
+              <input type="text" id="premNoteInput" class="form-input" placeholder="Tên Profile mong muốn hoặc ghi chú riêng..." aria-label="Tên Profile mong muốn hoặc ghi chú riêng">
+            </div>
+
+            <!-- Order Summary Box -->
+            <div class="order-summary-box">
+              <div class="summary-row">
+                <span>Dịch vụ:</span>
+                <strong id="premSummaryService" class="text-gold">YouTube Premium</strong>
+              </div>
+              <div class="summary-row">
+                <span>Gói đăng ký:</span>
+                <strong id="premSummaryPkg">1 Tháng</strong>
+              </div>
+              <div class="summary-row">
+                <span>Thời hạn:</span>
+                <strong id="premSummaryDuration" class="text-cyan">1 Tháng</strong>
+              </div>
+              <div class="summary-row total-row">
+                <span>Tổng thanh toán:</span>
+                <strong id="premSummaryTotal" class="text-gold">29.000đ</strong>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="button" id="btnSubmitPremium" class="btn-primary-gradient btn-gold">
+              <i class="fa-solid fa-crown"></i> <span>Thanh Toán & Đăng Ký Ngay</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Info Column -->
+        <div class="order-info-column">
+          <!-- Dynamic Features Card -->
+          <div class="info-card">
+            <h3 class="info-card-title" id="premFeaturesTitle">
+              <i class="fa-solid fa-crown text-gold"></i> Đặc Quyền Bản Quyền
+            </h3>
+            <ul class="policy-list" id="premFeaturesList">
+              <!-- Dynamically populated via JS -->
+            </ul>
+          </div>
+
+          <!-- Guarantee & Policy Card -->
+          <div class="info-card">
+            <h3 class="info-card-title"><i class="fa-solid fa-shield-halved text-cyan"></i> Cam Kết Chợ Premium DTH</h3>
+            <ul class="policy-list">
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Chính chủ & Ổn định:</strong> Tài khoản bản quyền chính thức, không bị văng, dùng mượt mà 100%.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Bảo hành trọn thời hạn:</strong> Lỗi 1 đổi 1 tức thì hoặc hoàn tiền 100% nếu có sự cố.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Kích hoạt siêu tốc 24/7:</strong> Sau khi thanh toán VietQR, hệ thống lập tức tiếp nhận và bàn giao.</li>
+              <li><i class="fa-solid fa-circle-check text-green"></i> <strong>Hỗ trợ tận tình:</strong> Đội ngũ Admin hỗ trợ cài đặt qua Zalo & Telegram trọn đời gói.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% else %}
+    <section class="tab-content-panel" id="panel-premium-maintenance" role="tabpanel" aria-labelledby="mainServiceNav">
+      <div class="hero-section hero-premium">
+        <div class="hero-badge gold-badge"><i class="fa-solid fa-store-slash"></i> TẠM NGƯNG DỊCH VỤ</div>
+        <h2 class="hero-title">Chợ Dịch Vụ Premium Tạm Đóng</h2>
+        <p class="hero-desc">Hệ thống đang bảo trì và cập nhật kho tài khoản. Quý khách vui lòng quay lại sau ít phút hoặc nhắn tin Zalo hỗ trợ!</p>
+        <div style="margin-top: 16px;">
+          <a href="https://zalo.me/0899195660" target="_blank" rel="noopener noreferrer" class="btn-zalo-support">
+            <i class="fa-solid fa-comment-dots"></i> Nhắn Tin Zalo Hỗ Trợ Ngay
+          </a>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ========================================== -->
+    <!-- TAB 4: TRA CỨU ĐƠN HÀNG HỢP NHẤT            -->
+    <!-- ========================================== -->
+    <section class="tab-content-panel {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}active{% endif %}" id="panel-lookup" role="tabpanel" aria-labelledby="mainServiceNav">
+      <div class="hero-section hero-lookup">
+        <div class="hero-badge purple-badge"><i class="fa-solid fa-magnifying-glass"></i> TRA CỨU ĐƠN HÀNG</div>
+        <h2 class="hero-title">Kiểm Tra Tiến Độ Đơn Hàng</h2>
+        <p class="hero-desc">Tra cứu tình trạng đơn hàng Chung Sức (CS), Locket Gold (LK), Mạng Xã Hội (TT) hoặc Chợ Premium (PR) dễ dàng bằng Mã Đơn hoặc Số Zalo.</p>
+      </div>
+
+      <div class="lookup-card-wrapper">
+        <div class="lookup-search-box">
+          <div class="input-with-action">
+            <label for="lookupInput" class="sr-only">Mã đơn hàng hoặc Số Zalo</label>
+            <input type="text" id="lookupInput" class="form-input" placeholder="Nhập Mã đơn hàng (vd: CS12345, LK98765, TT54321) hoặc Số Zalo..." aria-label="Mã đơn hàng hoặc số điện thoại Zalo cần tra cứu">
+            <button type="button" class="btn-primary-gradient" id="btnLookup" style="width: auto; padding: 0 24px;">
+              <i class="fa-solid fa-magnifying-glass"></i> Tra Cứu
+            </button>
+          </div>
+          <div id="orderTrackingWrapper" style="margin-top: 12px; display: none;">
+            <button type="button" class="btn-primary-gradient" id="btnTrackOrder" aria-label="Theo dõi đơn hàng" style="width: auto; padding: 10px 18px;">
+              <i class="fa-regular fa-bell"></i> Theo Dõi Đơn & Bật Thông Báo
+            </button>
+            <p id="order-tracking-status" class="text-muted" aria-live="polite" role="status" style="display: none; margin-top: 8px; font-size: 0.84rem;">
+              Nhập mã đơn và bật theo dõi; cần giữ trang này mở để nhận cập nhật.
+            </p>
+          </div>
+        </div>
+
+        <div id="lookupResultsContainer" class="lookup-results-list" style="margin-top: 24px;">
+          <div class="empty-state">
+            <i class="fa-solid fa-receipt"></i>
+            <p>Vui lòng nhập Mã đơn hàng hoặc Số Zalo để kiểm tra trạng thái đơn hàng của bạn.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: HƯỚNG DẪN CÀI ĐẶT LOCKET IOS        -->
+    
+
+    <!-- ========================================== -->
+    <!-- TAB 6: FREE CREATOR TOOLS SECTION          -->
+    <!-- ========================================== -->
+    <section class="tab-content-panel" id="panel-tools" role="tabpanel" aria-labelledby="mainServiceNav">
+      <div class="hero-section" style="background: linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(139,92,246,0.08) 100%);">
+        <div class="hero-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;"><i class="fa-solid fa-wand-magic-sparkles"></i> TIỆN ÍCH MIỄN PHÍ 100% CHO CREATOR</div>
+        <h2 class="hero-title">Bộ Công Cụ Sáng Tạo Nội Dung & Mạng Xã Hội</h2>
+        <p class="hero-desc">Trích xuất UID Facebook/TikTok, Tải video TikTok không logo và Tạo mã QR cá nhân tốc độ cao.</p>
+      </div>
+
+      <div style="max-width: 900px; margin: 0 auto; background: var(--card-bg, #ffffff); border: 1.5px solid var(--border-subtle, #e2e8f0); border-radius: 20px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+        <!-- Free Tools Nav -->
+        <div class="free-tools-nav" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap;">
+          <button type="button" class="btn-tool-tab active" data-tool="uid" onclick="switchFreeToolTab('uid')" style="padding: 10px 18px; border-radius: 12px; border: 1.5px solid var(--border-blue); background: var(--blue-primary); color: #fff; font-weight: 700; font-size: 0.88rem; cursor: pointer;">
+            <i class="fa-solid fa-id-card"></i> 1. Lấy UID / Object ID
+          </button>
+          <button type="button" class="btn-tool-tab" data-tool="tiktok" onclick="switchFreeToolTab('tiktok')" style="padding: 10px 18px; border-radius: 12px; border: 1.5px solid #cbd5e1; background: #f8fafc; color: #475569; font-weight: 700; font-size: 0.88rem; cursor: pointer;">
+            <i class="fa-brands fa-tiktok"></i> 2. Tải Video TikTok Không Logo & MP3
+          </button>
+          <button type="button" class="btn-tool-tab" data-tool="qr" onclick="switchFreeToolTab('qr')" style="padding: 10px 18px; border-radius: 12px; border: 1.5px solid #cbd5e1; background: #f8fafc; color: #475569; font-weight: 700; font-size: 0.88rem; cursor: pointer;">
+            <i class="fa-solid fa-qrcode"></i> 3. Tạo Mã QR Cá Nhân Tùy Chỉnh
+          </button>
+        </div>
+
+        <!-- Tool 1: Get UID -->
+        <div class="tool-content-pane" id="toolPaneUid">
+          <form onsubmit="handleGetUID(event); return false;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <label for="toolUidInput" class="sr-only">Link cần lấy UID</label>
+              <input type="text" id="toolUidInput" class="form-input" placeholder="Dán link Facebook profile/post, TikTok video/user, hoặc Instagram..." style="flex: 1; min-width: 260px;" aria-label="Đường dẫn liên kết cần trích xuất UID" required>
+              <button type="submit" class="btn-primary-gradient" id="btnToolGetUid" style="padding: 12px 24px; font-weight: 700; white-space: nowrap;">
+                <i class="fa-solid fa-magnifying-glass"></i> Lấy UID Ngay
+              </button>
+            </div>
+          </form>
+          <div id="toolUidResult" class="hidden" style="display: none; margin-top: 16px; background: rgba(37, 99, 235, 0.05); border: 1.5px solid var(--border-blue); border-radius: 12px; padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">KẾT QUẢ TRÍCH XUẤT:</div>
+                <div style="font-size: 1.25rem; font-weight: 800; color: var(--blue-primary); margin-top: 2px;" id="toolUidVal">---</div>
+                <div style="font-size: 0.82rem; color: #64748b; margin-top: 2px;" id="toolUidMeta">Nền tảng: Facebook • Loại: Profile UID</div>
+              </div>
+              <button type="button" class="btn-copy" onclick="copyToolUidResult()" style="padding: 8px 16px; font-size: 0.88rem;">
+                <i class="fa-regular fa-copy"></i> Sao Chép UID
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool 2: TikTok No Watermark -->
+        <div class="tool-content-pane" id="toolPaneTiktok" style="display: none;">
+          <form onsubmit="handleGetTikTokNoWatermark(event); return false;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <label for="toolTiktokInput" class="sr-only">Link video TikTok</label>
+              <input type="url" id="toolTiktokInput" class="form-input" placeholder="Dán link video TikTok (vd: https://vt.tiktok.com/... hoặc tiktok.com/@user/video/...)..." style="flex: 1; min-width: 260px;" aria-label="Đường dẫn video TikTok cần tải không logo" required>
+              <button type="submit" class="btn-primary-gradient" id="btnToolGetTiktok" style="padding: 12px 24px; font-weight: 700; white-space: nowrap; background: linear-gradient(135deg, #000000 0%, #2563eb 100%);">
+                <i class="fa-solid fa-cloud-arrow-down"></i> Tải Video HD
+              </button>
+            </div>
+          </form>
+          <div id="toolTiktokLoading" style="display: none; text-align: center; padding: 20px;">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; color: var(--blue-primary);"></i>
+            <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;">Đang bóc tách video HD không logo & trích xuất MP3...</p>
+          </div>
+          <div id="toolTiktokResult" class="hidden" style="display: none; margin-top: 16px; background: rgba(16, 185, 129, 0.05); border: 1.5px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 16px;">
+            <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+              <img id="toolTiktokCover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Video Cover" style="width: 80px; height: 110px; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);" width="80" height="110" loading="lazy">
+              <div style="flex: 1; min-width: 200px;">
+                <h4 id="toolTiktokTitle" style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 800; color: #0f172a;">Tiêu đề video</h4>
+                <p id="toolTiktokAuthor" style="margin: 0 0 12px 0; font-size: 0.84rem; color: #64748b;">@author</p>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <button type="button" id="btn-download-video" class="btn-primary-gradient" style="padding: 8px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; border: none; cursor: pointer; border-radius: 8px;">
+                    <i class="fa-solid fa-video"></i> Tải Video Không Logo
+                  </button>
+                  <button type="button" id="btn-download-audio" class="btn-secondary" style="padding: 8px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; border-radius: 8px;">
+                    <i class="fa-solid fa-music"></i> Tải Nhạc MP3
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool 3: QR Generator -->
+        <div class="tool-content-pane" id="toolPaneQr" style="display: none;">
+          <form onsubmit="handleGenerateQR(event); return false;">
+            <div style="display: grid; grid-template-columns: 1fr 140px 140px auto; gap: 10px; align-items: end;">
+              <div class="form-group" style="margin: 0;">
+                <label for="toolQrContent" style="font-size: 0.82rem; font-weight: 700; margin-bottom: 4px;">Nội dung mã QR (Văn bản / Link):</label>
+                <input type="text" id="toolQrContent" class="form-input" placeholder="Nhập link website, số tài khoản, Zalo..." aria-label="Nội dung mã QR cần tạo" required>
+              </div>
+              <div class="form-group" style="margin: 0;">
+                <label for="toolQrColor" style="font-size: 0.82rem; font-weight: 700; margin-bottom: 4px;">Màu mã QR:</label>
+                <input type="color" id="toolQrColor" class="form-input" value="#0f172a" style="padding: 4px; height: 44px; cursor: pointer;" aria-label="Màu sắc mã QR">
+              </div>
+              <div class="form-group" style="margin: 0;">
+                <label for="toolQrBgColor" style="font-size: 0.82rem; font-weight: 700; margin-bottom: 4px;">Màu nền QR:</label>
+                <input type="color" id="toolQrBgColor" class="form-input" value="#ffffff" style="padding: 4px; height: 44px; cursor: pointer;" aria-label="Màu nền mã QR">
+              </div>
+              <button type="submit" class="btn-primary-gradient" id="btnToolGenQr" style="height: 44px; padding: 0 20px; font-weight: 700;">
+                <i class="fa-solid fa-qrcode"></i> Tạo QR
+              </button>
+            </div>
+          </form>
+          <div id="toolQrResult" class="hidden" style="display: none; margin-top: 20px; text-align: center;">
+            <div style="display: inline-block; background: #ffffff; padding: 16px; border-radius: 14px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+              <img id="toolQrImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Mã QR Cá Nhân" style="display: block; max-width: 220px; height: auto;" width="220" height="220" loading="lazy">
+            </div>
+            <div style="margin-top: 12px;">
+              <button type="button" class="btn-primary-gradient" onclick="downloadQRImage()" style="padding: 8px 20px; font-size: 0.88rem;">
+                <i class="fa-solid fa-download"></i> Tải Mã QR Về Máy
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- SMART PAYMENT MODAL (VIETQR STANDARD)      -->
+  <!-- ========================================== -->
+      <!-- ======================================================= -->
+  <!-- 📢 TECH-CUTE CYBER-KAWAII POPUP ANNOUNCEMENT MODAL      -->
+  <!-- ======================================================= -->
+  <div class="modal-backdrop announcement-backdrop" id="popupAnnouncementModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="announcementModalTitle">
+    <div class="modal-card announcement-card">
+      <button type="button" class="modal-close-btn" onclick="closePopupAnnouncement()" aria-label="Đóng thông báo">&times;</button>
+      
+      <!-- Tech-Cute Cyber-Kawaii Glowing Header -->
+      <div class="announcement-header">
+        <div class="announcement-icon-badge">
+          <i class="fa-solid fa-bullhorn announcement-bell-icon"></i>
+        </div>
+        <div class="announcement-pill-tag">
+          <span class="pulse-dot"></span> THÔNG BÁO TỪ HỆ THỐNG
+        </div>
+        <h3 class="announcement-title" id="announcementModalTitle">
+          🎉 THÔNG BÁO TỪ HỆ THỐNG
+        </h3>
+      </div>
+
+      <!-- Content Area with Cyber Kawaii Glass Styling -->
+      <div class="announcement-body">
+        <div class="announcement-content-box" id="announcementModalContent">
+          Chào mừng bạn đến với DTH Services! Chúc bạn một ngày tốt lành.
+        </div>
+      </div>
+
+      <!-- Footer Button: Pill Shaped "✕ Đã Hiểu / Đóng" -->
+      <div class="announcement-footer">
+        <button type="button" class="btn-announcement-close" onclick="closePopupAnnouncement()">
+          <i class="fa-solid fa-check"></i> Đã Hiểu / Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Thông Báo Khách Cũ Locket Gold -->
+  <div class="modal-backdrop" id="modalExistingCustomerLocket" style="display: none;">
+    <div class="modal-card" style="max-width: 480px; text-align: center; border-radius: 20px; padding: 28px 22px;">
+      <button type="button" class="modal-close-btn" onclick="closeExistingCustomerModal()" aria-label="Đóng thông báo khách cũ">&times;</button>
+      
+      <div style="width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2)); color: #f59e0b; display: inline-flex; align-items: center; justify-content: center; font-size: 2.2rem; margin-bottom: 16px; border: 2px solid rgba(245, 158, 11, 0.4); box-shadow: 0 6px 18px rgba(245, 158, 11, 0.25);">
+        <i class="fa-solid fa-crown text-gold"></i>
+      </div>
+
+      <div class="modal-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3); margin-bottom: 10px; display: inline-flex;">
+        <i class="fa-solid fa-star"></i> TÀI KHOẢN ĐÃ CÓ TRÊN HỆ THỐNG
+      </div>
+
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 10px; line-height: 1.4;">
+        Bạn Đã Từng Nâng Locket Gold!
+      </h3>
+
+      <p style="font-size: 0.94rem; color: #475569; line-height: 1.65; margin-bottom: 22px;">
+        Tài khoản <strong>@<span id="existingCustUsername" style="color: #d97706;"></span></strong> của bạn đã từng được kích hoạt thành công trên hệ thống DTH.
+        <span id="existingCustOrderIdWrapper" style="display: block; margin-top: 10px; margin-bottom: 10px; font-weight: 700; color: #b45309; background: #fef3c7; padding: 8px 12px; border-radius: 8px; border: 1px dashed #f59e0b;">
+          <i class="fa-solid fa-receipt"></i> Mã đơn hàng: <span id="existingCustOrderId" style="font-family: monospace; font-size: 1.05rem; letter-spacing: 0.5px;">---</span>
+        </span>
+        👉 Bạn hãy bấm nút bên dưới để chuyển sang <strong>Trang Tra Cứu Đơn Hàng</strong>, hệ thống sẽ tự động tra cứu mã đơn và hiển thị hướng dẫn cài đặt cũng như kích hoạt lại Gold cho bạn!
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button type="button" class="btn-primary-gradient" id="btnGoToLookupExisting" style="padding: 13px; font-size: 0.96rem; justify-content: center; font-weight: 800; border-radius: 12px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);">
+          <i class="fa-solid fa-magnifying-glass"></i> Sang Trang Tra Cứu Đơn Hàng
+        </button>
+        <button type="button" class="btn-action-outline" id="btnForceBuyNewLocket" style="padding: 10px; font-size: 0.85rem; justify-content: center; color: #64748b; border: 1px solid #cbd5e1; border-radius: 10px; font-weight: 600;">
+          Tôi vẫn muốn mua đơn hàng mới
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="paymentModal" style="display: none;">
+    <div class="modal-card">
+      <button type="button" class="modal-close-btn" id="btnCloseModal" aria-label="Đóng cửa sổ modal">&times;</button>
+      
+      <div class="modal-header">
+        <div class="modal-badge"><i class="fa-solid fa-qrcode"></i> THANH TOÁN TỰ ĐỘNG VIETQR</div>
+        <h3 class="modal-title" id="payModalServiceTitle">Thanh Toán Đơn Hàng</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;">Mã đơn: <strong id="payModalOrderId" class="text-gold">---</strong></p>
+      </div>
+
+      <div class="modal-body">
+        <!-- QR Code Column -->
+        <div class="qr-code-wrapper">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" id="qrImage" data-alt-id="payModalQrImg" class="qr-img" alt="VietQR Payment" width="240" height="240" style="width: 240px; height: 240px; max-width: 100%; aspect-ratio: 1/1; object-fit: contain;">
+          <button type="button" class="btn-download-qr" id="btnDownloadQr" onclick="downloadQrImage()" aria-label="Tải ảnh QR chuyển khoản về máy">
+            <i class="fa-solid fa-download"></i> Tải ảnh QR
+          </button>
+          <div class="qr-scan-hint">
+            <i class="fa-solid fa-camera"></i> Quét mã bằng App Ngân hàng hoặc ZaloPay
+          </div>
+          <div class="qr-timer">
+            <i class="fa-regular fa-clock"></i> Thời gian còn lại: <span id="payModalCountdown">15:00</span>
+          </div>
+        </div>
+
+        <!-- Success / VIP Gold Guide Box (Hiển thị ngay khi thanh toán thành công) -->
+        <div id="payModalSuccessBox" class="pay-modal-success-box" style="display: none; width: 100%;"></div>
+
+        <!-- Bank Details Column -->
+        <div class="bank-details-box">
+          <div class="bank-field">
+            <span class="field-label">Ngân hàng nhận:</span>
+            <div class="field-val-row">
+              <strong id="payModalBankName">{{ cfg.payment.bank_name or 'Ngân Hàng Bản Việt (BVBank - ZaloPay)' }}</strong>
+            </div>
+            <div class="bank-note-bvbank" style="font-size: 0.82rem; color: #f59e0b; margin-top: 4px; font-weight: 600; line-height: 1.4;">
+              <i class="fa-solid fa-circle-exclamation"></i> <em>Lưu ý: Nếu chuyển khoản thủ công, vui lòng chọn <strong>Ngân hàng Bản Việt (BVBank)</strong> — Không tìm chữ ZaloPay trong danh sách ngân hàng</em>
+            </div>
+          </div>
+
+          <div class="bank-field">
+            <span class="field-label">Số tài khoản:</span>
+            <div class="field-val-row">
+              <strong id="payModalAccNo" class="field-highlight text-cyan">{{ cfg.payment.account_number or '99ZP24261M43061759' }}</strong>
+              <button type="button" class="btn-copy" onclick="copyToClipboard('payModalAccNo')" aria-label="Sao chép số tài khoản"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <div class="bank-field">
+            <span class="field-label">Chủ tài khoản:</span>
+            <div class="field-val-row">
+              <strong id="payModalAccName">{{ cfg.payment.account_name or 'ZALOPAY_DINH TUAN HUNG' }}</strong>
+            </div>
+          </div>
+
+          <div class="bank-field">
+            <span class="field-label">Số tiền:</span>
+            <div class="field-val-row">
+              <strong id="payModalAmount" class="field-highlight text-gold">---</strong>
+              <button type="button" class="btn-copy" onclick="copyRawAmount()" aria-label="Sao chép số tiền"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <div class="bank-field">
+            <span class="field-label">Nội dung chuyển khoản (Bắt buộc):</span>
+            <div class="field-val-row">
+              <strong id="payModalContent" class="field-highlight text-pink">---</strong>
+              <button type="button" class="btn-copy" onclick="copyToClipboard('payModalContent')" aria-label="Sao chép nội dung chuyển khoản"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+          </div>
+
+          <div class="bank-alert-box">
+            <i class="fa-solid fa-triangle-exclamation"></i> Vui lòng giữ nguyên <strong>Nội dung chuyển khoản</strong> để hệ thống tự động nhận diện và xử lý đơn trong 10 - 30 giây!
+          </div>
+          <!-- VietQR Deep-Link Banking App Picker -->
+          <div class="banking-app-picker" style="background: rgba(37, 99, 235, 0.05); border: 1.5px dashed var(--border-blue); border-radius: var(--radius-md); padding: 12px; margin-top: 14px;">
+            <div style="font-size: 0.84rem; font-weight: 800; color: var(--blue-primary); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fa-solid fa-mobile-screen-button"></i> MỞ THẲNG APP NGÂN HÀNG (1-CLICK VIETQR):</span>
+              <span style="font-size: 0.74rem; font-weight: 600; color: var(--text-muted);">(Tự điền STK & Nội dung)</span>
+            </div>
+            <div class="banking-apps-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;">
+              <button type="button" class="btn-bank-app" onclick="openBankingApp('MBBank')" title="Mở MB Bank" style="border: 1px solid #cbd5e1; background: #fff; padding: 6px 4px; border-radius: 8px; cursor: pointer; text-align: center;">
+                <span style="background: #18008f; color: #fff; font-weight: 900; font-size: 0.72rem; padding: 3px 6px; border-radius: 4px; display: inline-block;">MB</span>
+                <span style="font-size: 0.74rem; font-weight: 700; color: #1e293b; margin-top: 3px; display: block;">MB Bank</span>
+              </button>
+              <button type="button" class="btn-bank-app" onclick="openBankingApp('Vietcombank')" title="Mở Vietcombank" style="border: 1px solid #cbd5e1; background: #fff; padding: 6px 4px; border-radius: 8px; cursor: pointer; text-align: center;">
+                <span style="background: #005a36; color: #fff; font-weight: 900; font-size: 0.72rem; padding: 3px 6px; border-radius: 4px; display: inline-block;">VCB</span>
+                <span style="font-size: 0.74rem; font-weight: 700; color: #1e293b; margin-top: 3px; display: block;">Vietcom</span>
+              </button>
+              <button type="button" class="btn-bank-app" onclick="openBankingApp('Techcombank')" title="Mở Techcombank" style="border: 1px solid #cbd5e1; background: #fff; padding: 6px 4px; border-radius: 8px; cursor: pointer; text-align: center;">
+                <span style="background: #e11b22; color: #fff; font-weight: 900; font-size: 0.72rem; padding: 3px 6px; border-radius: 4px; display: inline-block;">TCB</span>
+                <span style="font-size: 0.74rem; font-weight: 700; color: #1e293b; margin-top: 3px; display: block;">Techcom</span>
+              </button>
+              <button type="button" class="btn-bank-app" onclick="openBankingApp('ZaloPay')" title="Mở ZaloPay" style="border: 1px solid #cbd5e1; background: #fff; padding: 6px 4px; border-radius: 8px; cursor: pointer; text-align: center;">
+                <span style="background: #008fe5; color: #fff; font-weight: 900; font-size: 0.72rem; padding: 3px 6px; border-radius: 4px; display: inline-block;">ZP</span>
+                <span style="font-size: 0.74rem; font-weight: 700; color: #1e293b; margin-top: 3px; display: block;">ZaloPay</span>
+              </button>
+              <button type="button" class="btn-bank-app" onclick="openBankingApp('MoMo')" title="Mở MoMo" style="border: 1px solid #cbd5e1; background: #fff; padding: 6px 4px; border-radius: 8px; cursor: pointer; text-align: center;">
+                <span style="background: #a50064; color: #fff; font-weight: 900; font-size: 0.72rem; padding: 3px 6px; border-radius: 4px; display: inline-block;">MOMO</span>
+                <span style="font-size: 0.74rem; font-weight: 700; color: #1e293b; margin-top: 3px; display: block;">Ví MoMo</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-primary-gradient btn-paid-confirm" id="btnConfirmPaidNow">
+          <i class="fa-solid fa-circle-check"></i> <span>Tôi Đã Chuyển Khoản - Kiểm Tra Ngay</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Guide Modal (2 Video Hướng Dẫn Shadowrocket & Module VIP - Bảo Vệ Paid Only) -->
+  <div class="modal-backdrop" id="videoModal" style="display: none;">
+    <div class="modal-card video-modal-card">
+      <button type="button" class="modal-close-btn" onclick="closeVideoGuideModal()" aria-label="Đóng video hướng dẫn">&times;</button>
+      
+      <!-- Video Tabs Selection -->
+      <div class="video-modal-tabs" style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;" role="tablist" aria-label="Chọn video hướng dẫn Locket Gold">
+        <button type="button" class="btn-video-tab active" id="btnVideoTabSr" onclick="switchVideoGuideTab('shadowrocket')" role="tab" aria-selected="true" aria-controls="videoGuideList1" aria-label="Video 1: Cài Đặt Shadowrocket">
+          <i class="fa-solid fa-mobile-screen-button text-blue"></i> 📱 Video 1: Cài Đặt Shadowrocket
+        </button>
+        <button type="button" class="btn-video-tab" id="btnVideoTabMod" onclick="switchVideoGuideTab('module')" role="tab" aria-selected="false" aria-controls="videoGuideList2" aria-label="Video 2: Thêm Module Locket Gold VIP">
+          <i class="fa-solid fa-bolt text-yellow"></i> ⚡ Video 2: Thêm Module Locket Gold VIP
+        </button>
+      </div>
+
+      <h3 id="videoModalTitle" class="modal-title" style="margin-bottom: 12px; color: var(--text-main); font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-circle-play text-blue"></i> Video 1: Cài Đặt Shadowrocket
+      </h3>
+
+      <div class="video-player-container" style="background: #000; border-radius: 12px; overflow: hidden; margin-bottom: 14px; position: relative; min-height: 240px; display: flex; align-items: center; justify-content: center;">
+        
+        <!-- Video Player (Chỉ hiển thị cho khách VIP đã thanh toán) -->
+        <video id="guideVideoPlayer" controls playsinline preload="metadata" style="width: 100%; max-height: 480px; display: none; object-fit: contain; background: #000;">
+          Trình duyệt của bạn không hỗ trợ thẻ video HTML5.
+        </video>
+
+        <!-- VIP Lock Overlay (Khi khách vãng lai hoặc đơn chưa thanh toán) -->
+        <div id="videoLockOverlay" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 28px 20px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); width: 100%; min-height: 240px; color: #fff;">
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(245, 158, 11, 0.2); border: 2px solid #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #f59e0b; margin-bottom: 12px; box-shadow: 0 0 18px rgba(245, 158, 11, 0.35);">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 800; color: #fef08a; margin-bottom: 8px;">Nội Dung Dành Riêng Cho Khách Hàng VIP</h4>
+          <p style="font-size: 0.88rem; color: #cbd5e1; max-width: 440px; line-height: 1.55; margin-bottom: 16px;">
+            Video hướng dẫn cài đặt chỉ khả dụng cho khách hàng đã thanh toán thành công đơn hàng Locket Gold. Vui lòng thanh toán hoặc tra cứu đơn hàng để mở khóa!
+          </p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+            <button type="button" class="btn-primary" onclick="closeVideoGuideModal(); switchTab('locket');" style="padding: 9px 18px; font-size: 0.85rem; font-weight: 700; border-radius: 8px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
+              <i class="fa-solid fa-cart-shopping"></i> Mua Locket Gold Ngay
+            </button>
+            <button type="button" class="btn-secondary" onclick="closeVideoGuideModal(); switchTab('lookup');" style="padding: 9px 18px; font-size: 0.85rem; font-weight: 700; border-radius: 8px; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.25); color: #fff; cursor: pointer;">
+              <i class="fa-solid fa-magnifying-glass"></i> Tra Cứu Đơn Đã Mua
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="videoStepsContainer">
+        <!-- Steps for Shadowrocket -->
+        <ul class="video-steps-list" id="videoGuideList1" role="tabpanel" aria-labelledby="btnVideoTabSr">
+          <li>
+            <span><strong>Bước 1:</strong> Mở App Store hoặc nhận tài khoản cài app <strong>Shadowrocket</strong> trên iPhone.</span>
+          </li>
+          <li>
+            <span><strong>Bước 2:</strong> Mở app Shadowrocket ➔ Vào mục <strong>Cấu hình (Config)</strong> ➔ Bật kết nối VPN.</span>
+          </li>
+          <li>
+            <span><strong>Bước 3:</strong> Chuyển sang <strong>Video 2</strong> để thêm Module VIP mở khóa Locket Gold trọn đời!</span>
+          </li>
+        </ul>
+
+        <!-- Steps for Module -->
+        <ul class="video-steps-list hidden" id="videoGuideList2" style="display: none !important;" role="tabpanel" aria-labelledby="btnVideoTabMod">
+          <li>
+            <span><strong>Bước 1:</strong> Mở app <strong>Shadowrocket</strong> trên iPhone ➔ Vào tab <strong>Cấu hình (Config)</strong> ➔ Bấm vào <strong>Modules</strong>.</span>
+          </li>
+          <li>
+            <span><strong>Bước 2:</strong> Bấm dấu <strong>+</strong> ở góc trên ➔ Dán link Module VIP nhận được sau khi thanh toán thành công (hoặc bấm nút <em>"Cài Trực Tiếp Vào Shadowrocket"</em> tại màn hình đơn hàng).</span>
+          </li>
+          <li>
+            <span><strong>Bước 3:</strong> Tích chọn module <strong>👑 Locket Gold All-In-One (dth206)</strong> ➔ Bật công tắc kết nối Shadowrocket (VPN) ➔ Mở Locket tận hưởng trọn vẹn Gold vĩnh viễn, video dài 60s và khung Widget VIP!</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="locket-friend-reminder" style="margin-top: 14px; padding: 10px 14px; background: rgba(245, 158, 11, 0.1); border: 1px dashed rgba(245, 158, 11, 0.4); border-radius: 10px; text-align: center; font-size: 0.88rem;">
+        💛 <a href="https://locket.cam/dth206" target="_blank" rel="noopener noreferrer" style="color: #d97706; font-weight: 700; text-decoration: underline;">Nhấn vào đây để kết bạn Locket cùng chủ shop nha: locket.cam/dth206</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Floating Recent Purchase Toast -->
+  <div class="live-ticker-toast hidden" id="liveTickerToast" style="display: none;">
+    <div class="ticker-avatar"><i class="fa-solid fa-bell"></i></div>
+    <div class="ticker-content">
+      <div class="ticker-user" id="tickerUser">Khách 098***</div>
+      <div class="ticker-desc" id="tickerDesc">Mở thành công Full 3 Rương</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="footer-title">{{ cfg.site_name or 'DTH Services' }}</div>
+        <p class="footer-desc">Hệ thống dịch vụ nạp tự động 24/7 uy tín, tốc độ và bảo mật hàng đầu Việt Nam.</p>
+      </div>
+      <div class="footer-links">
+        <a href="{{ cfg.shop_info.support_zalo or 'https://zalo.me/0899195660' }}" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-comment-dots"></i> Zalo: {{ cfg.shop_info.support_phone or '0899195660' }}</a>
+        <a href="{{ cfg.shop_info.support_telegram or 'https://t.me/dth260106' }}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-telegram"></i> Telegram: @dth260106</a>
+        <a href="https://locket.cam/dth206" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-heart" style="color: #ff3366;"></i> Locket: locket.cam/dth206</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 {{ cfg.site_name or 'DTH Services' }}. All rights reserved.
+    </div>
+  </footer>
+
+    <!-- Mobile Sticky Bottom Navigation -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Thanh điều hướng di động" role="tablist">
+    {% if services_enabled.get('chungsuc', True) %}
+    <button type="button" class="mobile-bottom-nav-btn active" data-tab="chungsuc" role="tab" aria-selected="true" aria-controls="panel-chungsuc" aria-label="Dịch vụ Chung Sức Liên Quân">
+      <i class="fa-solid fa-gamepad"></i>
+      <span>Chung Sức</span>
+    </button>
+    {% endif %}
+
+    {% if services_enabled.get('locket', True) %}
+    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) %}active{% endif %}" data-tab="locket" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) %}true{% else %}false{% endif %}" aria-controls="panel-locket" aria-label="Dịch vụ Nâng Cấp Locket Gold">
+      <i class="fa-solid fa-heart"></i>
+      <span>Locket Gold</span>
+    </button>
+    {% endif %}
+
+    {% if services_enabled.get('mxh', True) %}
+    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}active{% endif %}" data-tab="mxh" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}true{% else %}false{% endif %}" aria-controls="panel-mxh" aria-label="Dịch vụ Mạng Xã Hội">
+      <i class="fa-solid fa-chart-line"></i>
+      <span>Dịch Vụ MXH</span>
+    </button>
+    {% endif %}
+
+    {% if services_enabled.get('premium', True) %}
+    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}active{% endif %}" data-tab="premium" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-premium" aria-label="Chợ Dịch Vụ Premium">
+      <i class="fa-solid fa-crown"></i>
+      <span>Chợ Premium</span> <span class="badge-maintenance">Bảo trì</span>
+    </button>
+    {% endif %}
+
+    <button type="button" class="mobile-bottom-nav-btn" data-tab="tools" role="tab" aria-selected="false" aria-controls="panel-tools" aria-label="Bộ Công Cụ Sáng Tạo Nội Dung Miễn Phí">
+      <i class="fa-solid fa-wand-magic-sparkles text-pink"></i>
+      <span>Free Tools</span>
+    </button>
+    <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}active{% endif %}" data-tab="lookup" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-lookup" aria-label="Tra Cứu Đơn Hàng">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Tra Cứu</span>
+    </button>
+  </nav>
+
+  <script>window.gServicesEnabled = {{ services_enabled | tojson }};</script>
+  <!-- Frontend Logic -->
+  <script src="{{ url_for('static', filename='js/app.js') }}?v={{ range(1000, 9999) | random }}"></script>
+
+  <!-- Receipt Card Modal (Biên lai điện tử) -->
+  <div class="modal-backdrop" id="receiptModal" style="display: none;">
+    <div class="modal-card receipt-modal-card" style="max-width: 480px; text-align: center; border-radius: 20px;">
+      <button type="button" class="modal-close-btn" onclick="closeReceiptModal()">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge"><i class="fa-solid fa-receipt"></i> HÓA ĐƠN ĐIỆN TỬ VIP</div>
+        <h3 class="modal-title" style="margin-top: 6px;">Biên Lai Thanh Toán</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Hệ thống DTH Services 24/7</p>
+      </div>
+      <div class="modal-body" style="padding: 16px 10px;">
+        <canvas id="receiptCanvas" width="600" height="760" style="width: 100%; max-width: 360px; height: auto; display: block; margin: 0 auto; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);"></canvas>
+      </div>
+      <div class="modal-footer" style="display: flex; gap: 10px; justify-content: center; padding: 14px 20px;">
+        <button type="button" class="btn-primary-gradient" onclick="downloadReceiptImage()" style="flex: 1; padding: 12px 18px; font-weight: 700; border-radius: 12px; cursor: pointer;">
+          <i class="fa-solid fa-download"></i> Tải Ảnh Về Máy
+        </button>
+        <button type="button" class="btn-secondary" onclick="shareReceipt()" style="padding: 12px 18px; font-weight: 700; border-radius: 12px; border: 1px solid var(--border-subtle); background: var(--bg-subtle); cursor: pointer;">
+          <i class="fa-solid fa-share-nodes"></i> Chia Sẻ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Comments Picker Modal -->
+  <div class="modal-backdrop" id="aiCommentModal" style="display: none;">
+    <div class="modal-card" style="max-width: 520px; border-radius: 20px;">
+      <button type="button" class="modal-close-btn" onclick="closeAiCommentsModal()">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;"><i class="fa-solid fa-wand-magic-sparkles"></i> AI SMART SEEDING</div>
+        <h3 class="modal-title" style="margin-top: 6px;">Tạo Bình Luận Tự Nhiên Bằng AI</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Sinh 10-20 comment tiếng Việt tự nhiên, phù hợp mạng xã hội.</p>
+      </div>
+      <div class="modal-body" style="padding: 16px 20px;">
+        <div class="form-group">
+          <label for="aiCommentTopic" style="font-weight: 700; font-size: 0.86rem;">Chọn Chủ Đề Video / Bài Viết:</label>
+          <select id="aiCommentTopic" class="form-input form-select" style="padding: 10px;" aria-label="Chọn chủ đề video hoặc bài viết">
+            <option value="ban_hang">🛍️ Bán Hàng & Thời Trang, Phụ Kiện</option>
+            <option value="an_uong">🍜 Ẩm Thực, Ăn Uống & Cafe</option>
+            <option value="khen_ngoi">✨ Khen Ngợi Visual & Nhan Sắc</option>
+            <option value="hai_huoc">😂 Hài Hước, Giải Trí & Bắt Trend</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="aiCommentTone" style="font-weight: 700; font-size: 0.86rem;">Tone Giọng Bình Luận:</label>
+          <select id="aiCommentTone" class="form-input form-select" style="padding: 10px;" aria-label="Tone giọng bình luận seeding AI">
+            <option value="tu_nhien">🌱 Tự nhiên đời thường (Mộc mạc)</option>
+            <option value="khen_ngoi">🌟 Khen nức nở (5 sao, siêu đẹp)</option>
+            <option value="hoi_gia">❓ Seeding hỏi giá / hỏi size / tư vấn</option>
+            <option value="review_uy_tin">🏆 Feedback uy tín sau khi nhận hàng</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="aiCommentCount" style="font-weight: 700; font-size: 0.86rem;">Số lượng bình luận:</label>
+          <select id="aiCommentCount" class="form-input form-select" style="padding: 10px;" aria-label="Số lượng bình luận seeding AI">
+            <option value="15">15 Bình luận (Khuyên dùng)</option>
+            <option value="10">10 Bình luận</option>
+            <option value="20">20 Bình luận</option>
+          </select>
+        </div>
+        <div style="margin-top: 14px;">
+          <button type="button" class="btn-primary-gradient" onclick="generateAiComments()" style="width: 100%; padding: 11px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);" aria-label="Tạo bình luận seeding ngay">
+            <i class="fa-solid fa-sparkles"></i> Tạo Bình Luận Ngay
+          </button>
+        </div>
+        <div id="aiCommentPreviewBox" style="display: none; margin-top: 14px;">
+          <label for="aiCommentPreviewText" style="font-weight: 700; font-size: 0.84rem; color: #475569;">Bản xem trước bình luận:</label>
+          <textarea id="aiCommentPreviewText" class="form-input" rows="6" style="margin-top: 4px; font-size: 0.85rem; line-height: 1.5;" aria-label="Bản xem trước danh sách bình luận AI"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer" style="padding: 14px 20px;">
+        <button type="button" id="btnApplyAiComments" class="btn-primary-gradient" onclick="applyAiCommentsToOrder()" style="width: 100%; padding: 12px; font-weight: 800; display: none;">
+          <i class="fa-solid fa-check-double"></i> Điền Thẳng Vào Đơn Hàng
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

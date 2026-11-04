@@ -1,0 +1,22 @@
+{
+  "name": "DTH Services - Cổng Dịch Vụ Tự Động 24/7",
+  "short_name": "DTH Services",
+  "description": "Nâng cấp Locket Gold VIP, Sự kiện Chung Sức Liên Quân, Tăng tương tác MXH uy tín 24/7",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0e1a",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/static/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/apple-touch-icon.png",
+      "sizes": "180x180 192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

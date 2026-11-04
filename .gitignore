@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+env/
+venv/
+*.log
+.DS_Store
+
+bank_cache.json
+temp_orders.json
+dth_services.db
+*.sqlite
+*.db
+.pytest_cache/
+
+data/*.json

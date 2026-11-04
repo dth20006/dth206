@@ -1,0 +1,414 @@
+{
+  "21277": {
+    "name": "Test cấm dùng ( dùng mất tiền ăn ban không hỗ trợ )",
+    "is_maintenance": true
+  },
+  "297527": {
+    "name": "Test cấm dùng ( dùng mất tiền ăn ban không hỗ trợ )",
+    "is_maintenance": true
+  },
+  "297710": {
+    "name": "Test cấm dùng ( dùng mất tiền ăn ban không hỗ trợ )",
+    "is_maintenance": true
+  },
+  "298064": {
+    "name": "Like 👍",
+    "is_maintenance": false
+  },
+  "298256": {
+    "name": "Tim 💖",
+    "is_maintenance": false
+  },
+  "298448": {
+    "name": "Care 🥰",
+    "is_maintenance": false
+  },
+  "130773": {
+    "name": "Like 👍",
+    "is_maintenance": false
+  },
+  "130889": {
+    "name": "Care 🥰",
+    "is_maintenance": false
+  },
+  "130947": {
+    "name": "Buồn 😢",
+    "is_maintenance": false
+  },
+  "131005": {
+    "name": "HaHa 🤣",
+    "is_maintenance": false
+  },
+  "131063": {
+    "name": "Wow  🙀",
+    "is_maintenance": false
+  },
+  "131121": {
+    "name": "Cáu 😡",
+    "is_maintenance": false
+  },
+  "187388": {
+    "name": "Tim 💖",
+    "is_maintenance": false
+  },
+  "216646": {
+    "name": "Like 👍",
+    "is_maintenance": false
+  },
+  "216730": {
+    "name": "Tim 💖",
+    "is_maintenance": false
+  },
+  "216772": {
+    "name": "Care 🥰",
+    "is_maintenance": false
+  },
+  "216814": {
+    "name": "Buồn 😢",
+    "is_maintenance": false
+  },
+  "216856": {
+    "name": "HaHa 🤣",
+    "is_maintenance": false
+  },
+  "216898": {
+    "name": "Wow 🙀",
+    "is_maintenance": false
+  },
+  "216940": {
+    "name": "Cáu 😡",
+    "is_maintenance": false
+  },
+  "54552": {
+    "name": "Bình Luận [ Việt ] ~ Bắt đầu ngay ~ Tốc x20",
+    "is_maintenance": false
+  },
+  "260226": {
+    "name": "Bình Luận [ Việt ] ~ Tài Nguyên Clone ~ Lên sau vài phút ~ Giá rẻ",
+    "is_maintenance": false
+  },
+  "287635": {
+    "name": "Bình luận [ Tây ] ~ Bắt đầu ngay ~ Đa quốc gia ~ Non Drop ~ Ngày 50k",
+    "is_maintenance": false
+  },
+  "295524": {
+    "name": "Bình Luận [ Việt ] ~ Tên Việt Nam ~ Có Avatar ~ Loại Vip ~ Bắt đầu ngay ~ Tốc x50",
+    "is_maintenance": false
+  },
+  "295730": {
+    "name": "Bình Luận [ Việt ] ~ Sky ~ Giá siêu rẻ ~ Tốc độ ổn",
+    "is_maintenance": false
+  },
+  "257940": {
+    "name": "Theo Dõi [ Tây ] ~ Bot Data ~ Gốc Follow cao trên 50k phải dùng sv5 - 6",
+    "is_maintenance": false
+  },
+  "258026": {
+    "name": "Theo Dõi [ Tây ] ~ Real Account ~ Max 30k ~ Instant",
+    "is_maintenance": false
+  },
+  "265057": {
+    "name": "Theo Dõi [ Tây ] ~ Bắt đầu ngay ~ Cân gốc cao ~ Chuyên Cho Các Đơn 100K - 1TR Sub",
+    "is_maintenance": false
+  },
+  "287166": {
+    "name": "Theo Dõi [ Tây ] ~ Global Name ~ Max 20k",
+    "is_maintenance": false
+  },
+  "291955": {
+    "name": "Theo Dõi [ Việt ] ~ Tài nguyên Clone + Page Việt ~ Lên sau vài phút ~ Ổn định  ~ Tài Khoản Tên Việt Có Avatar",
+    "is_maintenance": false
+  },
+  "295158": {
+    "name": "Theo Dõi [ Tây ] ~ Tài khoản thật ~ Gốc Follow cao trên 50k phải dùng sv5 - 6",
+    "is_maintenance": false
+  },
+  "295879": {
+    "name": "Theo Dõi [ Tây ] ~ Tài nguyên page ~ Gốc Follow cao trên 30k phải dùng sv5 - 6",
+    "is_maintenance": false
+  },
+  "296525": {
+    "name": "Theo Dõi [ Tây ] ~ Bắt đầu ngay ~ Cân gốc cao ~ Chuyên Cho Các Đơn 100K - 200K Sub",
+    "is_maintenance": false
+  },
+  "133749": {
+    "name": "Like + Follow Page [ Việt ] ~ Tài nguyên Clone + Via Việt ~ Bắt đầu ngay ~ Hỗ trợ mọi Page",
+    "is_maintenance": false
+  },
+  "192076": {
+    "name": "Like + Follow Page [ Tây ] ~ Bắt đầu ngay ~ Chất lượng cao ~100k/Ngày",
+    "is_maintenance": false
+  },
+  "23121": {
+    "name": "Share Vip S1 ~ Chạy được cho cả Video/Post/Photo ~ Lên ngay tốc ổn định ~ Mua bằng uid ~ 200k/Days",
+    "is_maintenance": false
+  },
+  "267347": {
+    "name": "Share Vip S2 ~ Chạy được cho cả Video/Post/Photo ~ Mua bằng uid ~ Tốc chậm hơn sv1 lên sau vài phút",
+    "is_maintenance": false
+  },
+  "298832": {
+    "name": "Share bài viết ~ Chỉ chạy được cho Bài Viết cấm chạy cho Video ~ Lên dần ổn định ~ Mua bằng uid",
+    "is_maintenance": false
+  },
+  "299025": {
+    "name": "Share Ảo ~ Chỉ chạy được cho Bài Viết cấm chạy cho Video ~ Min 50k",
+    "is_maintenance": false
+  },
+  "4890": {
+    "name": "Thành Viên Nhóm [ Tây ] ~ Lên từ từ tốc ổn ~ Gốc thành viên nhóm trên 50k chuyển sang dùng sv2",
+    "is_maintenance": false
+  },
+  "135681": {
+    "name": "Thành Viên Nhóm [ Việt ] ~ Bắt đầu ngay ~ Có Avatar + Tên Việt ~ Tài nguyên Clone + Page",
+    "is_maintenance": false
+  },
+  "159380": {
+    "name": "Thành Viên Nhóm [ Tây ] ~ Siêu nhanh ~ Chuyên cho các đơn mem 100k - 1Triệu Member",
+    "is_maintenance": false
+  },
+  "3227": {
+    "name": "View Story ~ Bắt đầu ngay ~ Max 5k ~ Tốc độ : 100 View/Phút",
+    "is_maintenance": false
+  },
+  "61405": {
+    "name": "View Story ~ Bắt đầu ngay ~ Max 5k ~ Giá siêu rẻ ~  [ Tự sản xuất ]",
+    "is_maintenance": false
+  },
+  "3229": {
+    "name": "Mắt Live |⚡Nhanh⚡| Time : 15 Phút",
+    "is_maintenance": false
+  },
+  "3230": {
+    "name": "Mắt Live |⚡Nhanh⚡| Time : 30 Phút",
+    "is_maintenance": false
+  },
+  "3231": {
+    "name": "Mắt Live |⚡Nhanh⚡| Time : 60 Phút",
+    "is_maintenance": false
+  },
+  "3232": {
+    "name": "Mắt Live |⚡Nhanh⚡| Time : 90 Phút",
+    "is_maintenance": false
+  },
+  "3233": {
+    "name": "Mắt Live |⚡Nhanh⚡| Time : 120 Phút",
+    "is_maintenance": false
+  },
+  "170945": {
+    "name": "Mắt Live |⚡Nhanh⚡| Time : 240 Phút",
+    "is_maintenance": false
+  },
+  "3234": {
+    "name": "Tim Việt ~ Tốc lên ổn ~ Nếu không cần quá nhanh có thể dùng",
+    "is_maintenance": false
+  },
+  "38661": {
+    "name": "Tim Việt ~ Bắt đầu ngay ~ Tài khoản thật tên Việt ~ Ổn định nhất hiện tại",
+    "is_maintenance": false
+  },
+  "81089": {
+    "name": "Tim Việt ~ Tốc chậm ~ Lên từ từ trong ngày ~ Max 10k",
+    "is_maintenance": false
+  },
+  "204375": {
+    "name": "TikTok Likes Tây ~ Dạng ẩn ~ 20k/Days ~ Instant",
+    "is_maintenance": false
+  },
+  "259317": {
+    "name": "TikTok Likes Tây ~ HQ Account ~ 10k/Days ~ Max 50k",
+    "is_maintenance": false
+  },
+  "293593": {
+    "name": "Tim Việt ~ Lên sau vài phút ~ Bán chạy nhất ~ Có tỷ lệ Bonus",
+    "is_maintenance": false
+  },
+  "294001": {
+    "name": "TikTok Likes Tây ~ Chất lượng cao ~ 100k/Days ~ Bắt đầu ngay",
+    "is_maintenance": false
+  },
+  "3238": {
+    "name": "Theo Dõi Việt ~ Tốc nhanh ổn ~ Chất lượng cao ~ Tốc độ : 200 - 300 Follow/Day",
+    "is_maintenance": false
+  },
+  "131520": {
+    "name": "Theo Dõi Việt ~ Tốc độ : 50 - 200 Follow/Day ~ Đọc mẹo tăng tốc ở mô tả",
+    "is_maintenance": false
+  },
+  "232095": {
+    "name": "Theo Dõi Việt VIP ~ Ổn định nhất ~ Tụt ít nhất ~ Tốc độ : 300 - 800 Follow/Day",
+    "is_maintenance": false
+  },
+  "247873": {
+    "name": "Theo Dõi Việt ~ Tốc chậm ~ 100 Follow/Day ~ Siêu rẻ ~ Đọc mẹo tăng tốc ở mô tả",
+    "is_maintenance": false
+  },
+  "23820": {
+    "name": "TikTok Video Views ~ Bắt đầu ngay ~ Chậm hơn sv4 ~ Day 20M",
+    "is_maintenance": false
+  },
+  "23821": {
+    "name": "View Video VIP S1 ~ Tốc độ ổn ~ Lên từ từ ổn định 50k view/ngày",
+    "is_maintenance": false
+  },
+  "243142": {
+    "name": "TikTok Video Views [ Max Unlimited ] ~ Instant Start ~ Day 100M [ ULTRA FAST ]",
+    "is_maintenance": false
+  },
+  "253612": {
+    "name": "Tăng View Video ~ Tốc độ chậm ổn ~ Lên từ từ trong 24h chứ không lên ngay",
+    "is_maintenance": false
+  },
+  "294954": {
+    "name": "View Video VIP Nhất ~ Người xem thật  + Tỷ lệ xu hướng ~ Tốc nhanh lên ngay khi cài",
+    "is_maintenance": false
+  },
+  "296682": {
+    "name": "View Video VIP S2 ~ Tốc độ ổn ~ Lên từ từ ổn định 300k view/ngày",
+    "is_maintenance": false
+  },
+  "296850": {
+    "name": "TikTok Video Views ~ Lên từ từ chứ không lên phát một ~ Tốc độ ổn định ~ Giá rẻ",
+    "is_maintenance": false
+  },
+  "3243": {
+    "name": "Lưu Video ~ Bắt đầu ngay ~ Hoàn thành 1 phút ~ Super Instant ~ 50k/Day",
+    "is_maintenance": false
+  },
+  "289920": {
+    "name": "Lưu Video Việt ~ Bắt đầu ngay ~ Có thể lên dư rất nhiều ~ Luôn ổn định",
+    "is_maintenance": false
+  },
+  "3244": {
+    "name": "Share Video ~ Lên từ từ chứ không lên ngay ~ Tốc độ 200/10 minutes có thể lâu hơn tùy thời điểm",
+    "is_maintenance": false
+  },
+  "225345": {
+    "name": "Share Video ~ Bắt đầu ngay ~ Super Instant ~ Tốc độ : 50k/Ngày",
+    "is_maintenance": false
+  },
+  "8943": {
+    "name": "Theo Dõi Tây ~ Lên sau vài phút ~ Max 5k ~ Tốc độ : 10k/Days",
+    "is_maintenance": false
+  },
+  "93602": {
+    "name": "Theo Dõi Tây ~ Bắt đầu ngay ~ Tài khoản thật tụt ít nhất ~ Tốc độ : 50k/Days",
+    "is_maintenance": false
+  },
+  "127121": {
+    "name": "Theo Dõi Việt ~ Lên Ổn Định ~ Tối Đa 1000 Hoàn Thành Đặt Tiếp",
+    "is_maintenance": false
+  },
+  "3251": {
+    "name": "Tim Tây ~ Cài Là Lên ~ Tài Khoản Thật ~ Non Drop",
+    "is_maintenance": false
+  },
+  "34022": {
+    "name": "Comment Việt ~ Tốc lúc nhanh lúc chậm ~ Đọc kĩ mô tả server trước khi sử dụng",
+    "is_maintenance": false
+  },
+  "7051": {
+    "name": "Thành Viên Nhóm | Tài Khoản Chất Lượng | Bắt Đầu Ngay | Day 200K 🚀",
+    "is_maintenance": false
+  },
+  "48722": {
+    "name": "Thành Viên Nhóm | Chất Lượng Trung Bình | Tốc Nhanh | Tương Lai Có Thể Tụt",
+    "is_maintenance": false
+  },
+  "7061": {
+    "name": "Theo Dõi Tây | Chất lượng cao | Tăng nhanh | Bắt đầu ngay lập tức | Ngày 200K 🚀 [ UPDATE 28.03.2026 ]",
+    "is_maintenance": false
+  },
+  "7069": {
+    "name": "Tim Tây ~ Bắt đầu ngay ~ Old Accounts ~ Tốc độ : 5k/1h ~ Admin đã test",
+    "is_maintenance": false
+  },
+  "7090": {
+    "name": "View Bài Viết | Bắt Đầu Ngay | Day 500K   [ UPDATE 28.03.2026 ]",
+    "is_maintenance": false
+  },
+  "7093": {
+    "name": "View Tin Nhắn Nhóm | Bắt đầu ngay | Không giới hạn | Hoàn thành siêu tốc",
+    "is_maintenance": false
+  },
+  "7095": {
+    "name": "Cảm Xúc Tele | Cảm Xúc Tiêu Cực Random | Ví Dụ : 👎 😢 🤮 ...",
+    "is_maintenance": false
+  },
+  "7096": {
+    "name": "Cảm Xúc Tele | Cảm Xúc Tích Cực Random | Ví Dụ : 👍 💖 🎉 ...",
+    "is_maintenance": false
+  },
+  "7103": {
+    "name": "Theo Dõi Shoppe | Tốc Độ Ổn | Dự Kiến : 1k - 4k Trong 24h",
+    "is_maintenance": false
+  },
+  "7104": {
+    "name": "Theo Dõi Shoppe | Tốc Độ Ổn | Dự Kiến : 2k - 10k Trong 24h",
+    "is_maintenance": false
+  },
+  "7114": {
+    "name": "YouTube Likes [ Max 500K ] | HQ Accounts | Non Drop | No Refill ⚠️ | Superinstant | 1K Per Minutes 🔥",
+    "is_maintenance": false
+  },
+  "7115": {
+    "name": "YouTube Likes [ Max 1M ] | HQ Accounts | Almost No Drop | No Refill ⚠️ | Instant Start | 20K/Hours 🚀",
+    "is_maintenance": false
+  },
+  "7116": {
+    "name": "YouTube Likes | Cheap | Low Drop | Day 50K ⚡",
+    "is_maintenance": false
+  },
+  "286548": {
+    "name": "YouTube Likes [ Max 2K ] | Almost No Drop | No Refill ⚠️ | Instant Start | Instant Complete 🚀",
+    "is_maintenance": false
+  },
+  "7120": {
+    "name": "Sub Youtube Tây ~ Cài Là Lên ~ High Drop ~ 50k/Ngày",
+    "is_maintenance": false
+  },
+  "14572": {
+    "name": "View Video FB ~ Reels Cài Được ~  Đã test lên ổn định  [ Giá Rẻ ]",
+    "is_maintenance": false
+  },
+  "195690": {
+    "name": "Tăng Lượt Xem Video ~ Hỗ Trợ Reels/Video ~ Tất Cả Các Link ~ Bắt đầu nhanh ~ Tốc độ : 200k/Day",
+    "is_maintenance": false
+  },
+  "134046": {
+    "name": "Vip Like Việt | Loại Ổn Định | 1 Tháng | 5 Bài/ngày",
+    "is_maintenance": false
+  },
+  "14975": {
+    "name": "Bình Luận Việt | 5 bài/ngày | 1 Tháng",
+    "is_maintenance": false
+  },
+  "15000": {
+    "name": "Tim Việt | 1 Tháng | 1 Video/ngày",
+    "is_maintenance": false
+  },
+  "15001": {
+    "name": "Tim Việt | 1 Tháng | 2 Video/ngày",
+    "is_maintenance": false
+  },
+  "15002": {
+    "name": "Tim Việt | 1 Tháng | 3 Video/ngày",
+    "is_maintenance": false
+  },
+  "15047": {
+    "name": "Tim Việt | 1 Tháng | 5 Video/ngày",
+    "is_maintenance": false
+  },
+  "15048": {
+    "name": "Tim Việt | 1 Tháng | 7 Video/ngày",
+    "is_maintenance": false
+  },
+  "15049": {
+    "name": "Tim Việt | 1 Tháng | 10 Video/ngày",
+    "is_maintenance": false
+  },
+  "57182": {
+    "name": "View Video + Reels ~ ⚡Nhanh⚡~ Cài Là Lên Luôn",
+    "is_maintenance": false
+  }
+}

@@ -1,0 +1,7208 @@
+﻿<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+  <title>Quáº£n Trá»‹ Há»‡ Thá»‘ng - DTH Portal</title>
+
+  
+
+  <link rel="icon" type="image/png" href="/static/favicon.png">
+
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}?v={{ range(1000, 9999) | random }}">
+
+  <style>
+
+/* ==========================================
+
+   ADMIN PANEL STYLESHEET
+
+   Clean Dark Mode & Glassmorphic Dashboard
+
+   ========================================== */
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+
+
+
+:root {
+
+  --admin-bg: #090e1a;
+
+  --admin-sidebar: #0f172a;
+
+  --admin-card: #131d35;
+
+  --admin-card-border: rgba(255, 255, 255, 0.08);
+
+  --admin-primary: #2563eb;
+
+  --admin-primary-hover: #1d4ed8;
+
+  --admin-accent: #3b82f6;
+
+  --admin-text: #f8fafc;
+
+  --admin-muted: #94a3b8;
+
+  --admin-dim: #64748b;
+
+  
+
+  --status-pending: #3b82f6;
+
+  --status-paid: #3b82f6;
+
+  --status-processing: #8b5cf6;
+
+  --status-completed: #10b981;
+
+  --status-refunded: #ec4899;
+
+  --status-cancelled: #ef4444;
+
+}
+
+
+
+* {
+
+  margin: 0;
+
+  padding: 0;
+
+  box-sizing: border-box;
+
+}
+
+
+
+body {
+
+  font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  background-color: var(--admin-bg);
+
+  color: var(--admin-text);
+
+  line-height: 1.5;
+
+  min-height: 100vh;
+
+}
+
+
+
+.hidden {
+
+  display: none !important;
+
+}
+
+
+
+/* ==========================================
+
+   LOGIN SCREEN
+
+   ========================================== */
+
+.admin-login-wrap {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 100vh;
+
+  padding: 20px;
+
+  background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #090e1a 70%);
+
+}
+
+
+
+.login-card {
+
+  background: var(--admin-card);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 20px;
+
+  padding: 36px 32px;
+
+  width: 100%;
+
+  max-width: 420px;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(37, 99, 235, 0.15);
+
+  text-align: center;
+
+}
+
+
+
+.login-logo {
+
+  width: 60px;
+
+  height: 60px;
+
+  border-radius: 16px;
+
+  object-fit: cover;
+
+  border: 2px solid var(--admin-primary);
+
+  margin-bottom: 16px;
+
+}
+
+
+
+.login-title {
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+  color: #fff;
+
+  margin-bottom: 6px;
+
+}
+
+
+
+.login-sub {
+
+  font-size: 13px;
+
+  color: var(--admin-muted);
+
+  margin-bottom: 24px;
+
+}
+
+
+
+/* ==========================================
+
+   ADMIN LAYOUT
+
+   ========================================== */
+
+.admin-layout {
+
+  display: grid;
+
+  grid-template-columns: 240px 1fr;
+
+  min-height: 100vh;
+
+}
+
+
+
+/* Sidebar */
+
+.admin-sidebar {
+
+  background: var(--admin-sidebar);
+
+  border-right: 1px solid var(--admin-card-border);
+
+  padding: 24px 16px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  position: sticky;
+
+  top: 0;
+
+  height: 100vh;
+
+}
+
+
+
+.sidebar-brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  text-decoration: none;
+
+  color: #fff;
+
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid var(--admin-card-border);
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.sidebar-logo {
+
+  width: 36px;
+
+  height: 36px;
+
+  border-radius: 10px;
+
+  border: 1.5px solid var(--admin-primary);
+
+}
+
+
+
+.sidebar-brand h2 {
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.3px;
+
+}
+
+
+
+.sidebar-brand span {
+
+  font-size: 11px;
+
+  color: var(--admin-primary);
+
+  font-weight: 600;
+
+  display: block;
+
+}
+
+
+
+.sidebar-menu {
+
+  display: grid;
+
+  gap: 6px;
+
+}
+
+
+
+.nav-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 11px 14px;
+
+  border-radius: 10px;
+
+  color: var(--admin-muted);
+
+  font-size: 13.5px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  border: none;
+
+  background: transparent;
+
+  width: 100%;
+
+  text-align: left;
+
+  transition: all 0.2s;
+
+}
+
+
+
+.nav-item:hover {
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: #fff;
+
+}
+
+
+
+.nav-item.active {
+
+  background: rgba(37, 99, 235, 0.15);
+
+  color: #60a5fa;
+
+  border: 1px solid rgba(37, 99, 235, 0.3);
+
+}
+
+
+
+.nav-item i {
+
+  width: 18px;
+
+  font-size: 15px;
+
+}
+
+
+
+.sidebar-footer {
+
+  padding-top: 16px;
+
+  border-top: 1px solid var(--admin-card-border);
+
+}
+
+
+
+/* Main Content Area */
+
+.admin-main {
+
+  padding: 30px clamp(16px, 3vw, 40px);
+
+  overflow-y: auto;
+
+}
+
+
+
+.admin-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 26px;
+
+  flex-wrap: wrap;
+
+}
+
+
+
+.admin-title h1 {
+
+  font-size: 26px;
+
+  font-weight: 800;
+
+  color: #fff;
+
+}
+
+
+
+.admin-title p {
+
+  font-size: 13.5px;
+
+  color: var(--admin-muted);
+
+}
+
+
+
+.admin-top-actions {
+
+  display: flex;
+
+  gap: 10px;
+
+  align-items: center;
+
+}
+
+
+
+/* ==========================================
+
+   KPI STATS CARDS
+
+   ========================================== */
+
+.stats-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 28px;
+
+}
+
+
+
+.stat-card {
+
+  background: var(--admin-card);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 16px;
+
+  padding: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+}
+
+
+
+.stat-icon {
+
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 22px;
+
+}
+
+
+
+.stat-icon.revenue {
+
+  background: rgba(37, 99, 235, 0.15);
+
+  color: #60a5fa;
+
+  border: 1px solid rgba(37, 99, 235, 0.3);
+
+}
+
+
+
+.stat-icon.orders {
+
+  background: rgba(59, 130, 246, 0.15);
+
+  color: #60a5fa;
+
+  border: 1px solid rgba(59, 130, 246, 0.3);
+
+}
+
+
+
+.stat-icon.pending {
+
+  background: rgba(239, 68, 68, 0.15);
+
+  color: #f87171;
+
+  border: 1px solid rgba(239, 68, 68, 0.3);
+
+}
+
+
+
+.stat-icon.completed {
+
+  background: rgba(16, 185, 129, 0.15);
+
+  color: #34d399;
+
+  border: 1px solid rgba(16, 185, 129, 0.3);
+
+}
+
+
+
+.stat-data h3 {
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+  color: #fff;
+
+  letter-spacing: -0.5px;
+
+}
+
+
+
+.stat-data span {
+
+  font-size: 12.5px;
+
+  color: var(--admin-muted);
+
+}
+
+
+
+/* ==========================================
+
+   SECTION CARDS
+
+   ========================================== */
+
+.admin-card {
+
+  background: var(--admin-card);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 18px;
+
+  padding: 24px;
+
+  margin-bottom: 24px;
+
+}
+
+
+
+.card-head {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 20px;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+}
+
+
+
+.card-title {
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+  color: #fff;
+
+}
+
+
+
+/* ==========================================
+
+   ORDER TABLE & FILTERS
+
+   ========================================== */
+
+.table-toolbar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-bottom: 18px;
+
+  flex-wrap: wrap;
+
+}
+
+
+
+.status-tabs {
+
+  display: flex;
+
+  gap: 6px;
+
+  background: rgba(11, 19, 38, 0.6);
+
+  padding: 4px;
+
+  border-radius: 10px;
+
+  border: 1px solid var(--admin-card-border);
+
+  flex-wrap: wrap;
+
+}
+
+
+
+.status-tab {
+
+  padding: 6px 12px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  border: none;
+
+  background: transparent;
+
+  color: var(--admin-muted);
+
+  cursor: pointer;
+
+  transition: all 0.2s;
+
+}
+
+
+
+.status-tab:hover {
+
+  color: #fff;
+
+}
+
+
+
+.status-tab.active {
+
+  background: rgba(37, 99, 235, 0.2);
+
+  color: #60a5fa;
+
+  border: 1px solid rgba(37, 99, 235, 0.3);
+
+}
+
+
+
+.search-box {
+
+  min-width: 260px;
+
+  position: relative;
+
+}
+
+
+
+.search-input {
+
+  width: 100%;
+
+  background: rgba(11, 19, 38, 0.8);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 10px;
+
+  padding: 9px 14px 9px 36px;
+
+  color: #fff;
+
+  font-size: 13.5px;
+
+  outline: none;
+
+}
+
+
+
+.search-input:focus {
+
+  border-color: var(--admin-primary);
+
+}
+
+
+
+.search-icon {
+
+  position: absolute;
+
+  left: 12px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: var(--admin-dim);
+
+  font-size: 13px;
+
+}
+
+
+
+/* Table */
+
+.table-responsive {
+
+  width: 100%;
+
+  overflow-x: auto;
+
+}
+
+
+
+.admin-table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: 13.5px;
+
+}
+
+
+
+.admin-table th {
+
+  text-align: left;
+
+  padding: 12px 14px;
+
+  background: rgba(11, 19, 38, 0.5);
+
+  color: var(--admin-muted);
+
+  font-weight: 700;
+
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+
+  border-bottom: 1px solid var(--admin-card-border);
+
+}
+
+
+
+.admin-table td {
+
+  padding: 14px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  vertical-align: middle;
+
+}
+
+
+
+.admin-table tr:hover td {
+
+  background: rgba(255, 255, 255, 0.02);
+
+}
+
+
+
+.copy-mini-btn {
+
+  background: rgba(37, 99, 235, 0.15);
+
+  border: 1px solid rgba(37, 99, 235, 0.3);
+
+  color: #60a5fa;
+
+  padding: 2px 7px;
+
+  border-radius: 4px;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  margin-left: 6px;
+
+}
+
+
+
+.zalo-link-btn {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: #60a5fa;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+  background: rgba(59, 130, 246, 0.1);
+
+  padding: 3px 8px;
+
+  border-radius: 6px;
+
+  border: 1px solid rgba(59, 130, 246, 0.25);
+
+  font-size: 12px;
+
+}
+
+
+
+.zalo-link-btn:hover {
+
+  background: rgba(59, 130, 246, 0.25);
+
+}
+
+
+
+/* Action Button Group */
+
+.action-btn-group {
+
+  display: flex;
+
+  gap: 6px;
+
+  align-items: center;
+
+}
+
+
+
+.act-btn {
+
+  padding: 5px 10px;
+
+  border-radius: 6px;
+
+  font-size: 11.5px;
+
+  font-weight: 700;
+
+  border: none;
+
+  cursor: pointer;
+
+  transition: all 0.2s;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 4px;
+
+}
+
+
+
+.act-btn.success {
+
+  background: rgba(16, 185, 129, 0.2);
+
+  color: #34d399;
+
+  border: 1px solid rgba(16, 185, 129, 0.35);
+
+}
+
+
+
+.act-btn.success:hover {
+
+  background: #10b981;
+
+  color: #000;
+
+}
+
+
+
+.act-btn.process {
+
+  background: rgba(139, 92, 246, 0.2);
+
+  color: #c084fc;
+
+  border: 1px solid rgba(139, 92, 246, 0.35);
+
+}
+
+
+
+.act-btn.process:hover {
+
+  background: #8b5cf6;
+
+  color: #fff;
+
+}
+
+
+
+.act-btn.refund {
+
+  background: rgba(236, 72, 153, 0.2);
+
+  color: #f472b6;
+
+  border: 1px solid rgba(236, 72, 153, 0.35);
+
+}
+
+
+
+.act-btn.refund:hover {
+
+  background: #ec4899;
+
+  color: #fff;
+
+}
+
+
+
+.act-btn.danger {
+
+  background: rgba(239, 68, 68, 0.15);
+
+  color: #f87171;
+
+  border: 1px solid rgba(239, 68, 68, 0.3);
+
+}
+
+
+
+.act-btn.danger:hover {
+
+  background: #ef4444;
+
+  color: #fff;
+
+}
+
+
+
+/* ==========================================
+
+   FORM & PACKAGE EDITORS
+
+   ========================================== */
+
+.form-grid-2 {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.admin-field {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+}
+
+
+
+.admin-field label {
+
+  font-size: 12.5px;
+
+  font-weight: 700;
+
+  color: #cbd5e1;
+
+}
+
+
+
+.admin-field input, .admin-field select, .admin-field textarea {
+
+  background: rgba(11, 19, 38, 0.85);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 10px;
+
+  padding: 10px 14px;
+
+  color: #fff;
+
+  font-size: 14px;
+
+  font-family: inherit;
+
+  outline: none;
+
+}
+
+
+
+.admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus {
+
+  border-color: var(--admin-primary);
+
+}
+
+
+
+.admin-field textarea {
+
+  min-height: 80px;
+
+  resize: vertical;
+
+}
+
+
+
+.btn-primary {
+
+  padding: 10px 20px;
+
+  background: var(--admin-primary);
+
+  border: none;
+
+  border-radius: 8px;
+
+  color: #000;
+
+  font-weight: 700;
+
+  font-size: 13.5px;
+
+  cursor: pointer;
+
+  transition: all 0.2s;
+
+}
+
+
+
+.btn-primary:hover {
+
+  background: var(--admin-primary-hover);
+
+}
+
+
+
+.btn-secondary {
+
+  padding: 10px 20px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 8px;
+
+  color: #fff;
+
+  font-weight: 600;
+
+  font-size: 13.5px;
+
+  cursor: pointer;
+
+}
+
+
+
+/* Package Editor Item */
+
+.package-editor-card {
+
+  background: rgba(11, 19, 38, 0.65);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 14px;
+
+  padding: 18px;
+
+  margin-bottom: 16px;
+
+}
+
+
+
+.package-editor-head {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 14px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+}
+
+
+
+/* VietQR Live Preview Box */
+
+.vietqr-preview-box {
+
+  background: #fff;
+
+  border-radius: 12px;
+
+  padding: 16px;
+
+  text-align: center;
+
+  max-width: 240px;
+
+  margin: 14px auto 0;
+
+}
+
+
+
+.vietqr-preview-img {
+
+  width: 100%;
+
+  height: auto;
+
+  border-radius: 6px;
+
+}
+
+
+
+/* Responsive */
+
+@media (max-width: 992px) {
+
+  .admin-layout {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .admin-sidebar {
+
+    height: auto;
+
+    position: relative;
+
+  }
+
+}
+
+
+
+/* ==========================================
+
+   BATCH ACTION BAR & CHECKBOX SELECTION
+
+   ========================================== */
+
+.admin-checkbox {
+
+  width: 18px;
+
+  height: 18px;
+
+  cursor: pointer;
+
+  accent-color: #ef4444;
+
+  vertical-align: middle;
+
+  border-radius: 4px;
+
+}
+
+
+
+.batch-action-bar {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  background: rgba(239, 68, 68, 0.12);
+
+  border: 1px solid rgba(239, 68, 68, 0.35);
+
+  border-radius: 12px;
+
+  padding: 6px 14px;
+
+  animation: fadeIn 0.2s ease-in-out;
+
+}
+
+
+
+.batch-count-badge {
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  color: #fca5a5;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+}
+
+
+
+.btn-batch-delete {
+
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+
+  color: #fff;
+
+  border: none;
+
+  border-radius: 8px;
+
+  padding: 7px 15px;
+
+  font-size: 12.5px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+
+  transition: all 0.2s ease;
+
+}
+
+
+
+.btn-batch-delete:hover {
+
+  filter: brightness(1.15);
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.45);
+
+}
+
+
+
+.btn-batch-clear {
+
+  background: rgba(255, 255, 255, 0.08);
+
+  color: var(--admin-muted);
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  border-radius: 8px;
+
+  padding: 7px 12px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+}
+
+
+
+.btn-batch-clear:hover {
+
+  background: rgba(255, 255, 255, 0.18);
+
+  color: #fff;
+
+}
+
+
+
+.admin-table tr.row-selected td {
+
+  background: rgba(239, 68, 68, 0.08) !important;
+
+}
+
+
+
+
+
+/* ==========================================
+
+   UNIFIED ADMIN ENHANCEMENTS
+
+   ========================================== */
+
+.admin-login-overlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(9, 14, 26, 0.95);
+
+  backdrop-filter: blur(16px);
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+}
+
+
+
+.admin-login-card {
+
+  background: #131d35;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 20px;
+
+  padding: 36px 30px;
+
+  width: 100%;
+
+  max-width: 420px;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(37, 99, 235, 0.2);
+
+  text-align: center;
+
+}
+
+
+
+.login-brand i {
+
+  font-size: 3rem;
+
+  margin-bottom: 12px;
+
+}
+
+
+
+.login-brand h2 {
+
+  font-size: 1.4rem;
+
+  font-weight: 800;
+
+  color: #fff;
+
+  letter-spacing: 0.5px;
+
+}
+
+
+
+.login-brand p {
+
+  color: var(--admin-muted);
+
+  font-size: 0.9rem;
+
+  margin-bottom: 24px;
+
+}
+
+
+
+.btn-admin-primary {
+
+  width: 100%;
+
+  padding: 12px 20px;
+
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+
+  color: #fff;
+
+  font-weight: 700;
+
+  font-size: 1rem;
+
+  border: none;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+}
+
+
+
+.btn-admin-primary:hover {
+
+  filter: brightness(1.1);
+
+  transform: translateY(-1px);
+
+}
+
+
+
+.admin-layout {
+
+  display: flex;
+
+  min-height: 100vh;
+
+}
+
+
+
+.admin-sidebar {
+
+  width: 250px;
+
+  background: var(--admin-sidebar);
+
+  border-right: 1px solid var(--admin-card-border);
+
+  display: flex;
+
+  flex-direction: column;
+
+  position: sticky;
+
+  top: 0;
+
+  height: 100vh;
+
+  z-index: 10;
+
+}
+
+
+
+.sidebar-brand {
+
+  padding: 24px 20px;
+
+  font-size: 1.25rem;
+
+  font-weight: 800;
+
+  color: #fff;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  border-bottom: 1px solid var(--admin-card-border);
+
+}
+
+
+
+.sidebar-nav {
+
+  padding: 16px 10px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  flex: 1;
+
+  overflow-y: auto;
+
+}
+
+
+
+.sidebar-tab {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 12px 16px;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: var(--admin-muted);
+
+  border: none;
+
+  font-size: 0.92rem;
+
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+}
+
+
+
+.sidebar-tab:hover {
+
+  color: #fff;
+
+  background: rgba(255, 255, 255, 0.05);
+
+}
+
+
+
+.sidebar-tab.active {
+
+  color: #fff;
+
+  background: rgba(37, 99, 235, 0.15);
+
+  border-left: 3px solid #2563eb;
+
+}
+
+
+
+.sidebar-footer {
+
+  padding: 16px 10px;
+
+  border-top: 1px solid var(--admin-card-border);
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+}
+
+
+
+.sidebar-link-btn {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px 14px;
+
+  border-radius: 8px;
+
+  color: var(--admin-muted);
+
+  text-decoration: none;
+
+  font-size: 0.88rem;
+
+  font-weight: 600;
+
+  background: transparent;
+
+  border: none;
+
+  cursor: pointer;
+
+  text-align: left;
+
+}
+
+
+
+.sidebar-link-btn:hover {
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: #fff;
+
+}
+
+
+
+.admin-main {
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+
+}
+
+
+
+.admin-topbar {
+
+  padding: 18px 28px;
+
+  border-bottom: 1px solid var(--admin-card-border);
+
+  background: rgba(15, 23, 42, 0.8);
+
+  backdrop-filter: blur(10px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 5;
+
+}
+
+
+
+.topbar-title h2 {
+
+  font-size: 1.25rem;
+
+  font-weight: 800;
+
+  color: #fff;
+
+}
+
+
+
+.btn-topbar-action {
+
+  padding: 9px 18px;
+
+  border-radius: 8px;
+
+  font-size: 0.88rem;
+
+  font-weight: 700;
+
+  background: rgba(37, 99, 235, 0.15);
+
+  color: #60a5fa;
+
+  border: 1px solid rgba(37, 99, 235, 0.3);
+
+  cursor: pointer;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  transition: all 0.2s ease;
+
+}
+
+
+
+.btn-topbar-action:hover {
+
+  background: rgba(37, 99, 235, 0.25);
+
+  transform: translateY(-1px);
+
+}
+
+
+
+.admin-content-area {
+
+  padding: 28px;
+
+  flex: 1;
+
+}
+
+
+
+.admin-panel {
+
+  display: none;
+
+}
+
+
+
+.admin-panel.active {
+
+  display: block;
+
+}
+
+
+
+/* Stats Summary Cards */
+
+.stats-cards-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 16px;
+
+}
+
+
+
+.stat-card {
+
+  background: var(--admin-card);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 16px;
+
+  padding: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+}
+
+
+
+.stat-icon {
+
+  width: 52px;
+
+  height: 52px;
+
+  border-radius: 12px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 1.4rem;
+
+}
+
+
+
+.icon-revenue { background: rgba(37, 99, 235, 0.15); color: #60a5fa; }
+
+.icon-today { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+
+.icon-orders { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+
+.icon-pending { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+
+
+.stat-label {
+
+  font-size: 0.85rem;
+
+  color: var(--admin-muted);
+
+  display: block;
+
+}
+
+
+
+.stat-value {
+
+  font-size: 1.45rem;
+
+  font-weight: 800;
+
+  display: block;
+
+  margin-top: 2px;
+
+}
+
+
+
+/* Service Breakdown Grid */
+
+.services-breakdown-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+  gap: 16px;
+
+  margin-top: 14px;
+
+}
+
+
+
+.breakdown-box {
+
+  background: rgba(15, 23, 42, 0.6);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 12px;
+
+  padding: 16px;
+
+}
+
+
+
+.breakdown-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  font-size: 0.9rem;
+
+  font-weight: 600;
+
+  color: #fff;
+
+  margin-bottom: 8px;
+
+}
+
+
+
+.breakdown-header .badge {
+
+  background: rgba(255, 255, 255, 0.1);
+
+  padding: 2px 8px;
+
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+
+}
+
+
+
+.breakdown-amount {
+
+  font-size: 1.3rem;
+
+  font-weight: 800;
+
+}
+
+
+
+/* Partner Balances Grid */
+
+.partner-balances-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+  gap: 16px;
+
+  margin-top: 14px;
+
+}
+
+
+
+.partner-box {
+
+  background: rgba(15, 23, 42, 0.6);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 12px;
+
+  padding: 18px;
+
+}
+
+
+
+.partner-title {
+
+  font-size: 0.92rem;
+
+  font-weight: 700;
+
+  color: var(--admin-muted);
+
+  margin-bottom: 4px;
+
+}
+
+
+
+.partner-bal {
+
+  font-size: 1.4rem;
+
+  font-weight: 800;
+
+  color: #fff;
+
+  margin: 6px 0;
+
+}
+
+
+
+/* Orders Filter Bar */
+
+.orders-filter-bar {
+
+  display: flex;
+
+  gap: 14px;
+
+  flex-wrap: wrap;
+
+  align-items: flex-end;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+.filter-group {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+}
+
+
+
+.filter-group label {
+
+  font-size: 0.8rem;
+
+  color: var(--admin-muted);
+
+  font-weight: 600;
+
+}
+
+
+
+.filter-search {
+
+  flex: 1;
+
+  min-width: 220px;
+
+}
+
+
+
+.admin-select, .admin-input {
+
+  background: #0f172a;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 8px;
+
+  color: #fff;
+
+  padding: 9px 12px;
+
+  font-size: 0.88rem;
+
+  font-family: inherit;
+
+  outline: none;
+
+}
+
+
+
+.admin-select:focus, .admin-input:focus {
+
+  border-color: #2563eb;
+
+}
+
+
+
+/* Admin Table */
+
+.admin-table-responsive {
+
+  overflow-x: auto;
+
+}
+
+
+
+.admin-table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  text-align: left;
+
+  font-size: 0.88rem;
+
+}
+
+
+
+.admin-table th {
+
+  background: rgba(15, 23, 42, 0.7);
+
+  padding: 12px 14px;
+
+  color: var(--admin-muted);
+
+  font-weight: 700;
+
+  border-bottom: 1px solid var(--admin-card-border);
+
+  white-space: nowrap;
+
+}
+
+
+
+.admin-table td {
+
+  padding: 12px 14px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+  vertical-align: middle;
+
+}
+
+
+
+.admin-table tr:hover td {
+
+  background: rgba(255, 255, 255, 0.02);
+
+}
+
+
+
+.admin-badge {
+
+  display: inline-block;
+
+  padding: 2px 8px;
+
+  border-radius: 4px;
+
+  font-size: 0.72rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+}
+
+
+
+.badge-gold { background: rgba(37, 99, 235, 0.2); color: #60a5fa; }
+
+.badge-yellow { background: rgba(234, 179, 8, 0.2); color: #fde047; }
+
+.badge-blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+
+.badge-green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+
+.badge-red { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+
+
+.admin-status-pill {
+
+  display: inline-block;
+
+  padding: 4px 10px;
+
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+}
+
+
+
+.status-pending { background: rgba(37, 99, 235, 0.15); color: #60a5fa; }
+
+.status-processing { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+
+.status-completed { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+
+.status-failed { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+
+
+.action-buttons-cell {
+
+  display: flex;
+
+  gap: 6px;
+
+}
+
+
+
+.btn-sm {
+
+  padding: 4px 8px;
+
+  border-radius: 6px;
+
+  border: none;
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.15s ease;
+
+}
+
+
+
+.btn-accept { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+
+.btn-accept:hover { background: rgba(16, 185, 129, 0.35); }
+
+
+
+.btn-push { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+
+.btn-push:hover { background: rgba(59, 130, 246, 0.35); }
+
+
+
+.btn-complete { background: rgba(37, 99, 235, 0.2); color: #60a5fa; }
+
+.btn-complete:hover { background: rgba(37, 99, 235, 0.35); }
+
+
+
+.btn-delete { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+.btn-delete:hover { background: rgba(239, 68, 68, 0.35); }
+
+
+
+.btn-admin-action {
+
+  padding: 9px 14px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 8px;
+
+  color: #fff;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  transition: all 0.2s ease;
+
+}
+
+
+
+.btn-admin-action:hover {
+
+  background: rgba(255, 255, 255, 0.14);
+
+}
+
+
+
+.flex-between {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+
+
+.admin-form {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+
+}
+
+
+
+.form-row {
+
+  display: flex;
+
+  gap: 16px;
+
+  flex-wrap: wrap;
+
+}
+
+
+
+.form-col {
+
+  flex: 1;
+
+  min-width: 200px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+}
+
+
+
+.form-col label {
+
+  font-size: 0.85rem;
+
+  color: var(--admin-muted);
+
+  font-weight: 600;
+
+}
+
+
+
+.pkg-edit-row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 12px 16px;
+
+  background: rgba(15, 23, 42, 0.5);
+
+  border: 1px solid var(--admin-card-border);
+
+  border-radius: 10px;
+
+  margin-bottom: 8px;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+}
+
+
+
+.pkg-edit-inputs {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+
+
+.pkg-edit-inputs label {
+
+  font-size: 0.8rem;
+
+  color: var(--admin-muted);
+
+}
+
+
+
+.pkg-edit-inputs input {
+
+  width: 120px;
+
+}
+
+
+
+/* Toast */
+
+.admin-toast {
+
+  padding: 12px 18px;
+
+  border-radius: 10px;
+
+  background: #1e293b;
+
+  color: #fff;
+
+  font-size: 0.88rem;
+
+  font-weight: 600;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 10px;
+
+  border-left: 4px solid #3b82f6;
+
+  animation: slideIn 0.3s ease;
+
+}
+
+
+
+.admin-toast-success { border-color: #10b981; }
+
+.admin-toast-error { border-color: #ef4444; }
+
+
+
+@keyframes slideIn {
+
+  from { transform: translateX(50px); opacity: 0; }
+
+  to { transform: translateX(0); opacity: 1; }
+
+}
+
+
+
+@media (max-width: 850px) {
+
+  .admin-layout {
+
+    flex-direction: column;
+
+  }
+
+  .admin-sidebar {
+
+    width: 100%;
+
+    height: auto;
+
+    position: relative;
+
+  }
+
+  .sidebar-nav {
+
+    flex-direction: row;
+
+    overflow-x: auto;
+
+  }
+
+}
+
+
+
+  
+
+/* ==========================================
+
+   ADMIN MODALS (Centered & Fully Responsive)
+
+   ========================================== */
+
+.modal-backdrop {
+
+  position: fixed !important;
+
+  inset: 0 !important;
+
+  top: 0 !important;
+
+  left: 0 !important;
+
+  width: 100vw !important;
+
+  height: 100vh !important;
+
+  background: rgba(0, 0, 0, 0.82) !important;
+
+  backdrop-filter: blur(8px) !important;
+
+  -webkit-backdrop-filter: blur(8px) !important;
+
+  display: none;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 999999 !important;
+
+  padding: 16px !important;
+
+  box-sizing: border-box !important;
+
+}
+
+
+
+.modal-backdrop.active,
+
+.modal-backdrop.show {
+
+  display: flex !important;
+
+}
+
+
+
+.modal-card {
+
+  background: #0f172a !important;
+
+  border: 1.5px solid rgba(37, 99, 235, 0.45) !important;
+
+  border-radius: 18px !important;
+
+  padding: 24px 28px !important;
+
+  width: 100% !important;
+
+  max-width: 660px !important;
+
+  max-height: 90vh !important;
+
+  overflow-y: auto !important;
+
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(37, 99, 235, 0.2) !important;
+
+  position: relative !important;
+
+  margin: auto !important;
+
+  box-sizing: border-box !important;
+
+}
+
+
+
+.modal-close-btn {
+
+  position: absolute !important;
+
+  top: 14px !important;
+
+  right: 18px !important;
+
+  background: transparent !important;
+
+  border: none !important;
+
+  font-size: 26px !important;
+
+  color: #94a3b8 !important;
+
+  cursor: pointer !important;
+
+  line-height: 1 !important;
+
+}
+
+
+
+.modal-close-btn:hover {
+
+  color: #fff !important;
+
+}
+
+
+
+/* Switch Toggle Slider */
+
+.switch-toggle {
+
+  position: relative;
+
+  display: inline-block;
+
+  width: 50px;
+
+  height: 28px;
+
+}
+
+.switch-toggle input {
+
+  opacity: 0;
+
+  width: 0;
+
+  height: 0;
+
+}
+
+.slider {
+
+  position: absolute;
+
+  cursor: pointer;
+
+  top: 0; left: 0; right: 0; bottom: 0;
+
+  background-color: #334155;
+
+  transition: .3s;
+
+}
+
+.slider:before {
+
+  position: absolute;
+
+  content: "";
+
+  height: 22px;
+
+  width: 22px;
+
+  left: 3px;
+
+  bottom: 3px;
+
+  background-color: white;
+
+  transition: .3s;
+
+}
+
+.slider.round {
+
+  border-radius: 34px;
+
+}
+
+.slider.round:before {
+
+  border-radius: 50%;
+
+}
+
+.switch-toggle input:checked + .slider {
+
+  background-color: #10b981;
+
+}
+
+.switch-toggle input:focus + .slider {
+
+  box-shadow: 0 0 1px #10b981;
+
+}
+
+.switch-toggle input:checked + .slider:before {
+
+  transform: translateX(22px);
+
+}
+
+
+
+  
+
+/* =======================================================
+
+   RESPONSIVE MOBILE ADMIN DASHBOARD ENHANCEMENTS
+
+   ======================================================= */
+
+.btn-hamburger, .sidebar-close-btn, .sidebar-backdrop, .admin-mobile-bottom-nav {
+
+  display: none;
+
+}
+
+
+
+.topbar-left {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+}
+
+
+
+.topbar-actions {
+
+  display: flex;
+
+  gap: 8px;
+
+  align-items: center;
+
+}
+
+
+
+.sidebar-header-row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+
+}
+
+
+
+@media (max-width: 900px) {
+
+  .admin-layout {
+
+    display: block !important;
+
+    min-height: 100vh;
+
+  }
+
+
+
+  /* Off-canvas slide-out Drawer Sidebar */
+
+  .admin-sidebar {
+
+    position: fixed !important;
+
+    top: 0 !important;
+
+    left: 0 !important;
+
+    bottom: 0 !important;
+
+    width: 290px !important;
+
+    max-width: 86vw !important;
+
+    height: 100vh !important;
+
+    z-index: 99999 !important;
+
+    transform: translateX(-100%);
+
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.85) !important;
+
+    background: #0f172a !important;
+
+    overflow-y: auto !important;
+
+    padding: 16px 14px !important;
+
+    box-sizing: border-box !important;
+
+  }
+
+
+
+  .admin-sidebar.mobile-open {
+
+    transform: translateX(0) !important;
+
+  }
+
+
+
+  .sidebar-backdrop {
+
+    display: block !important;
+
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    background: rgba(0, 0, 0, 0.72) !important;
+
+    backdrop-filter: blur(4px) !important;
+
+    -webkit-backdrop-filter: blur(4px) !important;
+
+    z-index: 99998 !important;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: opacity 0.25s ease;
+
+  }
+
+
+
+  .sidebar-backdrop.active {
+
+    opacity: 1 !important;
+
+    pointer-events: auto !important;
+
+  }
+
+
+
+  .sidebar-header-row {
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid var(--admin-card-border);
+
+  }
+
+
+
+  .sidebar-close-btn {
+
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: none;
+
+    color: #fff;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: background 0.15s ease;
+
+  }
+
+  .sidebar-close-btn:hover {
+
+    background: rgba(239, 68, 68, 0.25);
+
+    color: #f87171;
+
+  }
+
+
+
+  /* Hamburger Menu Button */
+
+  .btn-hamburger {
+
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid var(--admin-card-border);
+
+    color: #f8fafc;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+
+  }
+
+  .btn-hamburger:hover {
+
+    background: rgba(37, 99, 235, 0.2);
+
+    border-color: #3b82f6;
+
+    color: #60a5fa;
+
+  }
+
+
+
+  .admin-topbar {
+
+    padding: 10px 14px !important;
+
+    flex-wrap: nowrap !important;
+
+    gap: 10px !important;
+
+    position: sticky !important;
+
+    top: 0 !important;
+
+    z-index: 100 !important;
+
+    background: rgba(15, 23, 42, 0.95) !important;
+
+    backdrop-filter: blur(12px) !important;
+
+  }
+
+
+
+  .admin-topbar h2 {
+
+    font-size: 0.95rem !important;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    max-width: 160px;
+
+  }
+
+
+
+  .hide-mobile {
+
+    display: none !important;
+
+  }
+
+
+
+  .btn-topbar-action {
+
+    padding: 7px 11px !important;
+
+    font-size: 0.8rem !important;
+
+    border-radius: 8px !important;
+
+  }
+
+
+
+  /* Main Container on Mobile */
+
+  .admin-main {
+
+    padding: 12px 10px 76px 10px !important; /* Extra bottom padding for sticky bar */
+
+  }
+
+
+
+  /* Sticky Bottom Navigation Bar */
+
+  .admin-mobile-bottom-nav {
+
+    display: grid !important;
+
+    grid-template-columns: repeat(5, 1fr) !important;
+
+    position: fixed !important;
+
+    bottom: 0 !important;
+
+    left: 0 !important;
+
+    right: 0 !important;
+
+    height: 60px !important;
+
+    background: rgba(15, 23, 42, 0.96) !important;
+
+    backdrop-filter: blur(16px) !important;
+
+    -webkit-backdrop-filter: blur(16px) !important;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+    z-index: 9999 !important;
+
+    padding: 4px 6px !important;
+
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6) !important;
+
+    box-sizing: border-box !important;
+
+  }
+
+
+
+  .admin-mobile-nav-btn {
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    align-items: center !important;
+
+    justify-content: center !important;
+
+    background: transparent !important;
+
+    border: none !important;
+
+    color: var(--admin-muted) !important;
+
+    font-size: 0.68rem !important;
+
+    font-weight: 600 !important;
+
+    gap: 3px !important;
+
+    cursor: pointer !important;
+
+    border-radius: 8px !important;
+
+    transition: all 0.15s ease !important;
+
+    padding: 4px 2px !important;
+
+  }
+
+
+
+  .admin-mobile-nav-btn i {
+
+    font-size: 1.1rem !important;
+
+  }
+
+
+
+  .admin-mobile-nav-btn.active {
+
+    color: #60a5fa !important;
+
+    background: rgba(37, 99, 235, 0.15) !important;
+
+  }
+
+
+
+  /* Sub Navigation Tabs for Orders */
+
+  .orders-nav-tabs {
+
+    display: grid !important;
+
+    grid-template-columns: repeat(3, 1fr) !important;
+
+    gap: 6px !important;
+
+    margin-bottom: 12px !important;
+
+    padding-bottom: 10px !important;
+
+  }
+
+
+
+  .btn-orders-tab {
+
+    padding: 8px 4px !important;
+
+    font-size: 0.72rem !important;
+
+    flex-direction: column !important;
+
+    gap: 3px !important;
+
+    text-align: center !important;
+
+    justify-content: center !important;
+
+    border-radius: 8px !important;
+
+  }
+
+
+
+  .btn-orders-tab span {
+
+    font-size: 0.72rem !important;
+
+    line-height: 1.2;
+
+  }
+
+
+
+  .tab-badge {
+
+    margin-left: 0 !important;
+
+    font-size: 0.68rem !important;
+
+    padding: 1px 6px !important;
+
+  }
+
+
+
+  /* Orders Filter Bar */
+
+  .orders-filter-bar {
+
+    flex-direction: column !important;
+
+    align-items: stretch !important;
+
+    gap: 10px !important;
+
+    margin-bottom: 14px !important;
+
+  }
+
+
+
+  .filter-group {
+
+    width: 100% !important;
+
+  }
+
+
+
+  .filter-actions {
+
+    width: 100% !important;
+
+  }
+
+
+
+  .filter-actions button {
+
+    width: 100% !important;
+
+    justify-content: center !important;
+
+    padding: 10px !important;
+
+  }
+
+
+
+  /* Stats Grid */
+
+  .stats-cards-grid {
+
+    grid-template-columns: repeat(2, 1fr) !important;
+
+    gap: 8px !important;
+
+    margin-bottom: 12px !important;
+
+  }
+
+
+
+  .revenue-breakdown-grid {
+
+    grid-template-columns: 1fr !important;
+
+    gap: 8px !important;
+
+  }
+
+
+
+  .stat-card {
+
+    padding: 10px 10px !important;
+
+    gap: 8px !important;
+
+    border-radius: 12px !important;
+
+  }
+
+
+
+  .stat-icon {
+
+    width: 34px !important;
+
+    height: 34px !important;
+
+    font-size: 14px !important;
+
+    border-radius: 8px !important;
+
+  }
+
+
+
+  .stat-value {
+
+    font-size: 1.05rem !important;
+
+  }
+
+
+
+  .stat-label {
+
+    font-size: 0.7rem !important;
+
+  }
+
+
+
+  /* Tables & Responsive Scrolling */
+
+  .admin-table-responsive {
+
+    overflow-x: auto !important;
+
+    -webkit-overflow-scrolling: touch !important;
+
+    border-radius: 10px !important;
+
+    margin-bottom: 8px !important;
+
+  }
+
+
+
+  .admin-table {
+
+    min-width: 680px !important;
+
+    font-size: 0.78rem !important;
+
+  }
+
+
+
+  .admin-table th, .admin-table td {
+
+    padding: 8px 10px !important;
+
+  }
+
+
+
+  .admin-card {
+
+    padding: 12px 10px !important;
+
+    border-radius: 12px !important;
+
+    margin-bottom: 12px !important;
+
+  }
+
+
+
+  .form-row {
+
+    flex-direction: column !important;
+
+    gap: 10px !important;
+
+  }
+
+
+
+  .form-col {
+
+    min-width: 100% !important;
+
+    width: 100% !important;
+
+  }
+
+
+
+  .pkg-edit-row {
+
+    flex-direction: column !important;
+
+    align-items: stretch !important;
+
+    gap: 8px !important;
+
+    padding: 10px !important;
+
+  }
+
+
+
+  /* Modals */
+
+  .modal-card {
+
+    width: 95% !important;
+
+    max-width: 95vw !important;
+
+    padding: 18px 14px !important;
+
+    margin: 10px auto !important;
+
+    border-radius: 14px !important;
+
+  }
+
+}
+
+
+
+@media (max-width: 480px) {
+
+  .stats-cards-grid {
+
+    grid-template-columns: 1fr !important;
+
+  }
+
+}
+
+
+
+  
+
+/* Mobile & Tablet Card Layout for Admin Tables */
+
+.btn-sm.btn-edit {
+
+  background: rgba(249, 115, 22, 0.2) !important;
+
+  color: #fb923c !important;
+
+  border: 1px solid rgba(249, 115, 22, 0.4) !important;
+
+}
+
+.btn-sm.btn-edit:hover {
+
+  background: #ea580c !important;
+
+  color: #fff !important;
+
+}
+
+
+
+@media (max-width: 768px) {
+
+  .admin-layout {
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+  }
+
+
+
+  .admin-sidebar {
+
+    width: 100% !important;
+
+    height: auto !important;
+
+    position: relative !important;
+
+    padding: 10px 12px !important;
+
+    border-bottom: 1px solid var(--admin-card-border) !important;
+
+    border-right: none !important;
+
+  }
+
+
+
+  .sidebar-brand {
+
+    padding: 8px 6px !important;
+
+    margin-bottom: 6px !important;
+
+    border-bottom: none !important;
+
+  }
+
+
+
+  .sidebar-nav {
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    overflow-x: auto !important;
+
+    -webkit-overflow-scrolling: touch !important;
+
+    gap: 8px !important;
+
+    padding: 6px 0 !important;
+
+    scrollbar-width: none !important;
+
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+
+    display: none;
+
+  }
+
+
+
+  .sidebar-tab {
+
+    white-space: nowrap !important;
+
+    padding: 8px 14px !important;
+
+    font-size: 0.84rem !important;
+
+    border-radius: 20px !important;
+
+    background: rgba(255, 255, 255, 0.05) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+    border-left: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+    flex-shrink: 0 !important;
+
+  }
+
+  .sidebar-tab.active {
+
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+
+    color: #fff !important;
+
+    border-color: #3b82f6 !important;
+
+  }
+
+
+
+  .sidebar-footer {
+
+    display: none !important;
+
+  }
+
+
+
+  .admin-main {
+
+    padding: 14px 10px 80px 10px !important;
+
+  }
+
+
+
+  /* Table to Cards on Mobile */
+
+  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td {
+
+    display: block !important;
+
+    width: 100% !important;
+
+    box-sizing: border-box !important;
+
+  }
+
+
+
+  .admin-table thead {
+
+    display: none !important;
+
+  }
+
+
+
+  .admin-table-responsive {
+
+    overflow-x: visible !important;
+
+  }
+
+
+
+  .admin-table {
+
+    min-width: 100% !important;
+
+  }
+
+
+
+  .admin-table tr {
+
+    background: #141f36 !important;
+
+    border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+
+    border-radius: 14px !important;
+
+    padding: 14px 12px !important;
+
+    margin-bottom: 14px !important;
+
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+
+  }
+
+
+
+  .admin-table tr:hover {
+
+    background: #182642 !important;
+
+    border-color: rgba(59, 130, 246, 0.3) !important;
+
+  }
+
+
+
+  .admin-table td {
+
+    display: flex !important;
+
+    justify-content: space-between !important;
+
+    align-items: center !important;
+
+    padding: 8px 0 !important;
+
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.07) !important;
+
+    font-size: 0.88rem !important;
+
+    text-align: right !important;
+
+  }
+
+
+
+  .admin-table td::before {
+
+    content: attr(data-label);
+
+    font-weight: 700;
+
+    color: var(--admin-muted);
+
+    font-size: 0.78rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    margin-right: 12px;
+
+    flex-shrink: 0;
+
+    text-align: left;
+
+  }
+
+
+
+  .admin-table td:last-child {
+
+    border-bottom: none !important;
+
+    padding-top: 12px !important;
+
+    justify-content: stretch !important;
+
+  }
+
+
+
+  .admin-table td:last-child::before {
+
+    display: none !important;
+
+  }
+
+
+
+  .action-buttons-cell {
+
+    width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)) !important;
+
+    gap: 6px !important;
+
+  }
+
+
+
+  .action-buttons-cell .btn-sm {
+
+    padding: 9px 8px !important;
+
+    font-size: 0.82rem !important;
+
+    justify-content: center !important;
+
+    border-radius: 8px !important;
+
+  }
+
+}
+
+
+
+
+
+.btn-reup-gold {
+
+  background: rgba(245, 158, 11, 0.16) !important;
+
+  color: #fbbf24 !important;
+
+  border: 1px solid rgba(245, 158, 11, 0.45) !important;
+
+  font-weight: 700 !important;
+
+  padding: 6px 10px !important;
+
+  border-radius: 6px !important;
+
+  cursor: pointer !important;
+
+  display: inline-flex !important;
+
+  align-items: center !important;
+
+  gap: 5px !important;
+
+  font-size: 11.5px !important;
+
+  transition: all 0.2s ease !important;
+
+  white-space: nowrap !important;
+
+}
+
+.btn-reup-gold:hover {
+
+  background: rgba(245, 158, 11, 0.35) !important;
+
+  color: #ffffff !important;
+
+  transform: translateY(-1px) !important;
+
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35) !important;
+
+}
+
+
+
+@media (max-width: 768px) {
+
+  .admin-order-tabs, .admin-nav-tabs {
+
+    display: flex !important;
+
+    overflow-x: auto !important;
+
+    -webkit-overflow-scrolling: touch !important;
+
+    scrollbar-width: none !important;
+
+    flex-wrap: nowrap !important;
+
+    gap: 8px !important;
+
+    padding-bottom: 6px !important;
+
+  }
+
+  .admin-order-tabs::-webkit-scrollbar,
+
+  .admin-nav-tabs::-webkit-scrollbar {
+
+    display: none !important;
+
+  }
+
+  .btn-orders-tab {
+
+    flex-shrink: 0 !important;
+
+    white-space: nowrap !important;
+
+    padding: 8px 14px !important;
+
+    font-size: 0.82rem !important;
+
+  }
+
+  .action-buttons-cell {
+
+    display: flex !important;
+
+    flex-wrap: wrap !important;
+
+    gap: 5px !important;
+
+  }
+
+  .btn-sm {
+
+    padding: 6px 9px !important;
+
+    font-size: 11px !important;
+
+  }
+
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+
+
+
+  <!-- Login Overlay (Shows if not logged in) -->
+
+  <div class="admin-login-overlay" id="adminLoginOverlay" style="display: none;">
+
+    <div class="admin-login-card">
+
+      <div class="login-brand">
+
+        <i class="fa-solid fa-shield-halved text-gold"></i>
+
+        <h2>DTH PORTAL ADMIN</h2>
+
+        <p>Há»‡ Thá»‘ng Quáº£n Trá»‹ Há»£p Nháº¥t 3-in-1</p>
+
+      </div>
+
+      <form id="loginForm" onsubmit="return false;">
+
+        <div class="form-group">
+
+          <label for="adminPasswordInput">Máº­t kháº©u Quáº£n Trá»‹:</label>
+
+          <input type="password" id="adminPasswordInput" class="form-input" placeholder="Nháº­p máº­t kháº©u admin..." required autofocus>
+
+        </div>
+
+        <button type="submit" id="btnAdminLogin" class="btn-admin-primary">
+
+          <i class="fa-solid fa-key"></i> ÄÄƒng Nháº­p
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Main Admin Dashboard Wrapper -->
+
+  <div class="admin-layout" id="adminLayout">
+
+    <!-- Sidebar -->
+
+    <aside class="admin-sidebar" id="adminSidebar">
+
+      <div class="sidebar-header-row">
+
+        <div class="sidebar-brand">
+
+          <i class="fa-solid fa-bolt-lightning text-gold"></i>
+
+          <span>DTH PORTAL</span>
+
+        </div>
+
+        <button type="button" class="sidebar-close-btn" id="btnSidebarClose" aria-label="ÄÃ³ng Menu">
+
+          <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+      </div>
+
+
+
+      <nav class="sidebar-nav">
+
+        <button type="button" class="sidebar-tab active" data-tab="dashboard">
+
+          <i class="fa-solid fa-chart-pie"></i> <span>Tá»•ng Quan</span>
+
+        </button>
+
+
+
+        <div class="sidebar-heading">QUáº¢N LÃ ÄÆ N HÃ€NG</div>
+
+        <button type="button" class="sidebar-tab" data-tab="orders-chungsuc">
+
+          <i class="fa-solid fa-gamepad text-gold"></i> <span>ÄÆ¡n Chung Sá»©c</span>
+
+          <span class="badge-count" id="badgeCountCs">0</span>
+
+        </button>
+
+        <button type="button" class="sidebar-tab" data-tab="orders-locket">
+
+          <i class="fa-solid fa-heart text-pink"></i> <span>ÄÆ¡n Locket Gold</span>
+
+          <span class="badge-count" id="badgeCountLk">0</span>
+
+        </button>
+
+        <button type="button" class="sidebar-tab" data-tab="orders-mxh">
+
+          <i class="fa-solid fa-rocket text-cyan"></i> <span>ÄÆ¡n Máº¡ng XÃ£ Há»™i</span>
+
+          <span class="badge-count" id="badgeCountMxh">0</span>
+
+        </button>
+
+        <button type="button" class="sidebar-tab" data-tab="orders-premium">
+
+          <i class="fa-solid fa-crown text-gold"></i> <span>ÄÆ¡n Chá»£ Premium</span>
+
+          <span class="badge-count" id="badgeCountPr">0</span>
+
+        </button>
+
+
+
+        <div class="sidebar-heading">Cáº¤U HÃŒNH Dá»ŠCH Vá»¤</div>
+
+        <button type="button" class="sidebar-tab" data-tab="chungsuc">
+
+          <i class="fa-solid fa-sliders text-gold"></i> <span>CÃ i Äáº·t Chung Sá»©c</span>
+
+        </button>
+
+        <button type="button" class="sidebar-tab" data-tab="locket">
+
+          <i class="fa-solid fa-key text-pink"></i> <span>CÃ i Äáº·t Locket</span>
+
+        </button>
+
+        <button type="button" class="sidebar-tab" data-tab="mxh">
+
+          <i class="fa-solid fa-diagram-project text-cyan"></i> <span>CÃ i Äáº·t MXH</span>
+
+        </button>
+
+        <button type="button" class="sidebar-tab" data-tab="premium">
+
+          <i class="fa-solid fa-crown text-gold"></i> <span>CÃ i Äáº·t Chá»£ Premium</span>
+
+        </button>
+
+
+
+        <div class="sidebar-heading">Há»† THá»NG</div>
+
+        <button type="button" class="sidebar-tab" data-tab="payment">
+
+          <i class="fa-solid fa-building-columns"></i> <span>NgÃ¢n HÃ ng & Auto</span>
+
+        </button>
+
+        <button type="button" class="sidebar-tab" data-tab="announcement">
+          <i class="fa-solid fa-bullhorn text-warning"></i> <span>Popup ThÃ´ng BÃ¡o</span>
+        </button>
+        <button type="button" class="sidebar-tab" data-tab="settings">
+
+          <i class="fa-solid fa-gears"></i> <span>CÃ i Äáº·t Há»‡ Thá»‘ng</span>
+
+        </button>
+
+      </nav>
+
+
+
+      <div class="sidebar-footer">
+
+        <a href="/" target="_blank" class="sidebar-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Xem Trang Web</a>
+
+        <button type="button" class="sidebar-link-btn text-danger" id="btnAdminLogout"><i class="fa-solid fa-right-from-bracket"></i> ÄÄƒng Xuáº¥t</button>
+
+      </div>
+
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+
+
+    <!-- Main Content -->
+
+    <div class="admin-main">
+
+      <!-- Top Bar -->
+
+      <header class="admin-topbar">
+
+        <div class="topbar-left">
+
+          <button type="button" class="btn-hamburger" id="btnSidebarToggle" aria-label="Menu Quáº£n Trá»‹">
+
+            <i class="fa-solid fa-bars"></i>
+
+          </button>
+
+          <div class="topbar-title">
+
+            <h2 id="adminPageTitle">Báº£ng Äiá»u Khiá»ƒn Tá»•ng Quan</h2>
+
+          </div>
+
+        </div>
+
+        <div class="topbar-actions">
+
+          <button type="button" class="btn-topbar-action" id="btnTopMargin" title="Chá»‰nh % GiÃ¡ TangTim" style="background: rgba(234, 179, 8, 0.15); border: 1px solid rgba(234, 179, 8, 0.4); color: #facc15; font-weight: 700;">
+
+            <i class="fa-solid fa-percent"></i> <span class="hide-mobile">Chá»‰nh % (+{{ (cfg.get('tangtim', {}).get('margin_percent', 50) if cfg else 50) }}%)</span>
+
+          </button>
+
+          <button type="button" class="btn-topbar-action btn-scan-bank" id="btnTopScanBank" title="QuÃ©t NgÃ¢n HÃ ng Ngay">
+
+            <i class="fa-solid fa-rotate"></i> <span class="hide-mobile">QuÃ©t Bank</span>
+
+          </button>
+
+        </div>
+
+      </header>
+
+
+
+      <!-- Content Area -->
+
+      <main class="admin-content-area">
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB 1: DASHBOARD STATS                     -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel active" id="panel-dashboard">
+
+          <!-- Stats Summary Grid -->
+
+          <div class="stats-cards-grid">
+
+            <div class="stat-card">
+
+              <div class="stat-icon icon-revenue"><i class="fa-solid fa-sack-dollar"></i></div>
+
+              <div class="stat-data">
+
+                <span class="stat-label">Tá»•ng Doanh Thu</span>
+
+                <strong class="stat-value text-gold" id="statTotalRev">0Ä‘</strong>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+              <div class="stat-icon icon-today"><i class="fa-solid fa-calendar-day"></i></div>
+
+              <div class="stat-data">
+
+                <span class="stat-label">Doanh Thu HÃ´m Nay</span>
+
+                <strong class="stat-value text-green" id="statTodayRev">0Ä‘</strong>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+              <div class="stat-icon icon-orders"><i class="fa-solid fa-receipt"></i></div>
+
+              <div class="stat-data">
+
+                <span class="stat-label">Tá»•ng ÄÆ¡n HÃ ng</span>
+
+                <strong class="stat-value text-cyan" id="statTotalOrders">0</strong>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+              <div class="stat-icon icon-pending"><i class="fa-solid fa-hourglass-half"></i></div>
+
+              <div class="stat-data">
+
+                <span class="stat-label">ÄÆ¡n Chá» Thanh ToÃ¡n</span>
+
+                <strong class="stat-value text-warning" id="statPendingOrders">0</strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Service Revenue Breakdown -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header">
+
+              <h3><i class="fa-solid fa-chart-bar text-cyan"></i> PhÃ¢n Loáº¡i Theo Máº£ng Dá»‹ch Vá»¥</h3>
+
+            </div>
+
+            <div class="services-breakdown-grid">
+
+              <div class="breakdown-box" onclick="switchToTab('orders-chungsuc')" style="cursor: pointer;" title="Báº¥m Ä‘á»ƒ xem riÃªng danh sÃ¡ch Ä‘Æ¡n Chung Sá»©c">
+
+                <div class="breakdown-header">
+
+                  <span><i class="fa-solid fa-gamepad text-gold"></i> Chung Sá»©c LiÃªn QuÃ¢n</span>
+
+                  <span class="badge" id="bdCsOrders">0 Ä‘Æ¡n</span>
+
+                </div>
+
+                <div class="breakdown-amount text-gold" id="bdCsRev">0Ä‘</div>
+
+              </div>
+
+
+
+              <div class="breakdown-box" onclick="switchToTab('orders-locket')" style="cursor: pointer;" title="Báº¥m Ä‘á»ƒ xem riÃªng danh sÃ¡ch Ä‘Æ¡n Locket Gold">
+
+                <div class="breakdown-header">
+
+                  <span><i class="fa-solid fa-heart text-yellow"></i> NÃ¢ng Cáº¥p Locket Gold</span>
+
+                  <span class="badge" id="bdLkOrders">0 Ä‘Æ¡n</span>
+
+                </div>
+
+                <div class="breakdown-amount text-yellow" id="bdLkRev">0Ä‘</div>
+
+              </div>
+
+
+
+              <div class="breakdown-box" onclick="switchToTab('orders-mxh')" style="cursor: pointer;" title="Báº¥m Ä‘á»ƒ xem riÃªng danh sÃ¡ch Ä‘Æ¡n Máº¡ng XÃ£ Há»™i">
+
+                <div class="breakdown-header">
+
+                  <span><i class="fa-solid fa-rocket text-blue"></i> Máº¡ng XÃ£ Há»™i (TangTim)</span>
+
+                  <span class="badge" id="bdMxhOrders">0 Ä‘Æ¡n</span>
+
+                </div>
+
+                <div class="breakdown-amount text-blue" id="bdMxhRev">0Ä‘</div>
+
+              </div>
+
+
+
+              <div class="breakdown-box" onclick="switchToTab('orders-premium')" style="cursor: pointer;" title="Báº¥m Ä‘á»ƒ xem riÃªng danh sÃ¡ch Ä‘Æ¡n Chá»£ Premium">
+
+                <div class="breakdown-header">
+
+                  <span><i class="fa-solid fa-crown text-gold"></i> Chá»£ Dá»‹ch Vá»¥ Premium</span>
+
+                  <span class="badge" id="bdPrOrders">0 Ä‘Æ¡n</span>
+
+                </div>
+
+                <div class="breakdown-amount text-gold" id="bdPrRev">0Ä‘</div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Partner Balances -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header">
+
+              <h3><i class="fa-solid fa-wallet text-green"></i> Sá»‘ DÆ° VÃ­ Äá»‘i TÃ¡c Tá»± Äá»™ng</h3>
+
+            </div>
+
+            <div class="partner-balances-grid">
+
+              <div class="partner-box">
+
+                <div class="partner-title">AutoNhanh.com (Chung Sá»©c)</div>
+
+                <div class="partner-bal" id="balAutoNhanh">Äang kiá»ƒm tra...</div>
+
+                <small>DÃ¹ng Ä‘á»ƒ tá»± Ä‘á»™ng buff lÆ°á»£t má»Ÿ rÆ°Æ¡ng sá»± kiá»‡n</small>
+
+              </div>
+
+
+
+              <div class="partner-box">
+
+                <div class="partner-title">TangTim.vn (Máº¡ng XÃ£ Há»™i)</div>
+
+                <div class="partner-bal text-cyan" id="balTangTim">Äang kiá»ƒm tra...</div>
+
+                <small>DÃ¹ng Ä‘á»ƒ tá»± Ä‘á»™ng tÄƒng tÆ°Æ¡ng tÃ¡c TikTok, FB, Insta, YT</small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB: ÄÆ N CHUNG Sá»¨C LIÃŠN QUÃ‚N (CS)          -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel" id="panel-orders-chungsuc">
+
+          <div class="orders-nav-tabs">
+
+            <button type="button" class="btn-orders-tab active" onclick="switchToTab('orders-chungsuc')">
+
+              <i class="fa-solid fa-gamepad text-gold"></i> <span>ÄÆ¡n Chung Sá»©c LQ</span>
+
+              <span class="tab-badge" id="tabBadgeCs">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-locket')">
+
+              <i class="fa-solid fa-heart text-pink"></i> <span>ÄÆ¡n Locket Gold</span>
+
+              <span class="tab-badge" id="tabBadgeLk">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-mxh')">
+
+              <i class="fa-solid fa-rocket text-cyan"></i> <span>ÄÆ¡n Máº¡ng XÃ£ Há»™i</span>
+
+              <span class="tab-badge" id="tabBadgeMxh">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-premium')">
+
+              <i class="fa-solid fa-crown text-gold"></i> <span>ÄÆ¡n Chá»£ Premium</span>
+
+              <span class="tab-badge" id="tabBadgePr">0</span>
+
+            </button>
+
+          </div>
+
+
+
+          <div class="admin-card">
+
+            <div class="card-header" style="margin-bottom: 16px;">
+
+              <h3 style="color: #facc15;"><i class="fa-solid fa-gamepad"></i> Quáº£n LÃ½ ÄÆ¡n Chung Sá»©c LiÃªn QuÃ¢n (AutoNhanh)</h3>
+
+            </div>
+
+
+
+            <!-- Filter Bar for Chung Suc -->
+
+            <div class="orders-filter-bar">
+
+              <div class="filter-group">
+
+                <label>Tráº¡ng ThÃ¡i:</label>
+
+                <select id="filterCsStatus" class="admin-select">
+
+                  <option value="all">Táº¥t Cáº£ Tráº¡ng ThÃ¡i</option>
+
+                  <option value="PENDING">â³ Chá» Thanh ToÃ¡n</option>
+
+                  <option value="PAID">ðŸ’° ÄÃ£ Thanh ToÃ¡n</option>
+
+                  <option value="PROCESSING">âš¡ Äang Buff</option>
+
+                  <option value="COMPLETED">âœ… HoÃ n ThÃ nh</option>
+
+                  <option value="FAILED">âŒ Tháº¥t Báº¡i</option>
+
+                </select>
+
+              </div>
+
+
+
+              <div class="filter-group filter-search">
+
+                <label>TÃ¬m Kiáº¿m:</label>
+
+                <input type="text" id="searchCsInput" class="admin-input" placeholder="MÃ£ Ä‘Æ¡n CS..., MÃ£ má»i LQ, Link sá»± kiá»‡n, SÄT Zalo...">
+
+              </div>
+
+
+
+              <div class="filter-actions">
+
+                <button type="button" class="btn-admin-action" id="btnRefreshCsOrders"><i class="fa-solid fa-rotate"></i> Táº£i Láº¡i</button>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Chung Suc Table -->
+
+            <div class="admin-table-responsive">
+
+              <table class="admin-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>MÃ£ ÄÆ¡n</th>
+
+                    <th>MÃ£ Má»i / Link Sá»± Kiá»‡n</th>
+
+                    <th>GÃ³i Buff</th>
+
+                    <th>Sá»‘ Zalo</th>
+
+                    <th>Sá»‘ Tiá»n</th>
+
+                    <th>Tráº¡ng ThÃ¡i</th>
+
+                    <th>Thá»i Gian</th>
+
+                    <th>AutoNhanh Log</th>
+
+                    <th>HÃ nh Äá»™ng</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="csOrdersTableBody">
+
+                  <!-- Injected via JS -->
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB: ÄÆ N LOCKET GOLD (LK)                  -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel" id="panel-orders-locket">
+
+          <div class="orders-nav-tabs">
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-chungsuc')">
+
+              <i class="fa-solid fa-gamepad text-gold"></i> <span>ÄÆ¡n Chung Sá»©c LQ</span>
+
+              <span class="tab-badge" id="tabBadgeCs2">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab active" onclick="switchToTab('orders-locket')">
+
+              <i class="fa-solid fa-heart text-pink"></i> <span>ÄÆ¡n Locket Gold</span>
+
+              <span class="tab-badge" id="tabBadgeLk2">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-mxh')">
+
+              <i class="fa-solid fa-rocket text-cyan"></i> <span>ÄÆ¡n Máº¡ng XÃ£ Há»™i</span>
+
+              <span class="tab-badge" id="tabBadgeMxh2">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-premium')">
+
+              <i class="fa-solid fa-crown text-gold"></i> <span>ÄÆ¡n Chá»£ Premium</span>
+
+              <span class="tab-badge" id="tabBadgePr2">0</span>
+
+            </button>
+
+          </div>
+
+
+
+          <div class="admin-card">
+
+            <div class="card-header" style="margin-bottom: 16px;">
+
+              <h3 style="color: #f472b6;"><i class="fa-solid fa-heart"></i> Quáº£n LÃ½ ÄÆ¡n NÃ¢ng Cáº¥p Locket Gold iOS</h3>
+
+            </div>
+
+
+
+            <!-- Filter Bar for Locket -->
+
+            <div class="orders-filter-bar">
+
+              <div class="filter-group">
+
+                <label>Tráº¡ng ThÃ¡i:</label>
+
+                <select id="filterLkStatus" class="admin-select">
+
+                  <option value="all">Táº¥t Cáº£ Tráº¡ng ThÃ¡i</option>
+
+                  <option value="PENDING">â³ Chá» Thanh ToÃ¡n</option>
+
+                  <option value="PAID">ðŸ’° ÄÃ£ Thanh ToÃ¡n</option>
+
+                  <option value="PROCESSING">âš¡ Äang Xá»­ LÃ½</option>
+
+                  <option value="COMPLETED">âœ… ÄÃ£ CÃ³ Gold</option>
+
+                  <option value="FAILED">âŒ Tháº¥t Báº¡i</option>
+
+                </select>
+
+              </div>
+
+
+
+              <div class="filter-group filter-search">
+
+                <label>TÃ¬m Kiáº¿m:</label>
+
+                <input type="text" id="searchLkInput" class="admin-input" placeholder="MÃ£ Ä‘Æ¡n LK..., Username Locket, UID, SÄT Zalo...">
+
+              </div>
+
+
+
+              <div class="filter-actions">
+
+                <button type="button" class="btn-admin-action" id="btnRefreshLkOrders"><i class="fa-solid fa-rotate"></i> Táº£i Láº¡i</button>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Locket Table -->
+
+            <div class="admin-table-responsive">
+
+              <table class="admin-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>MÃ£ ÄÆ¡n</th>
+
+                    <th>TÃ i Khoáº£n Locket</th>
+
+                    <th>GÃ³i KÃ­ch Hoáº¡t</th>
+
+                    <th>UID Locket</th>
+
+                    <th>Sá»‘ Zalo</th>
+
+                    <th>Sá»‘ Tiá»n</th>
+
+                    <th>Tráº¡ng ThÃ¡i</th>
+
+                    <th>Thá»i Gian</th>
+
+                    <th>HÃ nh Äá»™ng</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="lkOrdersTableBody">
+
+                  <!-- Injected via JS -->
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB: ÄÆ N Máº NG XÃƒ Há»˜I (TT)                  -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel" id="panel-orders-mxh">
+
+          <div class="orders-nav-tabs">
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-chungsuc')">
+
+              <i class="fa-solid fa-gamepad text-gold"></i> <span>ÄÆ¡n Chung Sá»©c LQ</span>
+
+              <span class="tab-badge" id="tabBadgeCs3">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-locket')">
+
+              <i class="fa-solid fa-heart text-pink"></i> <span>ÄÆ¡n Locket Gold</span>
+
+              <span class="tab-badge" id="tabBadgeLk3">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab active" onclick="switchToTab('orders-mxh')">
+
+              <i class="fa-solid fa-rocket text-cyan"></i> <span>ÄÆ¡n Máº¡ng XÃ£ Há»™i</span>
+
+              <span class="tab-badge" id="tabBadgeMxh3">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-premium')">
+
+              <i class="fa-solid fa-crown text-gold"></i> <span>ÄÆ¡n Chá»£ Premium</span>
+
+              <span class="tab-badge" id="tabBadgePr3">0</span>
+
+            </button>
+
+          </div>
+
+
+
+          <div class="admin-card">
+
+            <div class="card-header" style="margin-bottom: 16px;">
+
+              <h3 style="color: #38bdf8;"><i class="fa-solid fa-rocket"></i> Quáº£n LÃ½ ÄÆ¡n Máº¡ng XÃ£ Há»™i (TangTim API)</h3>
+
+            </div>
+
+
+
+            <!-- Filter Bar for MXH -->
+
+            <div class="orders-filter-bar">
+
+              <div class="filter-group">
+
+                <label>Ná»n Táº£ng:</label>
+
+                <select id="filterMxhPlatform" class="admin-select">
+
+                  <option value="all">Táº¥t Cáº£ Ná»n Táº£ng</option>
+
+                  <option value="tiktok">TikTok</option>
+
+                  <option value="facebook">FaceBook</option>
+
+                  <option value="instagram">Instagram</option>
+
+                  <option value="youtube">YouTube</option>
+
+                </select>
+
+              </div>
+
+
+
+              <div class="filter-group">
+
+                <label>Tráº¡ng ThÃ¡i:</label>
+
+                <select id="filterMxhStatus" class="admin-select">
+
+                  <option value="all">Táº¥t Cáº£ Tráº¡ng ThÃ¡i</option>
+
+                  <option value="PENDING">â³ Chá» Thanh ToÃ¡n</option>
+
+                  <option value="PAID">ðŸ’° ÄÃ£ Thanh ToÃ¡n</option>
+
+                  <option value="PROCESSING">âš¡ Äang TÄƒng</option>
+
+                  <option value="COMPLETED">âœ… HoÃ n ThÃ nh</option>
+
+                  <option value="FAILED">âŒ Tháº¥t Báº¡i</option>
+
+                </select>
+
+              </div>
+
+
+
+              <div class="filter-group filter-search">
+
+                <label>TÃ¬m Kiáº¿m:</label>
+
+                <input type="text" id="searchMxhInput" class="admin-input" placeholder="MÃ£ Ä‘Æ¡n TT..., Link bÃ i viáº¿t / video, SÄT Zalo...">
+
+              </div>
+
+
+
+              <div class="filter-actions">
+
+                <button type="button" class="btn-admin-action" id="btnRefreshMxhOrders"><i class="fa-solid fa-rotate"></i> Táº£i Láº¡i</button>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- MXH Table -->
+
+            <div class="admin-table-responsive">
+
+              <table class="admin-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>MÃ£ ÄÆ¡n</th>
+
+                    <th>Ná»n Táº£ng & Dá»‹ch Vá»¥</th>
+
+                    <th>Link BÃ i Viáº¿t / Trang</th>
+
+                    <th>Sá»‘ LÆ°á»£ng</th>
+
+                    <th>Sá»‘ Tiá»n</th>
+
+                    <th>Tráº¡ng ThÃ¡i</th>
+
+                    <th>Thá»i Gian</th>
+
+                    <th>MÃ£ TangTim</th>
+
+                    <th>HÃ nh Äá»™ng</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="mxhOrdersTableBody">
+
+                  <!-- Injected via JS -->
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB 3: CHUNG Sá»¨C LIÃŠN QUÃ‚N CONFIG          -->
+
+        <!-- ========================================== -->
+
+                <!-- ========================================== -->
+
+        <!-- TAB: QUáº¢N LÃ ÄÆ N HÃ€NG CHá»¢ PREMIUM          -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel" id="panel-orders-premium">
+
+          <div class="orders-nav-tabs">
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-chungsuc')">
+
+              <i class="fa-solid fa-gamepad text-gold"></i> <span>ÄÆ¡n Chung Sá»©c LQ</span>
+
+              <span class="tab-badge" id="tabBadgeCs4">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-locket')">
+
+              <i class="fa-solid fa-heart text-pink"></i> <span>ÄÆ¡n Locket Gold</span>
+
+              <span class="tab-badge" id="tabBadgeLk4">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab" onclick="switchToTab('orders-mxh')">
+
+              <i class="fa-solid fa-rocket text-cyan"></i> <span>ÄÆ¡n Máº¡ng XÃ£ Há»™i</span>
+
+              <span class="tab-badge" id="tabBadgeMxh4">0</span>
+
+            </button>
+
+            <button type="button" class="btn-orders-tab active" onclick="switchToTab('orders-premium')">
+
+              <i class="fa-solid fa-crown text-gold"></i> <span>ÄÆ¡n Chá»£ Premium</span>
+
+              <span class="tab-badge" id="tabBadgePr4">0</span>
+
+            </button>
+
+          </div>
+
+
+
+          <div class="admin-card">
+
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+
+              <h3><i class="fa-solid fa-crown text-gold"></i> Danh SÃ¡ch ÄÆ¡n HÃ ng Chá»£ Premium</h3>
+
+              <div style="display: flex; gap: 8px;">
+
+                <button type="button" class="btn-admin-secondary" onclick="loadAdminOrders()">
+
+                  <i class="fa-solid fa-rotate"></i> LÃ m Má»›i
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Filters -->
+
+            <div class="table-filters" style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+
+              <input type="text" id="searchOrdersPremium" class="admin-input" placeholder="TÃ¬m theo MÃ£ Ä‘Æ¡n (PRxxxx) hoáº·c SÄT Zalo..." style="flex: 1; min-width: 200px;" oninput="filterOrdersPremium()">
+
+              <select id="filterStatusPremium" class="admin-input" style="width: 170px;" onchange="filterOrdersPremium()">
+
+                <option value="ALL">Táº¥t Cáº£ Tráº¡ng ThÃ¡i</option>
+
+                <option value="PAID">ÄÃ£ Thanh ToÃ¡n</option>
+
+                <option value="COMPLETED">ÄÃ£ HoÃ n Táº¥t</option>
+
+                <option value="PENDING">Chá» Thanh ToÃ¡n</option>
+
+                <option value="FAILED">Tháº¥t Báº¡i / Há»§y</option>
+
+              </select>
+
+            </div>
+
+
+
+            <div class="admin-table-responsive">
+
+              <table class="admin-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>MÃ£ ÄÆ¡n</th>
+
+                    <th>Thá»i Gian</th>
+
+                    <th>Dá»‹ch Vá»¥</th>
+
+                    <th>GÃ³i Mua</th>
+
+                    <th>TÃ i Khoáº£n / Email</th>
+
+                    <th>Zalo</th>
+
+                    <th>Sá»‘ Tiá»n</th>
+
+                    <th>Tráº¡ng ThÃ¡i</th>
+
+                    <th>Thao TÃ¡c</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="tbodyOrdersPremium">
+
+                  <tr>
+
+                    <td colspan="9" style="text-align: center; color: var(--admin-muted); padding: 30px;">
+
+                      Äang táº£i danh sÃ¡ch Ä‘Æ¡n hÃ ng Premium...
+
+                    </td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+<section class="admin-panel" id="panel-chungsuc">
+
+          <div class="admin-card">
+
+            <div class="card-header">
+
+              <h3><i class="fa-solid fa-robot text-gold"></i> Cáº¥u HÃ¬nh AutoNhanh.com (Auto Buff Chung Sá»©c)</h3>
+
+            </div>
+
+            <form id="csConfigForm" class="admin-form" onsubmit="return false;">
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>TÃ i khoáº£n AutoNhanh:</label>
+
+                  <input type="text" id="anUsername" class="admin-input">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>Máº­t kháº©u AutoNhanh:</label>
+
+                  <input type="password" id="anPassword" class="admin-input">
+
+                </div>
+
+              </div>
+
+
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>GiÃ¡ mua 1 gÃ³i (Xu):</label>
+
+                  <input type="number" id="anPriceXu" class="admin-input" value="760">
+
+                </div>
+
+                <div class="form-col" style="display: flex; align-items: flex-end;">
+
+                  <button type="button" class="btn-admin-action" id="btnTestAutoNhanh">
+
+                    <i class="fa-solid fa-key"></i> ÄÄƒng Nháº­p & Kiá»ƒm Tra Sá»‘ DÆ° Xu
+
+                  </button>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="card-header" style="margin-top: 24px; padding-left: 0;">
+
+                <h3><i class="fa-solid fa-tags text-cyan"></i> Báº£ng GiÃ¡ GÃ³i Sá»± Kiá»‡n Chung Sá»©c</h3>
+
+              </div>
+
+              <div style="background: rgba(15, 23, 42, 0.6); border: 1px dashed rgba(59, 130, 246, 0.4); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+
+                <div>
+
+                  <div style="font-weight: 700; color: #60a5fa; font-size: 0.92rem;">
+
+                    <i class="fa-solid fa-percent"></i> Äiá»u chá»‰nh giÃ¡ nhanh toÃ n bá»™ gÃ³i theo %:
+
+                  </div>
+
+                  <div style="font-size: 0.8rem; color: var(--admin-muted);">
+
+                    TÄƒng hoáº·c giáº£m giÃ¡ Ä‘á»“ng loáº¡t cho táº¥t cáº£ 5 gÃ³i Chung Sá»©c bÃªn dÆ°á»›i
+
+                  </div>
+
+                </div>
+
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+
+                  <button type="button" class="btn-admin-action btn-cs-adjust" data-pct="10">+10%</button>
+
+                  <button type="button" class="btn-admin-action btn-cs-adjust" data-pct="20">+20%</button>
+
+                  <button type="button" class="btn-admin-action btn-cs-adjust" data-pct="-10">-10%</button>
+
+                  <button type="button" class="btn-admin-action btn-cs-adjust" data-pct="-20">-20%</button>
+
+                </div>
+
+              </div>
+
+              <div id="csPackagesEditor" class="packages-editor-list">
+
+                <!-- Injected via JS -->
+
+              </div>
+
+
+
+              <div class="form-actions" style="margin-top: 20px;">
+
+                <button type="submit" id="btnSaveCsConfig" class="btn-admin-primary">
+
+                  <i class="fa-solid fa-floppy-disk"></i> LÆ°u Cáº¥u HÃ¬nh Chung Sá»©c
+
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB 4: LOCKET GOLD CONFIG                  -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel" id="panel-locket">
+
+          <!-- Card: Báº¢NG GIÃ GÃ“I NÃ‚NG Cáº¤P LOCKET GOLD -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header flex-between">
+
+              <h3><i class="fa-solid fa-tags text-yellow"></i> Báº£ng GiÃ¡ GÃ³i NÃ¢ng Cáº¥p Locket Gold</h3>
+
+            </div>
+
+            <div class="admin-form" style="margin-top: 14px;">
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>GÃ³i Tiáº¿t Kiá»‡m (KhÃ´ng Giá»¯ Gold) - GiÃ¡ (VND):</label>
+
+                  <input type="number" id="locketPriceNoDns" class="admin-input" value="10000" step="1000">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>GÃ³i KhuyÃªn DÃ¹ng (Giá»¯ Gold VÄ©nh Viá»…n) - GiÃ¡ (VND):</label>
+
+                  <input type="number" id="locketPriceWithDns" class="admin-input" value="30000" step="1000">
+
+                </div>
+
+              </div>
+
+              <div class="form-actions" style="margin-top: 16px;">
+
+                <button type="button" id="btnSaveLocketPrices" class="btn-admin-primary">
+
+                  <i class="fa-solid fa-floppy-disk"></i> LÆ°u Báº£ng GiÃ¡ Locket Gold
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Manual Grant Card -->
+
+          <div class="admin-card">
+
+            <div class="card-header">
+
+              <h3><i class="fa-solid fa-wand-magic-sparkles text-gold"></i> KÃ­ch Hoáº¡t Locket Gold Thá»§ CÃ´ng</h3>
+
+            </div>
+
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+
+              <input type="text" id="manualLocketUser" class="admin-input" placeholder="Nháº­p Username Locket cáº§n kÃ­ch hoáº¡t..." style="max-width: 350px;">
+
+              <button type="button" class="btn-admin-primary" id="btnManualGrantGold">
+
+                <i class="fa-solid fa-crown"></i> KÃ­ch Hoáº¡t Gold Ngay
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Card: Cáº¤U HÃŒNH MODULE SHADOWROCKET LOCKET GOLD -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header flex-between">
+
+              <h3><i class="fa-solid fa-shield-halved text-cyan"></i> Cáº¥u HÃ¬nh Module Shadowrocket Locket Gold</h3>
+
+              <a href="https://raw.githubusercontent.com/dth20006/shadow/main/dth.sgmodule" target="_blank" class="admin-badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); text-decoration: none;">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Xem File Raw GitHub
+
+              </a>
+
+            </div>
+
+            <div class="admin-form" style="margin-top: 14px;">
+
+              <div class="form-group">
+
+                <label>Link Module Shadowrocket (.sgmodule):</label>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+
+                  <input type="text" id="locketShadowModuleUrl" class="admin-input" value="https://raw.githubusercontent.com/dth20006/shadow/main/dth.sgmodule" style="flex: 1; min-width: 280px;" readonly>
+
+                  <button type="button" class="btn-admin-secondary" onclick="navigator.clipboard.writeText('https://raw.githubusercontent.com/dth20006/shadow/main/dth.sgmodule'); showToast('ÄÃ£ sao chÃ©p link module Shadowrocket!', 'success');">
+
+                    <i class="fa-regular fa-copy"></i> Sao ChÃ©p
+
+                  </button>
+
+                  <a href="/dth.sgmodule" target="_blank" class="btn-admin-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+
+                    <i class="fa-solid fa-download"></i> Táº£i File (.sgmodule)
+
+                  </a>
+
+                </div>
+
+                <small style="color: var(--admin-muted); display: block; margin-top: 6px;">
+
+                  Link cÃ i Ä‘áº·t trá»±c tiáº¿p cho khÃ¡ch: <code>https://raw.githubusercontent.com/dth20006/shadow/main/dth.sgmodule</code> (Tá»± Ä‘á»™ng má»Ÿ khÃ³a Gold, Video 60s, Khung Shin-chan & Doraemon).
+
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Tokens Management Card -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header flex-between">
+
+              <h3><i class="fa-solid fa-key text-yellow"></i> Kho Token KhÃ´i Phá»¥c Locket Gold (StoreKit 2)</h3>
+
+              <button type="button" class="btn-admin-action" id="btnAddTokenSetModalBtn">
+
+                <i class="fa-solid fa-plus"></i> ThÃªm Bá»™ Token Má»›i
+
+              </button>
+
+            </div>
+
+
+
+            <div class="admin-table-responsive" style="margin-top: 14px;">
+
+              <table class="admin-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th>TÃªn Token</th>
+
+                    <th>Product ID</th>
+
+                    <th>Háº¡n DÃ¹ng</th>
+
+                    <th>Tráº¡ng ThÃ¡i</th>
+
+                    <th>HÃ nh Äá»™ng</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="locketTokensTableBody">
+
+                  <!-- Injected via JS -->
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- Advanced Bearer / AppCheck -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header">
+
+              <h3><i class="fa-solid fa-sliders text-cyan"></i> Cáº¥u HÃ¬nh Token NÃ¢ng Cao (RevenueCat & Firebase)</h3>
+
+            </div>
+
+            <div class="admin-form">
+
+              <div class="form-group">
+
+                <label>RevenueCat Bearer Token:</label>
+
+                <input type="text" id="locketRevenueCatBearer" class="admin-input">
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Firebase AppCheck Token:</label>
+
+                <textarea id="locketFirebaseAppCheck" class="admin-input" rows="2"></textarea>
+
+              </div>
+
+              <div class="form-group">
+
+                <label>Locket Account Bearer Token <span style="font-size: 0.8rem; color: var(--admin-muted); font-weight: normal;">(TÃ¹y chá»n: dÃ¹ng láº¥y tÃªn gá»‘c Locket trá»±c tiáº¿p tá»« API)</span>:</label>
+
+                <textarea id="adv_locket_bearer" class="admin-input" rows="2" placeholder="Bearer eyJhbGciOiJSUzI1NiIs..."></textarea>
+
+              </div>
+
+              <button type="button" class="btn-admin-primary" id="btnSaveLocketAdvanced">
+
+                <i class="fa-solid fa-floppy-disk"></i> LÆ°u Token NÃ¢ng Cao
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- ÄÄƒng Nháº­p Locket Tá»± Äá»™ng (Láº¥y Bearer Token) -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header">
+
+              <h3 style="color: #60a5fa;"><i class="fa-solid fa-right-to-bracket text-blue"></i> ÄÄƒng Nháº­p Locket Tá»± Äá»™ng (Láº¥y Bearer Token)</h3>
+
+            </div>
+
+            <div class="admin-form">
+
+              <p style="font-size: 0.85rem; color: var(--admin-muted); margin-bottom: 12px; line-height: 1.5;">
+
+                Náº¿u cÃ³ tÃ i khoáº£n Locket (clone) Ä‘Äƒng kÃ½ báº±ng <b>Email & Máº­t kháº©u</b>, báº¡n cÃ³ thá»ƒ Ä‘Äƒng nháº­p trá»±c tiáº¿p táº¡i Ä‘Ã¢y Ä‘á»ƒ há»‡ thá»‘ng tá»± Ä‘á»™ng sinh vÃ  lÆ°u Bearer Token má»›i nháº¥t.
+
+              </p>
+
+              <div class="form-grid-2" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+
+                <div class="form-group">
+
+                  <label>Email Locket:</label>
+
+                  <input type="email" id="locket_login_email" class="admin-input" placeholder="clone@gmail.com">
+
+                </div>
+
+                <div class="form-group">
+
+                  <label>Máº­t kháº©u:</label>
+
+                  <input type="password" id="locket_login_pwd" class="admin-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
+
+                </div>
+
+              </div>
+
+              <button type="button" class="btn-admin-primary" id="btn_locket_login" style="margin-top: 10px; width: 100%;">
+
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> ÄÄƒng Nháº­p Locket & Láº¥y Token
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- BÃ³c TÃ¡ch & LÆ°u Token Locket tá»« GÃ³i Tin HTTP Catcher / Shadowrocket -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header">
+
+              <h3 style="color: #34d399;"><i class="fa-solid fa-bolt text-green"></i> BÃ³c TÃ¡ch Token Locket tá»« HTTP Catcher / Shadowrocket</h3>
+
+            </div>
+
+            <div class="admin-form">
+
+              <div style="padding: 12px 14px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.15); font-size: 0.82rem; color: var(--admin-muted); line-height: 1.6; margin-bottom: 12px;">
+
+                <strong style="color: #fff;">ðŸ“± Náº¿u dÃ¹ng tÃ i khoáº£n SÄT / Apple ID (Báº¯t qua App):</strong><br>
+
+                1. Má»Ÿ <strong>HTTP Catcher</strong> (con bÆ°á»›m) hoáº·c <strong>Shadowrocket</strong> trÃªn iOS, báº­t VPN.<br>
+
+                2. Má»Ÿ Locket, tÃ¬m báº¡n bÃ¨ hoáº·c lÆ°á»›t áº£nh Ä‘á»ƒ phÃ¡t sinh request.<br>
+
+                3. Lá»c domain <code>api.locketcamera.com</code>, báº¥m vÃ o request báº¥t ká»³.<br>
+
+                4. DÃ¡n toÃ n bá»™ gÃ³i tin báº¯t Ä‘Æ°á»£c vÃ o Ã´ bÃªn dÆ°á»›i rá»“i nháº¥n <em>BÃ³c TÃ¡ch & LÆ°u</em>:
+
+              </div>
+
+              <div class="form-group">
+
+                <textarea id="locket_raw_input" rows="3" class="admin-input" style="font-family: monospace; font-size: 0.82rem;" placeholder="DÃ¡n toÃ n bá»™ gÃ³i tin HTTP Catcher vÃ o Ä‘Ã¢y (chá»©a authorization: Bearer eyJ... vÃ  x-firebase-appcheck: eyJ...)"></textarea>
+
+              </div>
+
+              <button type="button" id="btnImportLocketRaw" class="btn-admin-action" style="width: 100%; justify-content: center; padding: 10px; font-weight: 700;">
+
+                <i class="fa-solid fa-bolt"></i> BÃ³c TÃ¡ch & LÆ°u Token Locket
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB 5: Máº NG XÃƒ Há»˜I CONFIG                  -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel" id="panel-mxh">
+
+          <!-- Card 1: CÃ€I Äáº¶T % CHÃŠNH Lá»†CH GIÃ BÃN (Lá»¢I NHUáº¬N / MARGIN %) -->
+
+          <div class="admin-card" style="margin-bottom: 24px; border: 1.5px solid rgba(234, 179, 8, 0.4); background: rgba(30, 27, 75, 0.6);">
+
+            <div class="card-header flex-between" style="flex-wrap: wrap; gap: 12px;">
+
+              <div>
+
+                <h3 style="color: #facc15; display: flex; align-items: center; gap: 8px;">
+
+                  <i class="fa-solid fa-percent"></i> CÃ i Äáº·t % ChÃªnh Lá»‡ch GiÃ¡ BÃ¡n (Margin / Lá»£i Nhuáº­n)
+
+                </h3>
+
+                <p style="color: var(--admin-muted); font-size: 0.85rem; margin-top: 4px;">
+
+                  Tá»± Ä‘á»™ng tÃ­nh láº¡i giÃ¡ bÃ¡n cho <b>toÃ n bá»™ 100+ dá»‹ch vá»¥ MXH</b> theo cÃ´ng thá»©c:<br>
+
+                  <code style="color: #60a5fa; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">GiÃ¡ bÃ¡n = GiÃ¡ gá»‘c TangTim &times; (1 + % ChÃªnh lá»‡ch / 100)</code><br>
+
+                  VÃ­ dá»¥: GiÃ¡ gá»‘c <b>1.000Ä‘</b> &bull; chá»‰nh <b>+50%</b> = <b>1.500Ä‘</b> &bull; chá»‰nh <b>+100%</b> = <b>2.000Ä‘</b> &bull; chá»‰nh <b>+150%</b> = <b>2.500Ä‘</b>
+
+                </p>
+
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 8px;">
+
+                <span class="badge" style="background: rgba(234, 179, 8, 0.2); color: #facc15; font-size: 0.95rem; font-weight: 700; padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(234, 179, 8, 0.4);" id="badgeCurrentMargin">
+
+                  Hiá»‡n táº¡i: +{{ (cfg.get('tangtim', {}).get('margin_percent', 50) if cfg else 50) }}%
+
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="admin-form" style="margin-top: 16px;">
+
+              <div class="form-row" style="align-items: flex-end;">
+
+                <div class="form-col" style="flex: 1; min-width: 200px;">
+
+                  <label for="setTtMargin" style="font-weight: 700; color: #fff;">
+
+                    % ChÃªnh Lá»‡ch Lá»£i Nhuáº­n (%):
+
+                  </label>
+
+                  <input type="number" id="setTtMargin" class="admin-input" value="{{ (cfg.get('tangtim', {}).get('margin_percent', 50) if cfg else 50) }}" min="0" max="1000" step="1" style="font-size: 1.1rem; font-weight: 700; color: #facc15;">
+
+                </div>
+
+                <div class="form-col" style="flex: 2; min-width: 300px;">
+
+                  <label style="color: var(--admin-muted); font-size: 0.85rem;">Chá»n nhanh má»©c % chÃªnh lá»‡ch:</label>
+
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+
+                    <button type="button" class="btn-admin-action btn-quick-margin" data-margin="20">+20%</button>
+
+                    <button type="button" class="btn-admin-action btn-quick-margin" data-margin="30">+30%</button>
+
+                    <button type="button" class="btn-admin-action btn-quick-margin" data-margin="50">+50%</button>
+
+                    <button type="button" class="btn-admin-action btn-quick-margin" data-margin="100">+100%</button>
+
+                    <button type="button" class="btn-admin-action btn-quick-margin" data-margin="150">+150%</button>
+
+                    <button type="button" class="btn-admin-action btn-quick-margin" data-margin="200">+200%</button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="form-actions" style="margin-top: 18px; display: flex; gap: 12px; align-items: center;">
+
+                <button type="button" id="btnSaveMarginPercent" class="btn-admin-primary" style="background: linear-gradient(135deg, #eab308, #ca8a04); border: none; font-weight: 700; padding: 12px 24px;">
+
+                  <i class="fa-solid fa-calculator"></i> Ãp Dá»¥ng & TÃ­nh Láº¡i GiÃ¡ BÃ¡n ToÃ n Bá»™ Dá»‹ch Vá»¥
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="admin-card">
+
+            <div class="card-header flex-between">
+
+              <h3><i class="fa-solid fa-server text-blue"></i> Cáº¥u HÃ¬nh TangTim API (MÃ¡y Chá»§ MXH)</h3>
+
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+
+                <button type="button" class="btn-admin-action" id="btnCheckTangTimBal">
+
+                  <i class="fa-solid fa-wallet text-gold"></i> Kiá»ƒm Tra Sá»‘ DÆ° TangTim
+
+                </button>
+
+                <button type="button" class="btn-admin-action" id="btnSyncMaintenance">
+
+                  <i class="fa-solid fa-shield-halved text-cyan"></i> QuÃ©t Báº£o TrÃ¬ MÃ¡y Chá»§
+
+                </button>
+
+                <button type="button" class="btn-admin-action" id="btnSyncMxhServices">
+
+                  <i class="fa-solid fa-cloud-arrow-down"></i> Äá»“ng Bá»™ Danh Má»¥c Tá»« TangTim
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+            <form id="mxhConfigForm" class="admin-form" onsubmit="return false;">
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>API Key TangTim:</label>
+
+                  <input type="text" id="ttApiKey" class="admin-input">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>API URL:</label>
+
+                  <input type="text" id="ttApiUrl" class="admin-input" value="https://tangtim.vn/api/v2">
+
+                </div>
+
+              </div>
+
+
+
+              <!-- Flash Sale Campaign Settings -->
+
+              <div class="card-header" style="margin-top: 24px; padding-left: 0;">
+
+                <h3><i class="fa-solid fa-fire text-pink"></i> CÃ i Äáº·t Flash Sale Giáº£m GiÃ¡</h3>
+
+              </div>
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>Báº­t Chiáº¿n Dá»‹ch Sale:</label>
+
+                  <select id="saleEnabled" class="admin-select">
+
+                    <option value="true">Báº­t Khuyáº¿n MÃ£i</option>
+
+                    <option value="false">Táº¯t Khuyáº¿n MÃ£i</option>
+
+                  </select>
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>% Giáº£m GiÃ¡ (Discount %):</label>
+
+                  <input type="number" id="salePercent" class="admin-input" value="25" min="0" max="90">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>Thá»i Gian Cháº¡y (NgÃ y):</label>
+
+                  <input type="number" id="saleDurationDays" class="admin-input" value="5" min="1" max="30">
+
+                </div>
+
+              </div>
+
+
+
+              <div class="form-actions" style="margin-top: 20px;">
+
+                <button type="submit" id="btnSaveMxhConfig" class="btn-admin-primary">
+
+                  <i class="fa-solid fa-floppy-disk"></i> LÆ°u Cáº¥u HÃ¬nh MXH & Flash Sale
+
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+
+
+          <!-- Card 3: Báº¢NG QUáº¢N LÃ Táº¤T Cáº¢ Dá»ŠCH Vá»¤ MXH (Lá»ŒC VIá»†T & TÃ‚Y / Báº¬T Táº®T GÃ“I) -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header flex-between" style="flex-wrap: wrap; gap: 12px;">
+
+              <div>
+
+                <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+
+                  <i class="fa-solid fa-list-check"></i> Quáº£n LÃ½ Danh Má»¥c GÃ³i Dá»‹ch Vá»¥ MXH (<span id="mxhTotalServicesCount">--</span> GÃ³i)
+
+                </h3>
+
+                <p style="color: var(--admin-muted); font-size: 0.85rem; margin-top: 4px;">
+
+                  ToÃ n bá»™ gÃ³i Ä‘Æ¡n tá»« mÃ¡y chá»§ (Ä‘Ã£ loáº¡i bá» sáº¡ch gÃ³i Vip Like / GÃ³i thÃ¡ng). Lá»c nhanh theo <b>TÃ i NguyÃªn Viá»‡t / TÃ¢y</b> hoáº·c <b>Ná»n táº£ng</b>, báº­t/táº¯t tá»«ng gÃ³i Ä‘á»ƒ hiá»ƒn thá»‹ cho khÃ¡ch.
+
+                </p>
+
+              </div>
+
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+
+                <button type="button" class="btn-admin-action" id="btnAdminBatchEnableAll" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); color: #34d399;">
+
+                  <i class="fa-solid fa-check-double"></i> Báº­t CÃ¡c GÃ³i Äang Lá»c
+
+                </button>
+
+                <button type="button" class="btn-admin-action" id="btnAdminBatchDisableAll" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); color: #f87171;">
+
+                  <i class="fa-solid fa-ban"></i> Táº¯t CÃ¡c GÃ³i Äang Lá»c
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Filter Controls in Admin -->
+
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; align-items: center; background: rgba(15, 23, 42, 0.5); padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.06);">
+
+              <!-- Platform select -->
+
+              <div style="min-width: 140px; flex: 1;">
+
+                <label style="font-size: 0.75rem; color: var(--admin-muted); font-weight: 700; display: block; margin-bottom: 4px;">Ná»n Táº£ng:</label>
+
+                <select id="adminMxhPlatformFilter" class="admin-select" style="padding: 7px 10px; font-size: 0.85rem;">
+
+                  <option value="all">-- Táº¥t Cáº£ Ná»n Táº£ng --</option>
+
+                  <option value="tiktok">TikTok</option>
+
+                  <option value="facebook">FaceBook</option>
+
+                  <option value="instagram">Instagram</option>
+
+                  <option value="youtube">YouTube</option>
+
+                  <option value="telegram">Telegram</option>
+
+                  <option value="twitter">X / Twitter</option>
+
+                  <option value="shopee">Shopee</option>
+
+                  <option value="threads">Threads</option>
+
+                </select>
+
+              </div>
+
+
+
+              <!-- Origin select (Viá»‡t vs TÃ¢y) -->
+
+              <div style="min-width: 150px; flex: 1;">
+
+                <label style="font-size: 0.75rem; color: var(--admin-muted); font-weight: 700; display: block; margin-bottom: 4px;">Nguá»“n TÃ i NguyÃªn:</label>
+
+                <select id="adminMxhOriginFilter" class="admin-select" style="padding: 7px 10px; font-size: 0.85rem;">
+
+                  <option value="all">-- Táº¥t Cáº£ (Viá»‡t & TÃ¢y) --</option>
+
+                  <option value="viet">ðŸ‡»ðŸ‡³ TÃ i NguyÃªn Viá»‡t</option>
+
+                  <option value="tay">ðŸŒ Quá»‘c Táº¿ (TÃ¢y)</option>
+
+                </select>
+
+              </div>
+
+
+
+              <!-- Status select -->
+
+              <div style="min-width: 130px; flex: 1;">
+
+                <label style="font-size: 0.75rem; color: var(--admin-muted); font-weight: 700; display: block; margin-bottom: 4px;">Tráº¡ng ThÃ¡i:</label>
+
+                <select id="adminMxhStatusFilter" class="admin-select" style="padding: 7px 10px; font-size: 0.85rem;">
+
+                  <option value="all">-- Táº¥t Cáº£ Tráº¡ng ThÃ¡i --</option>
+
+                  <option value="active">Äang Báº­t (Hiá»‡n khÃ¡ch)</option>
+
+                  <option value="inactive">Äang Táº¯t (áº¨n khÃ¡ch)</option>
+
+                </select>
+
+              </div>
+
+
+
+              <!-- Search input -->
+
+              <div style="min-width: 200px; flex: 2;">
+
+                <label style="font-size: 0.75rem; color: var(--admin-muted); font-weight: 700; display: block; margin-bottom: 4px;">TÃ¬m Kiáº¿m Nhanh:</label>
+
+                <input type="text" id="adminMxhSearchInput" class="admin-input" placeholder="TÃ¬m theo tÃªn dá»‹ch vá»¥, ID mÃ¡y chá»§..." style="padding: 7px 12px; font-size: 0.85rem;">
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Table -->
+
+            <div class="admin-table-responsive" style="margin-top: 14px; max-height: 520px; overflow-y: auto;">
+
+              <table class="admin-table">
+
+                <thead>
+
+                  <tr>
+
+                    <th style="width: 70px;">ID</th>
+
+                    <th>TÃªn GÃ³i Dá»‹ch Vá»¥ & Danh Má»¥c</th>
+
+                    <th style="width: 100px;">Ná»n Táº£ng</th>
+
+                    <th style="width: 110px;">Nguá»“n</th>
+
+                    <th style="width: 110px;">ÄÆ¡n GiÃ¡ BÃ¡n</th>
+
+                    <th style="width: 120px;">Min / Max</th>
+
+                    <th style="width: 110px; text-align: center;">Tráº¡ng ThÃ¡i</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="adminMxhServicesTableBody">
+
+                  <!-- Rendered via JS -->
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB 6: PAYMENT & BANK CONFIG               -->
+
+        <!-- ========================================== -->
+
+                <!-- ========================================== -->
+
+        <!-- TAB: Cáº¤U HÃŒNH Báº¢NG GIÃ CHá»¢ PREMIUM         -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel" id="panel-premium">
+
+          <div class="admin-card">
+
+            <!-- Market Status Toggle -->
+
+            <div class="market-toggle-card" style="display: flex; align-items: center; justify-content: space-between; background: rgba(30, 41, 59, 0.7); border: 1.5px solid var(--admin-border); border-radius: 14px; padding: 18px 22px; margin-bottom: 24px;">
+
+              <div>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+
+                  <i class="fa-solid fa-store" style="font-size: 1.4rem; color: #f59e0b;"></i>
+
+                  <strong style="font-size: 1.1rem; color: #f8fafc;">Báº¬T / Táº®T CHá»¢ Dá»ŠCH Vá»¤ PREMIUM:</strong>
+
+                  <span id="adminMarketStatusBadge" class="badge-status" style="font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; font-weight: 700; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);">ÄANG Báº¬T</span>
+
+                </div>
+
+                <p style="margin: 6px 0 0; font-size: 0.86rem; color: var(--admin-muted);">
+
+                  Khi táº¯t chá»£, khÃ¡ch hÃ ng trÃªn web sáº½ tháº¥y thÃ´ng bÃ¡o táº¡m Ä‘Ã³ng vÃ  khÃ´ng thá»ƒ gá»­i Ä‘Æ¡n hÃ ng má»›i.
+
+                </p>
+
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 12px;">
+
+                <label class="switch-toggle" style="position: relative; display: inline-block; width: 56px; height: 30px;">
+
+                  <input type="checkbox" id="adminMarketToggleInput" onchange="toggleMarketStatus(this.checked)" checked>
+
+                  <span class="slider round"></span>
+
+                </label>
+
+              </div>
+
+            </div>
+
+
+
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+
+              <div>
+
+                <h3 style="margin: 0; color: #f8fafc; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+
+                  <i class="fa-solid fa-layer-group text-gold"></i> Quáº£n LÃ½ Dá»‹ch Vá»¥ & Báº£ng GiÃ¡ GÃ³i
+
+                </h3>
+
+                <p style="color: var(--admin-muted); font-size: 0.88rem; margin: 4px 0 0;">
+
+                  Báº¡n cÃ³ thá»ƒ thÃªm khÃ´ng giá»›i háº¡n cÃ¡c dá»‹ch vá»¥ má»›i (ChatGPT, Canva, CapCut, v.v.) vÃ  tá»± do táº¡o thÃªm cÃ¡c gÃ³i thá»i háº¡n tÃ¹y Ã½!
+
+                </p>
+
+              </div>
+
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+
+                <button type="button" class="btn-admin-secondary" onclick="openAddServiceModal()" style="display: flex; align-items: center; gap: 6px; font-weight: 700; background: rgba(16, 185, 129, 0.15); border: 1.5px solid rgba(16, 185, 129, 0.4); color: #34d399;">
+
+                  <i class="fa-solid fa-plus-circle"></i> + ThÃªm Dá»‹ch Vá»¥ Má»›i
+
+                </button>
+
+                <button type="button" class="btn-admin-primary" id="btnSaveAllPremiumPkgs" onclick="saveAllPremiumServices()" style="display: flex; align-items: center; gap: 6px; font-weight: 700;">
+
+                  <i class="fa-solid fa-floppy-disk"></i> LÆ°u ToÃ n Bá»™ Cáº¥u HÃ¬nh
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- Dynamic Services Container -->
+
+            <div id="adminPremiumServicesList">
+
+              <div style="text-align: center; padding: 40px; color: var(--admin-muted);">
+
+                <i class="fa-solid fa-circle-notch fa-spin text-gold" style="font-size: 1.8rem;"></i>
+
+                <p style="margin-top: 10px;">Äang táº£i danh sÃ¡ch dá»‹ch vá»¥...</p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+<section class="admin-panel" id="panel-payment">
+
+          <div class="admin-card">
+
+            <div class="card-header">
+
+              <h3><i class="fa-solid fa-building-columns text-green"></i> CÃ i Äáº·t NgÃ¢n HÃ ng Nháº­n Tiá»n & Auto QuÃ©t</h3>
+
+            </div>
+
+            <form id="paymentConfigForm" class="admin-form" onsubmit="return false;">
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>MÃ£ NgÃ¢n HÃ ng (BIN VietQR):</label>
+
+                  <input type="text" id="bankId" class="admin-input" value="970454" placeholder="vd: 970454 (Báº£n Viá»‡t / ZaloPay)">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>TÃªn NgÃ¢n HÃ ng:</label>
+
+                  <input type="text" id="bankName" class="admin-input" value="NgÃ¢n HÃ ng Báº£n Viá»‡t (BVBank - ZaloPay)">
+
+                </div>
+
+              </div>
+
+
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>Sá»‘ TÃ i Khoáº£n Nháº­n:</label>
+
+                  <input type="text" id="accountNumber" class="admin-input" value="99ZP24261M43061759">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>TÃªn Chá»§ TÃ i Khoáº£n:</label>
+
+                  <input type="text" id="accountName" class="admin-input" value="ZALOPAY_DINH TUAN HUNG">
+
+                </div>
+
+              </div>
+
+
+
+              <div class="card-header" style="margin-top: 20px; padding-left: 0;">
+
+                <h3><i class="fa-solid fa-key text-gold"></i> Cá»•ng Tá»± Äá»™ng ThueAPIBank (ZaloPay)</h3>
+
+              </div>
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>Token ThueAPIBank:</label>
+
+                  <input type="text" id="thueapiToken" class="admin-input" value="498705aae1752f7c0658c6f622317daf">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>Sá»‘ Äiá»‡n Thoáº¡i ZaloPay:</label>
+
+                  <input type="text" id="thueapiPhone" class="admin-input" value="0353680869">
+
+                </div>
+
+              </div>
+
+
+
+              <div class="form-actions" style="margin-top: 20px;">
+
+                <button type="submit" id="btnSavePaymentConfig" class="btn-admin-primary">
+
+                  <i class="fa-solid fa-floppy-disk"></i> LÆ°u Cáº¥u HÃ¬nh NgÃ¢n HÃ ng
+
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+
+
+          <!-- Unmatched Transactions Queue Card -->
+
+          <div class="admin-card" style="margin-top: 24px; border: 1.5px solid #f59e0b;">
+
+            <div class="card-header flex-between" style="flex-wrap: wrap; gap: 12px;">
+
+              <div>
+
+                <h3 style="color: #f59e0b; margin: 0; display: flex; align-items: center; gap: 8px;">
+
+                  <i class="fa-solid fa-triangle-exclamation"></i> DÃ²ng Tiá»n ChÆ°a Khá»›p Lá»‡nh (Unmatched Transactions Queue)
+
+                </h3>
+
+                <p style="font-size: 0.82rem; color: var(--admin-muted); margin-top: 4px;">
+
+                  Giao dá»‹ch nháº­n tiá»n thá»±c táº¿ nhÆ°ng sai cÃº phÃ¡p hoáº·c thiáº¿u mÃ£ Ä‘Æ¡n. GÃ¡n vÃ o Ä‘Æ¡n hÃ ng Ä‘á»ƒ kÃ­ch hoáº¡t tráº£ hÃ ng tá»± Ä‘á»™ng 1-click.
+
+                </p>
+
+              </div>
+
+              <button type="button" class="btn-admin-secondary" onclick="loadUnmatchedTransactions()" style="padding: 7px 14px; font-size: 0.84rem;">
+
+                <i class="fa-solid fa-arrows-rotate"></i> LÃ m Má»›i DÃ²ng Tiá»n
+
+              </button>
+
+            </div>
+
+            
+
+            <div class="admin-table-responsive" style="margin-top: 14px;">
+
+              <table class="admin-table" id="unmatchedTransTable">
+
+                <thead>
+
+                  <tr>
+
+                    <th>MÃ£ GD Bank</th>
+
+                    <th>Sá»‘ Tiá»n</th>
+
+                    <th>Ná»™i Dung Chuyá»ƒn Khoáº£n</th>
+
+                    <th>Thá»i Gian</th>
+
+                    <th style="width: 220px;">GÃ¡n VÃ o MÃ£ ÄÆ¡n (#)</th>
+
+                    <th style="width: 100px; text-align: center;">HÃ nh Äá»™ng</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody id="unmatchedTransBody">
+
+                  <tr>
+
+                    <td colspan="6" style="text-align: center; color: var(--admin-muted); padding: 20px;">
+
+                      Äang táº£i danh sÃ¡ch dÃ²ng tiá»n chÆ°a khá»›p...
+
+                    </td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <!-- ========================================== -->
+
+        <!-- TAB 7: SYSTEM & TELEGRAM CONFIG            -->
+
+        <!-- ========================================== -->
+
+        <section class="admin-panel" id="panel-settings">
+          <!-- Quick Card for Popup Announcement in Settings -->
+          <div class="admin-card" style="margin-bottom: 24px; border: 1.5px solid rgba(245, 158, 11, 0.4); background: rgba(19, 29, 53, 0.95); cursor: pointer;" onclick="switchToTab('announcement')">
+            <div class="flex-between" style="flex-wrap: wrap; gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(245, 158, 11, 0.18); display: flex; align-items: center; justify-content: center; color: #fbbf24; font-size: 1.3rem;">
+                  <i class="fa-solid fa-bullhorn"></i>
+                </div>
+                <div>
+                  <h3 style="color: #fbbf24; font-size: 1.05rem;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Quáº£n LÃ½ Popup ThÃ´ng BÃ¡o KhÃ¡ch HÃ ng</h3>
+                  <p style="color: var(--admin-muted); font-size: 0.82rem; margin-top: 2px;">Cáº¥u hÃ¬nh ná»™i dung, báº­t/táº¯t popup chÃ o má»«ng khÃ¡ch ghÃ© thÄƒm web 2 chiá»u (Web & Telegram).</p>
+                </div>
+              </div>
+              <button type="button" class="btn-admin-primary" style="background: linear-gradient(135deg, #f59e0b, #d97706); border: none; font-size: 0.88rem; padding: 8px 18px;">
+                <i class="fa-solid fa-arrow-right"></i> Má»Ÿ CÃ i Äáº·t Popup
+              </button>
+            </div>
+          </div>
+
+
+          <div class="admin-card" style="margin-bottom: 24px; border: 1.5px solid rgba(37, 99, 235, 0.4); background: rgba(19, 29, 53, 0.9);">
+
+            <div class="card-header flex-between" style="flex-wrap: wrap; gap: 12px;">
+
+              <div>
+
+                <h3 style="color: #60a5fa; display: flex; align-items: center; gap: 8px;">
+
+                  <i class="fa-solid fa-power-off"></i> Báº­t / Táº¯t Hiá»ƒn Thá»‹ Dá»‹ch Vá»¥ TrÃªn Trang Chá»§
+
+                </h3>
+
+                <p style="color: var(--admin-muted); font-size: 0.85rem; margin-top: 4px;">
+
+                  Quáº£n lÃ½ trá»±c tiáº¿p cÃ¡c má»¥c hiá»ƒn thá»‹ trÃªn web khÃ¡ch. Táº¯t má»¥c nÃ o (vd: Locket) thÃ¬ trang khÃ¡ch sáº½ khÃ´ng tháº¥y dá»‹ch vá»¥ Ä‘Ã³!
+
+                </p>
+
+              </div>
+
+              <button type="button" class="btn-admin-primary" id="btnSaveServicesToggle" style="padding: 9px 20px; font-weight: 700;">
+
+                <i class="fa-solid fa-floppy-disk"></i> LÆ°u Tráº¡ng ThÃ¡i Dá»‹ch Vá»¥
+
+              </button>
+
+            </div>
+
+            <div class="card-body" style="padding: 16px 0 0 0;">
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+
+                <!-- Toggle Chung Suc -->
+
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;">
+
+                  <div style="display: flex; align-items: center; gap: 12px;">
+
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(37, 99, 235, 0.15); display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 1.2rem;">
+
+                      <i class="fa-solid fa-gamepad"></i>
+
+                    </div>
+
+                    <div>
+
+                      <div style="font-weight: 700; color: #fff;">Chung Sá»©c LiÃªn QuÃ¢n</div>
+
+                      <div style="font-size: 0.78rem; color: var(--admin-muted);">Má»Ÿ rÆ°Æ¡ng SS & SSS AutoNhanh</div>
+
+                    </div>
+
+                  </div>
+
+                  <label class="switch-toggle">
+
+                    <input type="checkbox" id="toggleServiceChungSuc" checked>
+
+                    <span class="slider round"></span>
+
+                  </label>
+
+                </div>
+
+
+
+                <!-- Toggle Locket Gold -->
+
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;">
+
+                  <div style="display: flex; align-items: center; gap: 12px;">
+
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(236, 72, 153, 0.15); display: flex; align-items: center; justify-content: center; color: #ec4899; font-size: 1.2rem;">
+
+                      <i class="fa-solid fa-heart"></i>
+
+                    </div>
+
+                    <div>
+
+                      <div style="font-weight: 700; color: #fff;">NÃ¢ng Cáº¥p Locket Gold</div>
+
+                      <div style="font-size: 0.78rem; color: var(--admin-muted);">KÃ­ch hoáº¡t Gold & DNS VIP</div>
+
+                    </div>
+
+                  </div>
+
+                  <label class="switch-toggle">
+
+                    <input type="checkbox" id="toggleServiceLocket" checked>
+
+                    <span class="slider round"></span>
+
+                  </label>
+
+                </div>
+
+
+
+                <!-- Toggle MXH -->
+
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;">
+
+                  <div style="display: flex; align-items: center; gap: 12px;">
+
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(59, 130, 246, 0.15); display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 1.2rem;">
+
+                      <i class="fa-solid fa-rocket"></i>
+
+                    </div>
+
+                    <div>
+
+                      <div style="font-weight: 700; color: #fff;">Dá»‹ch Vá»¥ Máº¡ng XÃ£ Há»™i</div>
+
+                      <div style="font-size: 0.78rem; color: var(--admin-muted);">TangTim API TikTok, FB, IG, YT</div>
+
+                    </div>
+
+                  </div>
+
+                  <label class="switch-toggle">
+
+                    <input type="checkbox" id="toggleServiceMxh" checked>
+
+                    <span class="slider round"></span>
+
+                  </label>
+
+                </div>
+
+
+
+                <!-- Toggle Premium Market -->
+
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;">
+
+                  <div style="display: flex; align-items: center; gap: 12px;">
+
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); display: flex; align-items: center; justify-content: center; color: #fbbf24; font-size: 1.2rem;">
+
+                      <i class="fa-solid fa-crown"></i>
+
+                    </div>
+
+                    <div>
+
+                      <div style="font-weight: 700; color: #fff;">Chá»£ á»¨ng Dá»¥ng Premium</div>
+
+                      <div style="font-size: 0.78rem; color: var(--admin-muted);">TÃ i khoáº£n VIP, ChatGPT, Netflix,...</div>
+
+                    </div>
+
+                  </div>
+
+                  <label class="switch-toggle">
+
+                    <input type="checkbox" id="toggleServicePremium" checked>
+
+                    <span class="slider round"></span>
+
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="admin-card">
+
+            <div class="card-header">
+
+              <h3><i class="fa-brands fa-telegram text-blue"></i> CÃ i Äáº·t Telegram Bot ThÃ´ng BÃ¡o</h3>
+
+            </div>
+
+            <form id="telegramConfigForm" class="admin-form" onsubmit="return false;">
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>Telegram Bot Token:</label>
+
+                  <input type="text" id="tgBotToken" class="admin-input">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>Telegram Chat ID:</label>
+
+                  <input type="text" id="tgChatId" class="admin-input">
+
+                </div>
+
+              </div>
+
+              <div style="display: flex; gap: 12px; margin-top: 14px;">
+
+                <button type="submit" id="btnSaveTgConfig" class="btn-admin-primary">
+
+                  <i class="fa-solid fa-floppy-disk"></i> LÆ°u Telegram
+
+                </button>
+
+                <button type="button" class="btn-admin-action" id="btnTestTg">
+
+                  <i class="fa-solid fa-paper-plane"></i> Gá»­i Tin Nháº¯n Test
+
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+
+
+          <!-- Change Admin Password -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header">
+
+              <h3><i class="fa-solid fa-lock text-warning"></i> Äá»•i Máº­t Kháº©u Quáº£n Trá»‹ ViÃªn</h3>
+
+            </div>
+
+            <div class="admin-form" style="max-width: 450px;">
+
+              <div class="form-group">
+
+                <label>Máº­t Kháº©u Má»›i:</label>
+
+                <input type="password" id="newAdminPassword" class="admin-input" placeholder="Nháº­p máº­t kháº©u má»›i..." autocomplete="new-password">
+
+              </div>
+
+              <button type="button" class="btn-admin-primary" id="btnSaveAdminPassword">
+
+                <i class="fa-solid fa-shield"></i> Cáº­p Nháº­t Máº­t Kháº©u
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- GitHub Auto Backup Config -->
+
+          <div class="admin-card" style="margin-top: 24px;">
+
+            <div class="card-header">
+
+              <h3><i class="fa-brands fa-github text-white"></i> CÃ i Äáº·t Äá»“ng Bá»™ Sao LÆ°u GitHub</h3>
+
+            </div>
+
+            <div class="admin-form">
+
+              <div class="form-row">
+
+                <div class="form-col">
+
+                  <label>GitHub Repository:</label>
+
+                  <input type="text" id="ghRepo" class="admin-input" value="cheatdth206/chungsuclienquan">
+
+                </div>
+
+                <div class="form-col">
+
+                  <label>GitHub Personal Access Token:</label>
+
+                  <input type="password" id="ghToken" class="admin-input" value="">
+
+                </div>
+
+              </div>
+
+              <button type="button" class="btn-admin-primary" id="btnSaveGhConfig" style="margin-top: 14px;">
+
+                <i class="fa-solid fa-cloud-arrow-up"></i> LÆ°u & Test Sync GitHub
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+        <!-- ========================================== -->
+        <!-- TAB: POPUP ANNOUNCEMENT MANAGEMENT        -->
+        <!-- ========================================== -->
+        <section class="admin-panel admin-popup-panel" id="panel-announcement" data-tab-panel="admin-popup-panel">
+          <div class="admin-card" id="admin-popup-panel" style="margin-bottom: 24px; border: 1.5px solid rgba(245, 158, 11, 0.4); background: rgba(19, 29, 53, 0.95); border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);">
+            <!-- Card Header: Title + Switch Toggle -->
+            <div class="card-header flex-between" style="flex-wrap: wrap; gap: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 16px;">
+              <div>
+                <h3 style="color: #fbbf24; display: flex; align-items: center; gap: 10px; font-size: 1.2rem; font-weight: 800; margin: 0;">
+                  <i class="fa-solid fa-bullhorn text-warning" style="font-size: 1.3rem;"></i> 📢 Cài Đặt Popup Thông Báo Toàn Website
+                </h3>
+                <p style="color: var(--admin-muted); font-size: 0.85rem; margin-top: 5px; margin-bottom: 0;">
+                  Hiển thị modal banner Cyber-Kawaii khi khách vào web. Quản lý đồng bộ 2 chiều (Web Admin &amp; Telegram Bot).
+                </p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px; background: rgba(15, 23, 42, 0.7); padding: 8px 18px; border-radius: 14px; border: 1px solid rgba(245, 158, 11, 0.3);">
+                <span style="font-size: 0.88rem; font-weight: 700; color: #fff;">Bật Popup:</span>
+                <label class="switch-toggle" style="margin: 0; cursor: pointer;">
+                  <input type="checkbox" id="togglePopupAnnouncement" checked>
+                  <input type="checkbox" id="popup-active" checked style="position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0;">
+                  <span class="slider round"></span>
+                </label>
+                <span id="popupStatusBadge" class="badge-status" style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-weight: 800; padding: 4px 12px; border-radius: 8px; font-size: 0.82rem; letter-spacing: 0.5px;">ĐANG BẬT</span>
+              </div>
+            </div>
+
+            <!-- Card Body: Split 2 Columns (Form Cấu Hình & Real-time Live Preview) -->
+            <div class="card-body" style="padding-top: 22px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; align-items: start;">
+                <!-- CỘT 1: FORM CẤU HÌNH CHI TIẾT -->
+                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 20px;">
+                  <h4 style="color: #60a5fa; font-size: 1rem; font-weight: 700; margin-top: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-sliders"></i> Soạn Thảo Cấu Hình
+                  </h4>
+                  <form id="popupAnnouncementForm" onsubmit="return false;">
+                    <div class="form-group" style="margin-bottom: 16px;">
+                      <label style="font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 0.9rem;">
+                        <i class="fa-solid fa-heading text-gold"></i> Tiêu Đề Popup:
+                      </label>
+                      <input type="text" id="popupTitleInput" class="admin-input" placeholder="🎉 THÔNG BÁO TỪ HỆ THỐNG" style="font-size: 0.95rem; font-weight: 600; width: 100%; border-radius: 10px;">
+                      <input type="hidden" id="popup-title" value="">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 18px;">
+                      <label style="font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 0.9rem;">
+                        <i class="fa-solid fa-pen-nib text-cyan"></i> Nội Dung Popup (Hỗ trợ Emoji, xuống dòng, liên kết):
+                      </label>
+                      <textarea id="popupContentInput" class="admin-input" rows="6" placeholder="Nhập nội dung thông báo gửi đến khách hàng..." style="font-size: 0.92rem; line-height: 1.6; resize: vertical; width: 100%; border-radius: 10px;"></textarea>
+                      <textarea id="popup-content" style="display: none;"></textarea>
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.8rem; color: var(--admin-dim); flex-wrap: wrap; gap: 6px;">
+                        <span><i class="fa-regular fa-clock"></i> Cập nhật gần nhất: <span id="popupLastUpdated" style="color: #94a3b8; font-weight: 600;">Chưa cập nhật</span></span>
+                        <span><i class="fa-brands fa-telegram text-blue"></i> Đồng bộ với lệnh bot <code>/popup &lt;nội dung&gt;</code></span>
+                      </div>
+                    </div>
+
+                    <!-- Button Action Group -->
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 20px;">
+                      <button type="button" class="btn-admin-primary" id="btnSavePopupAnnouncement" onclick="savePopupConfig()" style="padding: 10px 22px; font-weight: 700; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <i class="fa-solid fa-floppy-disk"></i> 💾 Lưu Cấu Hình
+                      </button>
+                      <button type="button" class="btn-admin-action" id="btnPreviewPopupAnnouncement" onclick="previewPopupConfig()" style="padding: 10px 18px; font-weight: 600; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <i class="fa-solid fa-eye text-cyan"></i> 👁️ Xem Thử (Preview)
+                      </button>
+                      <button type="button" class="btn-admin-action" id="btnClearPopupAnnouncement" onclick="clearPopupConfig()" style="padding: 10px 18px; font-weight: 600; color: #f87171; border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.1); border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <i class="fa-solid fa-trash-can"></i> ❌ Xóa Sạch Nội Dung &amp; Tắt
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- CỘT 2: KHUNG XEM TRƯỚC TRỰC QUAN TECH-CUTE CYBER-KAWAII (REAL-TIME LIVE PREVIEW) -->
+                <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 14px; padding: 20px;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <h4 style="color: #fbbf24; font-size: 1rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;">
+                      <i class="fa-solid fa-desktop"></i> Khung Xem Trước Trực Quan
+                    </h4>
+                    <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); padding: 2px 10px; border-radius: 9999px; font-weight: 700;">
+                      <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; margin-right: 4px;"></span> LIVE PREVIEW
+                    </span>
+                  </div>
+
+                  <!-- Mô phỏng chính xác modal popup của khách hàng -->
+                  <div style="background: linear-gradient(135deg, rgba(26, 38, 66, 0.98), rgba(15, 23, 42, 0.98)); border: 1.5px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 24px 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); text-align: center; position: relative;">
+                    <!-- Badge Bell Icon Glowing -->
+                    <div style="width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.25)); display: flex; align-items: center; justify-content: center; color: #fbbf24; font-size: 1.6rem; margin: 0 auto 12px auto; border: 2px solid rgba(245, 158, 11, 0.4); box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);">
+                      <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+
+                    <!-- Pill Tag -->
+                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 9999px; font-size: 0.72rem; font-weight: 800; background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); margin-bottom: 10px;">
+                      <span style="width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span> THÔNG BÁO TỪ HỆ THỐNG
+                    </div>
+
+                    <!-- Title -->
+                    <h3 id="panelLivePreviewTitle" style="font-size: 1.15rem; font-weight: 800; color: #fff; margin: 0 0 12px 0; line-height: 1.4;">
+                      🎉 THÔNG BÁO TỪ HỆ THỐNG
+                    </h3>
+
+                    <!-- Body Content Box -->
+                    <div id="panelLivePreviewContent" style="background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 14px; font-size: 0.9rem; line-height: 1.6; color: #cbd5e1; text-align: left; white-space: pre-wrap; word-break: break-word; max-height: 200px; overflow-y: auto; margin-bottom: 16px;">
+                      Chào mừng bạn đến với DTH Services! Chúc bạn một ngày tốt lành.
+                    </div>
+
+                    <!-- Footer Button -->
+                    <div style="display: flex; justify-content: center;">
+                      <button type="button" style="border-radius: 9999px; padding: 10px 24px; font-weight: 700; font-size: 0.88rem; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #fff; cursor: default; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
+                        ✓ Đã Hiểu / Đóng
+                      </button>
+                    </div>
+                  </div>
+                  <div style="text-align: center; margin-top: 10px; font-size: 0.78rem; color: var(--admin-dim);">
+                    <i class="fa-solid fa-circle-info"></i> Khung trên phản ánh chính xác 100% modal khách hàng nhìn thấy khi ghé website.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Add Token Set Modal (Smart Auto-TÃ¡ch Token) -->
+
+  <div class="modal-backdrop" id="addTokenModal" style="display: none;">
+
+    <div class="modal-card">
+
+      <button type="button" class="modal-close-btn" onclick="var m=document.getElementById('addTokenModal'); if(m){m.style.setProperty('display','none','important'); m.classList.remove('active','show');}">&times;</button>
+
+      
+
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+
+        <div style="width: 42px; height: 42px; background: rgba(37, 99, 235,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 1.3rem;">
+
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        </div>
+
+        <div>
+
+          <h3 style="color: #fff; font-size: 1.2rem; margin: 0;">ThÃªm & Tá»± Äá»™ng BÃ³c TÃ¡ch Token StoreKit 2</h3>
+
+          <p style="color: #94a3b8; font-size: 0.85rem; margin: 0;">Há»‡ thá»‘ng tá»± nháº­n diá»‡n vÃ  bÃ³c tÃ¡ch Fetch Token & App Transaction, báº¡n khÃ´ng cáº§n pháº£i tá»± tÃ¡ch!</p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="admin-form">
+
+        <!-- Smart Auto-Extract Area -->
+
+        <div class="form-group" style="background: rgba(37, 99, 235,0.06); border: 1.5px dashed rgba(37, 99, 235,0.4); border-radius: 14px; padding: 14px;">
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+
+            <label style="color: #60a5fa; font-weight: 700; margin: 0;">
+
+              <i class="fa-solid fa-bolt"></i> DÃ¡n ToÃ n Bá»™ Dá»¯ Liá»‡u VÃ o ÄÃ¢y (Tá»± BÃ³c TÃ¡ch 100%):
+
+            </label>
+
+            <button type="button" id="btnPasteRawToken" style="background: rgba(37, 99, 235,0.2); border: 1px solid rgba(37, 99, 235,0.5); color: #60a5fa; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+
+              <i class="fa-regular fa-paste"></i> DÃ¡n tá»« Clipboard
+
+            </button>
+
+          </div>
+
+          <textarea id="smartRawInput" class="admin-input" rows="4" placeholder="DÃ¡n lá»‡nh cURL, raw HTTP request tá»« Proxyman / HTTP Catcher / Thor, hoáº·c JSON chá»©a fetch_token vÃ  app_transaction vÃ o Ä‘Ã¢y..."></textarea>
+
+          <div id="smartParseStatus" style="display: none; margin-top: 8px; font-size: 0.85rem; padding: 8px 12px; border-radius: 8px;"></div>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label>TÃªn gá»£i nhá»› cho Token (TÃ¹y chá»n):</label>
+
+          <input type="text" id="newTokenName" class="admin-input" placeholder="vd: Token iOS 18 má»›i (Charles)">
+
+        </div>
+
+
+
+        <!-- Auto-filled fields -->
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+
+          <div class="form-group">
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+
+              <label style="margin: 0; font-size: 0.82rem;">Fetch Token (JWS):</label>
+
+              <span id="badgeFetchStatus" style="font-size: 0.75rem; color: #94a3b8;">ChÆ°a cÃ³</span>
+
+            </div>
+
+            <textarea id="newTokenFetch" class="admin-input" rows="3" placeholder="eyJ..."></textarea>
+
+          </div>
+
+          <div class="form-group">
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+
+              <label style="margin: 0; font-size: 0.82rem;">App Transaction (JWS):</label>
+
+              <span id="badgeAppTransStatus" style="font-size: 0.75rem; color: #94a3b8;">ChÆ°a cÃ³</span>
+
+            </div>
+
+            <textarea id="newTokenAppTrans" class="admin-input" rows="3" placeholder="eyJ..."></textarea>
+
+          </div>
+
+        </div>
+
+
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+
+          <div class="form-group">
+
+            <label style="font-size: 0.82rem;">Transaction ID:</label>
+
+            <input type="text" id="newTokenTransId" class="admin-input" value="570002518164026">
+
+          </div>
+
+          <div class="form-group">
+
+            <label style="font-size: 0.82rem;">Product ID:</label>
+
+            <input type="text" id="newTokenProductId" class="admin-input" value="locket_199_1m">
+
+          </div>
+
+        </div>
+
+
+
+        <div style="display: flex; gap: 12px; margin-top: 10px;">
+
+          <button type="button" class="btn-admin-primary" id="btnSaveNewToken" style="flex: 1; padding: 12px; font-size: 0.95rem; font-weight: 700; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: 10px; color: #ffffff; cursor: pointer;">
+
+            <i class="fa-solid fa-cloud-arrow-up"></i> LÆ°u & KÃ­ch Hoáº¡t Token
+
+          </button>
+
+          <button type="button" class="btn-admin-action" onclick="var m=document.getElementById('addTokenModal'); if(m){m.style.setProperty('display','none','important'); m.classList.remove('active','show');}" style="padding: 12px 22px;">
+
+            ÄÃ³ng
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Mobile Bottom Navigation Bar -->
+
+  <nav class="admin-mobile-bottom-nav">
+
+    <button type="button" class="admin-mobile-nav-btn active" data-tab="dashboard">
+
+      <i class="fa-solid fa-chart-pie"></i>
+
+      <span>Tá»•ng Quan</span>
+
+    </button>
+
+    <button type="button" class="admin-mobile-nav-btn" data-tab="orders-chungsuc">
+
+      <i class="fa-solid fa-gamepad text-gold"></i>
+
+      <span>Chung Sá»©c</span>
+
+    </button>
+
+    <button type="button" class="admin-mobile-nav-btn" data-tab="orders-locket">
+
+      <i class="fa-solid fa-heart text-pink"></i>
+
+      <span>Locket</span>
+
+    </button>
+
+    <button type="button" class="admin-mobile-nav-btn" data-tab="orders-mxh">
+
+      <i class="fa-solid fa-rocket text-cyan"></i>
+
+      <span>MXH</span>
+
+    </button>
+
+    <button type="button" class="admin-mobile-nav-btn" id="btnBottomNavMenu">
+
+      <i class="fa-solid fa-bars"></i>
+
+      <span>CÃ i Äáº·t</span>
+
+    </button>
+
+  </nav>
+
+
+
+  <div class="toast-container" id="adminToastContainer"></div>
+
+
+
+  <!-- Admin Script -->
+
+    <script>
+
+    function closeAddTokenModal() {
+
+      var m = document.getElementById("addTokenModal");
+
+      if (m) {
+
+        m.style.setProperty("display", "none", "important");
+
+        m.classList.remove("active", "show");
+
+      }
+
+    }
+
+    function openAddTokenModal() {
+
+      var m = document.getElementById("addTokenModal");
+
+      if (m) {
+
+        m.style.setProperty("display", "flex", "important");
+
+        m.classList.add("active", "show");
+
+      }
+
+    }
+
+    window.closeAddTokenModal = closeAddTokenModal;
+
+    window.openAddTokenModal = openAddTokenModal;
+
+  </script>
+
+  <script src="{{ url_for('static', filename='js/admin.js') }}?v={{ range(1000, 9999) | random }}"></script>
+
+
+
+  <!-- Modal ThÃªm Dá»‹ch Vá»¥ Má»›i Cho Chá»£ Premium -->
+
+  <div class="modal-backdrop" id="modalAddPremiumService" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center; padding: 16px;">
+
+    <div style="background: #1e293b; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 18px; width: 100%; max-width: 580px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden;">
+
+      <div style="padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between;">
+
+        <h3 style="margin: 0; font-size: 1.15rem; color: #34d399; display: flex; align-items: center; gap: 8px;">
+
+          <i class="fa-solid fa-plus-circle"></i> ThÃªm Dá»‹ch Vá»¥ Má»›i VÃ o Chá»£ Premium
+
+        </h3>
+
+        <button type="button" onclick="closeAddServiceModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">&times;</button>
+
+      </div>
+
+
+
+      <div style="padding: 20px 22px; max-height: 70vh; overflow-y: auto;">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">MÃ£ Dá»‹ch Vá»¥ (ID): <span style="color:#ef4444;">*</span></label>
+
+            <input type="text" id="addSvcId" class="admin-input" placeholder="vd: chatgpt, canva, capcut..." style="width: 100%;">
+
+            <small style="color: var(--admin-muted); font-size: 0.75rem;">Chá»¯ cÃ¡i thÆ°á»ng khÃ´ng dáº¥u, khÃ´ng dáº¥u cÃ¡ch</small>
+
+          </div>
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">TÃªn Dá»‹ch Vá»¥: <span style="color:#ef4444;">*</span></label>
+
+            <input type="text" id="addSvcName" class="admin-input" placeholder="vd: ChatGPT Plus, Canva Pro..." style="width: 100%;">
+
+          </div>
+
+        </div>
+
+
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Icon FontAwesome:</label>
+
+            <input type="text" id="addSvcIcon" class="admin-input" value="fa-solid fa-robot" placeholder="vd: fa-solid fa-robot..." style="width: 100%;">
+
+          </div>
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">MÃ u Sáº¯c Äáº¡i Diá»‡n:</label>
+
+            <div style="display: flex; gap: 8px; align-items: center;">
+
+              <input type="color" id="addSvcColorPicker" value="#10a37f" style="width: 42px; height: 38px; border: none; border-radius: 8px; cursor: pointer;" onchange="document.getElementById('addSvcColor').value = this.value">
+
+              <input type="text" id="addSvcColor" class="admin-input" value="#10a37f" style="flex: 1;" onchange="document.getElementById('addSvcColorPicker').value = this.value">
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Huy Hiá»‡u (Badge):</label>
+
+            <input type="text" id="addSvcBadge" class="admin-input" value="ChÃ­nh Chá»§ GPT-4o" placeholder="vd: BÃ¡n Cháº¡y, VIP..." style="width: 100%;">
+
+          </div>
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Kháº©u Hiá»‡u (Tagline):</label>
+
+            <input type="text" id="addSvcTagline" class="admin-input" placeholder="MÃ´ táº£ ngáº¯n gá»n vá» dá»‹ch vá»¥..." style="width: 100%;">
+
+          </div>
+
+        </div>
+
+
+
+        <div style="margin-bottom: 14px;">
+
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">NhÃ£n Ã” Nháº­p ThÃ´ng Tin KhÃ¡ch HÃ ng:</label>
+
+          <input type="text" id="addSvcInputLabel" class="admin-input" value="Email tÃ i khoáº£n OpenAI cáº§n nÃ¢ng cáº¥p" style="width: 100%;">
+
+        </div>
+
+
+
+        <div style="margin-bottom: 14px;">
+
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Ghi ChÃº HÆ°á»›ng Dáº«n / Báº£o Máº­t:</label>
+
+          <input type="text" id="addSvcGuideNote" class="admin-input" value="NÃ¢ng cáº¥p chÃ­nh chá»§ trá»±c tiáº¿p trÃªn tÃ i khoáº£n cá»§a báº¡n, an toÃ n 100%." style="width: 100%;">
+
+        </div>
+
+
+
+        <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.15);">
+
+          <strong style="color: #facc15; font-size: 0.9rem; display: block; margin-bottom: 8px;">GÃ³i Máº·c Äá»‹nh Äáº§u TiÃªn:</strong>
+
+          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px;">
+
+            <div>
+
+              <label style="font-size: 0.78rem; color: #94a3b8;">TÃªn GÃ³i:</label>
+
+              <input type="text" id="addSvcPkgName" class="admin-input" value="GÃ³i 1 ThÃ¡ng" style="width: 100%;">
+
+            </div>
+
+            <div>
+
+              <label style="font-size: 0.78rem; color: #94a3b8;">Thá»i Háº¡n:</label>
+
+              <input type="text" id="addSvcPkgDuration" class="admin-input" value="1 ThÃ¡ng" style="width: 100%;">
+
+            </div>
+
+            <div>
+
+              <label style="font-size: 0.78rem; color: #94a3b8;">GiÃ¡ (VNÄ):</label>
+
+              <input type="number" id="addSvcPkgPrice" class="admin-input" value="199000" step="1000" style="width: 100%;">
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div style="padding: 16px 22px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: flex-end; gap: 10px;">
+
+        <button type="button" class="btn-admin-secondary" onclick="closeAddServiceModal()">Há»§y</button>
+
+        <button type="button" class="btn-admin-primary" id="btnSubmitAddSvc" onclick="submitAddService()">
+
+          <i class="fa-solid fa-plus-circle"></i> Táº¡o Dá»‹ch Vá»¥ Ngay
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Modal ThÃªm GÃ³i Má»›i Cho Dá»‹ch Vá»¥ -->
+
+  <div class="modal-backdrop" id="modalAddPremiumPackage" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center; padding: 16px;">
+
+    <div style="background: #1e293b; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 18px; width: 100%; max-width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden;">
+
+      <div style="padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between;">
+
+        <h3 style="margin: 0; font-size: 1.15rem; color: #f59e0b; display: flex; align-items: center; gap: 8px;">
+
+          <i class="fa-solid fa-box-open"></i> ThÃªm GÃ³i Má»›i (<span id="addPkgTargetSvcName">...</span>)
+
+        </h3>
+
+        <button type="button" onclick="closeAddPackageModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">&times;</button>
+
+      </div>
+
+
+
+      <div style="padding: 20px 22px;">
+
+        <input type="hidden" id="addPkgTargetSvcId">
+
+
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">MÃ£ GÃ³i (ID): <span style="color:#ef4444;">*</span></label>
+
+            <input type="text" id="addPkgId" class="admin-input" maxlength="64" placeholder="vd: yt_3y, nf_vinhvien..." style="width: 100%;">
+
+          </div>
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Thá»i Háº¡n: <span style="color:#ef4444;">*</span></label>
+
+            <input type="text" id="addPkgDuration" class="admin-input" placeholder="vd: 3 ThÃ¡ng, 1 NÄƒm..." style="width: 100%;">
+
+          </div>
+
+        </div>
+
+
+
+        <div style="margin-bottom: 14px;">
+
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">TÃªn GÃ³i Hiá»ƒn Thá»‹: <span style="color:#ef4444;">*</span></label>
+
+          <input type="text" id="addPkgName" class="admin-input" placeholder="vd: GÃ³i Tiáº¿t Kiá»‡m 6 ThÃ¡ng..." style="width: 100%;">
+
+        </div>
+
+
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">GiÃ¡ BÃ¡n (VNÄ): <span style="color:#ef4444;">*</span></label>
+
+            <input type="number" id="addPkgPrice" class="admin-input" placeholder="vd: 149000" step="1000" style="width: 100%;">
+
+          </div>
+
+          <div>
+
+            <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">Huy Hiá»‡u (Badge):</label>
+
+            <input type="text" id="addPkgBadge" class="admin-input" placeholder="vd: Hot ðŸ”¥, Tiáº¿t Kiá»‡m..." style="width: 100%;">
+
+          </div>
+
+        </div>
+
+
+
+        <div style="margin-bottom: 14px;">
+
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">MÃ´ Táº£ GÃ³i:</label>
+
+          <textarea id="addPkgDesc" class="admin-input" maxlength="500" rows="3" placeholder="Ghi chÃº riÃªng cho gÃ³i, hiá»ƒn thá»‹ á»Ÿ trang Ä‘áº·t hÃ ng..." style="width: 100%; resize: vertical;"></textarea>
+
+        </div>
+
+      </div>
+
+
+
+      <div style="padding: 16px 22px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: flex-end; gap: 10px;">
+
+        <button type="button" class="btn-admin-secondary" onclick="closeAddPackageModal()">Há»§y</button>
+
+        <button type="button" class="btn-admin-primary" id="btnSubmitAddPkg" onclick="submitAddPackage()">
+
+          <i class="fa-solid fa-plus-circle"></i> ThÃªm GÃ³i Ngay
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+  <!-- Modal BÃ n Giao Báº£n Quyá»n / TÃ i Khoáº£n KhÃ¡ch HÃ ng -->
+
+  <div class="modal-backdrop" id="modalDeliveryInfo" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center; padding: 16px;">
+
+    <div style="background: #1e293b; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 18px; width: 100%; max-width: 560px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden;">
+
+      <div style="padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between;">
+
+        <h3 style="margin: 0; font-size: 1.15rem; color: #f59e0b; display: flex; align-items: center; gap: 8px;">
+
+          <i class="fa-solid fa-crown"></i> BÃ n Giao Báº£n Quyá»n: <span id="delivModalOid" style="color: #38bdf8;">#PR00000</span>
+
+        </h3>
+
+        <button type="button" onclick="closeDeliveryModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.3rem; cursor: pointer;">&times;</button>
+
+      </div>
+
+
+
+      <div style="padding: 20px 22px;">
+
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.88rem;">
+
+            <span style="color: #94a3b8;">Dá»‹ch vá»¥:</span>
+
+            <strong id="delivModalPlat" style="color: #facc15;">YouTube Premium</strong>
+
+          </div>
+
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.88rem;">
+
+            <span style="color: #94a3b8;">GÃ³i Ä‘Äƒng kÃ½:</span>
+
+            <strong id="delivModalPkg" style="color: #e2e8f0;">GÃ³i 1 NÄƒm</strong>
+
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: 0.88rem;">
+
+            <span style="color: #94a3b8;">TÃ i khoáº£n nháº­n:</span>
+
+            <strong id="delivModalTarget" style="color: #38bdf8; word-break: break-all;">test@gmail.com</strong>
+
+          </div>
+
+        </div>
+
+
+
+        <div style="margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+
+          <label style="font-weight: 700; font-size: 0.85rem; color: #cbd5e1;">Ná»™i Dung BÃ n Giao / TÃ i Khoáº£n / Key:</label>
+
+          <div style="display: flex; gap: 6px;">
+
+            <button type="button" onclick="setDeliveryTemplate('yt')" class="admin-badge" style="cursor: pointer; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); font-size: 0.72rem;">Máº«u YT</button>
+
+            <button type="button" onclick="setDeliveryTemplate('sp')" class="admin-badge" style="cursor: pointer; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); font-size: 0.72rem;">Máº«u Spotify</button>
+
+            <button type="button" onclick="setDeliveryTemplate('nf')" class="admin-badge" style="cursor: pointer; background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); font-size: 0.72rem;">Máº«u Netflix</button>
+
+          </div>
+
+        </div>
+
+
+
+        <textarea id="delivModalContent" class="admin-input" rows="6" placeholder="Nháº­p thÃ´ng tin tÃ i khoáº£n, máº­t kháº©u, link kÃ­ch hoáº¡t hoáº·c thÃ´ng bÃ¡o bÃ n giao cho khÃ¡ch..." style="width: 100%; resize: vertical; font-family: monospace; font-size: 0.88rem;"></textarea>
+
+        <small style="color: #94a3b8; display: block; margin-top: 6px; font-size: 0.8rem;">
+
+          <i class="fa-solid fa-circle-info text-cyan"></i> Ná»™i dung nÃ y sáº½ Ä‘Æ°á»£c lÆ°u vÃ o Ä‘Æ¡n vÃ  hiá»ƒn thá»‹ ngay láº­p tá»©c khi khÃ¡ch tra cá»©u Ä‘Æ¡n hÃ ng, Ä‘á»“ng thá»i gá»­i thÃ´ng bÃ¡o qua Zalo/Telegram.
+
+        </small>
+
+      </div>
+
+
+
+      <div style="padding: 16px 22px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: flex-end; gap: 10px;">
+
+        <button type="button" class="btn-admin-secondary" onclick="closeDeliveryModal()">ÄÃ³ng</button>
+
+        <button type="button" class="btn-admin-primary" id="btnSubmitDelivery" onclick="submitDeliveryInfo()">
+
+          <i class="fa-solid fa-paper-plane"></i> LÆ°u & BÃ n Giao Cho KhÃ¡ch
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+  <!-- Admin Live Preview Modal for Announcement -->
+  <div class="modal-backdrop announcement-backdrop" id="modalAdminPopupPreview" style="display: none;">
+    <div class="modal-card announcement-card" style="max-width: 480px;">
+      <button type="button" class="modal-close-btn" onclick="document.getElementById('modalAdminPopupPreview').style.display='none'">&times;</button>
+      <div class="announcement-header">
+        <div class="announcement-icon-badge" style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.25)); display: flex; align-items: center; justify-content: center; color: #fbbf24; font-size: 1.8rem; margin: 0 auto 12px auto; border: 2px solid rgba(245, 158, 11, 0.4);">
+          <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div class="announcement-pill-tag" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); margin-bottom: 8px;">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: #f59e0b; display: inline-block;"></span> XEM TRÆ¯á»šC GIAO DIá»†N KHÃCH HÃ€NG
+        </div>
+        <h3 class="announcement-title" id="adminPreviewTitle" style="font-size: 1.25rem; font-weight: 800; color: #fff; margin: 0;">
+          ðŸŽ‰ THÃ”NG BÃO Tá»ª Há»† THá»NG
+        </h3>
+      </div>
+      <div class="announcement-body" style="margin: 16px 0;">
+        <div class="announcement-content-box" id="adminPreviewContent" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 16px; font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; text-align: left; white-space: pre-wrap; word-break: break-word; max-height: 250px; overflow-y: auto;">
+          Ná»™i dung xem trÆ°á»›c...
+        </div>
+      </div>
+      <div class="announcement-footer" style="display: flex; justify-content: center;">
+        <button type="button" class="btn-admin-primary" onclick="document.getElementById('modalAdminPopupPreview').style.display='none'" style="border-radius: 9999px; padding: 12px 28px; font-weight: 700; background: linear-gradient(135deg, #f59e0b, #d97706); border: none;">
+          âœ• ÄÃ£ Hiá»ƒu / ÄÃ³ng (Xem trÆ°á»›c)
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
+
+

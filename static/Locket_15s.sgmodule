@@ -1,0 +1,25 @@
+#!name=👑 Locket Gold All-In-One (dth206)
+#!desc=Module Locket Gold VIP hoàn hảo nhất bởi dth206 | Mở khóa Gold Vĩnh Viễn + Video 60s + 280+ Captions VIP + Khung Shin-chan & Doraemon + Chuẩn 2K H.265 + Gửi Riêng Mình + Chặn QC & Tracking
+#!author=dth206
+#!homepage=https://github.com/dth20006/shadow
+#!system=ios
+
+[Header Rewrite]
+^https?:\/\/api\.(revenuecat|rc-backup)\.com\/.+\/(receipts$|subscribers\/?(.*?)*$) header-del x-revenuecat-etag
+^https?:\/\/api\.(revenuecat|rc-backup)\.com\/.+\/(receipts$|subscribers\/?(.*?)*$) header-del X-RevenueCat-ETag
+
+[Script]
+# 1. Mở khóa Locket Gold VIP Vĩnh Viễn (RevenueCat)
+dth_gold = type=http-response, pattern=^https:\/\/api\.(revenuecat|rc-backup)\.com\/.+\/(receipts$|subscribers\/[^/]+$), script-path=https://raw.githubusercontent.com/dth20006/shadow/main/dth_gold.js?v=3.5, requires-body=true, max-size=-1, timeout=60
+
+# 2. Xóa Header ETag & Fake US Geo IP (Bỏ cache 304 RevenueCat)
+dth_del_header = type=http-request, pattern=^https:\/\/api\.(revenuecat|rc-backup)\.com\/.+\/(receipts|subscribers), script-path=https://raw.githubusercontent.com/dth20006/shadow/main/dth_del_header.js?v=3.5, timeout=60
+
+# 3. Yêu cầu Full Remote Config US (Bỏ If-None-Match tránh lỗi 304 không có body)
+dth_rc_request = type=http-request, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/(locket-4252a|locket-camera)\/namespaces\/firebase:fetch, script-path=https://raw.githubusercontent.com/dth20006/shadow/main/dth_rc_request.js?v=3.5, requires-body=true, max-size=-1, timeout=30
+
+# 4. Kích hoạt Video 60s, 280+ Captions VIP, Khung Widget, 2K H.265, AI Filters & All Feature Gates
+dth_unlocked = type=http-response, pattern=^https:\/\/firebaseremoteconfig\.googleapis\.com\/v1\/projects\/(locket-4252a|locket-camera)\/.+, script-path=https://raw.githubusercontent.com/dth20006/shadow/main/dth_unlocked.js?v=3.5, requires-body=true, max-size=-1, timeout=60
+
+[MITM]
+hostname = %APPEND% api.revenuecat.com, api.rc-backup.com, firebaseremoteconfig.googleapis.com

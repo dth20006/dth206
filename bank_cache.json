@@ -1,0 +1,1624 @@
+{
+  "last_check": 1793636789.5002735,
+  "processed_trans": [
+    "261101004476012",
+    "261101004492728",
+    "261101004653662",
+    "261101004657072",
+    "261102000097048",
+    "261102003730227",
+    "261102003749080",
+    "261102004442095",
+    "261102004456952",
+    "261102004776378",
+    "261102005308498",
+    "261102005574710",
+    "261102005596666",
+    "261102005615867",
+    "261102005617044",
+    "261102005625719",
+    "261102005625975",
+    "261102005681550",
+    "261102005747615",
+    "261102005755411",
+    "261103000897524",
+    "261103003584912",
+    "261103004715978",
+    "261103004810842",
+    "261103005073065",
+    "261103005550313",
+    "261103005554547",
+    "261103005578035",
+    "261103005585923",
+    "261104000081012"
+  ],
+  "rate_limit_until": 0,
+  "cached_trans_list": [
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005755411",
+          "trans_type": 1,
+          "product_code": "FS006",
+          "app_id": "1402",
+          "description": "Nhận tiền tự động vào Số dư sinh lời",
+          "trans_time": "2026-11-02T15:50:35Z",
+          "trans_amount": "20000",
+          "sign": -1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Số dư sinh lời",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_finance_sdsl.dca3f3bab8f89c1e.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102dbkb2ihtg2cs73ekaamg"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": []
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102dbkb2ihtg2cs73ekaamg",
+          "ref_trans_id": "0",
+          "balance_snapshot": "0",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T15:50:34.835372Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005681550",
+          "trans_type": 11,
+          "product_code": "MS001",
+          "app_id": "3253",
+          "description": "Nhận tiền từ Dinh Tuan Hung",
+          "trans_time": "2026-11-02T15:50:33Z",
+          "trans_amount": "20000",
+          "sign": 1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Nhận tiền qua mã QR",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_mywallet_qrreceive.b0e56bb9184754ba.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Người gửi",
+                "value": " Dinh Tuan Hung "
+              },
+              {
+                "name": "Ngân hàng",
+                "value": " OCB - Ngân hàng TMCP Phương Đông "
+              },
+              {
+                "name": "Số tài khoản",
+                "value": " ************6004 "
+              },
+              {
+                "name": "Lời nhắn",
+                "value": " CS46002 "
+              },
+              {
+                "name": "Mã đơn hàng",
+                "value": " 261102000559122"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển tiền",
+                "link": "/chuyen-tien?app_id=3253&from_source=ctgd_qr_code",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 1,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102000559122",
+          "ref_trans_id": "0",
+          "balance_snapshot": "20000",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": null,
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005747615",
+          "trans_type": 1,
+          "product_code": "TF007",
+          "app_id": "241",
+          "description": "Hùng dùng Zalopay chuyển tiền",
+          "trans_time": "2026-11-02T15:49:33Z",
+          "trans_amount": "20000",
+          "sign": -1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Số dư sinh lời",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Chuyển tiền",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_transfer_money.a4a72edbc723bb5d.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": {
+              "steps": [
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Zalopay trừ tiền thành công",
+                  "time": "2026-11-02T15:49:33Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Nhà cung cấp xử lý thành công",
+                  "time": "2026-11-02T15:49:33Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Giao dịch thành công",
+                  "time": "2026-11-02T15:49:33Z"
+                }
+              ]
+            },
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102901384766"
+              },
+              {
+                "name": "Người nhận",
+                "value": "Dinh Tuan Hung"
+              },
+              {
+                "name": "Ngân hàng",
+                "value": "Ngân hàng TMCP Phương Đông"
+              },
+              {
+                "name": "Số tài khoản",
+                "value": "0119100012826004"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển thêm",
+                "link": "/chuyen-tien?app_id=241&from_source=ctgd_ibft_more&order_no=261102901384766",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102901384766",
+          "ref_trans_id": "0",
+          "balance_snapshot": "-1",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": {
+            "scope": "chuyen_tien",
+            "module": "./CustomAreaTransHistory",
+            "remote_entry": "https://sapi.zalopay.vn/mfpublic/share-module/micro-app/9c5ee045-1b45-4197-9191-a5d8f3117d92",
+            "props": "{\"appID\":\"241\",\"appTransID\":\"261102901384766\",\"fromSource\":\"TRANSACTION\",\"productCode\":\"TF007\",\"zpTransID\":\"261102005747615\"}"
+          },
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T15:49:31.362452Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005625975",
+          "trans_type": 1,
+          "product_code": "FS006",
+          "app_id": "1402",
+          "description": "Nhận tiền tự động vào Số dư sinh lời",
+          "trans_time": "2026-11-02T15:15:14Z",
+          "trans_amount": "20000",
+          "sign": -1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Số dư sinh lời",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_finance_sdsl.dca3f3bab8f89c1e.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102dbkai0g71nqc73cq69t0"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": []
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102dbkai0g71nqc73cq69t0",
+          "ref_trans_id": "0",
+          "balance_snapshot": "0",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T15:15:14.579684Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005596666",
+          "trans_type": 11,
+          "product_code": "MS001",
+          "app_id": "3253",
+          "description": "Nhận tiền từ Dinh Tuan Hung",
+          "trans_time": "2026-11-02T15:15:13Z",
+          "trans_amount": "20000",
+          "sign": 1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Nhận tiền qua mã QR",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_mywallet_qrreceive.b0e56bb9184754ba.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Số tài khoản",
+                "value": " ************6004 "
+              },
+              {
+                "name": "Lời nhắn",
+                "value": " CS22912 "
+              },
+              {
+                "name": "Mã đơn hàng",
+                "value": " 261102000536561 "
+              },
+              {
+                "name": "Người gửi",
+                "value": " Dinh Tuan Hung "
+              },
+              {
+                "name": "Ngân hàng",
+                "value": " OCB - Ngân hàng TMCP Phương Đông"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển tiền",
+                "link": "/chuyen-tien?app_id=3253&from_source=ctgd_qr_code",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 1,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102000536561",
+          "ref_trans_id": "0",
+          "balance_snapshot": "20000",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": null,
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005625719",
+          "trans_type": 1,
+          "product_code": "TF007",
+          "app_id": "241",
+          "description": "Hùng dùng Zalopay chuyển tiền",
+          "trans_time": "2026-11-02T15:14:55Z",
+          "trans_amount": "20000",
+          "sign": -1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Số dư sinh lời",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Chuyển tiền",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_transfer_money.a4a72edbc723bb5d.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": {
+              "steps": [
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Zalopay trừ tiền thành công",
+                  "time": "2026-11-02T15:14:55Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Nhà cung cấp xử lý thành công",
+                  "time": "2026-11-02T15:14:55Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Giao dịch thành công",
+                  "time": "2026-11-02T15:14:55Z"
+                }
+              ]
+            },
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102901355277"
+              },
+              {
+                "name": "Người nhận",
+                "value": "Dinh Tuan Hung"
+              },
+              {
+                "name": "Ngân hàng",
+                "value": "Ngân hàng TMCP Phương Đông"
+              },
+              {
+                "name": "Số tài khoản",
+                "value": "0119100012826004"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển thêm",
+                "link": "/chuyen-tien?app_id=241&from_source=ctgd_ibft_more&order_no=261102901355277",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102901355277",
+          "ref_trans_id": "0",
+          "balance_snapshot": "-1",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": {
+            "scope": "chuyen_tien",
+            "module": "./CustomAreaTransHistory",
+            "remote_entry": "https://sapi.zalopay.vn/mfpublic/share-module/micro-app/9c5ee045-1b45-4197-9191-a5d8f3117d92",
+            "props": "{\"appID\":\"241\",\"appTransID\":\"261102901355277\",\"fromSource\":\"TRANSACTION\",\"productCode\":\"TF007\",\"zpTransID\":\"261102005625719\"}"
+          },
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T15:14:53.595561Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005615867",
+          "trans_type": 1,
+          "product_code": "FS006",
+          "app_id": "1402",
+          "description": "Nhận tiền tự động vào Số dư sinh lời",
+          "trans_time": "2026-11-02T15:12:28Z",
+          "trans_amount": "20000",
+          "sign": -1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Số dư sinh lời",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_finance_sdsl.dca3f3bab8f89c1e.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102dbkagmttkpoc73bp63l0"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": []
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102dbkagmttkpoc73bp63l0",
+          "ref_trans_id": "0",
+          "balance_snapshot": "0",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T15:12:27.613098Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005574710",
+          "trans_type": 11,
+          "product_code": "MS001",
+          "app_id": "3253",
+          "description": "Nhận tiền từ Dinh Tuan Hung",
+          "trans_time": "2026-11-02T15:12:26Z",
+          "trans_amount": "20000",
+          "sign": 1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Nhận tiền qua mã QR",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_mywallet_qrreceive.b0e56bb9184754ba.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Lời nhắn",
+                "value": " CS22912 "
+              },
+              {
+                "name": "Mã đơn hàng",
+                "value": " 261102000540324 "
+              },
+              {
+                "name": "Người gửi",
+                "value": " Dinh Tuan Hung "
+              },
+              {
+                "name": "Ngân hàng",
+                "value": " OCB - Ngân hàng TMCP Phương Đông "
+              },
+              {
+                "name": "Số tài khoản",
+                "value": " ************6004"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển tiền",
+                "link": "/chuyen-tien?app_id=3253&from_source=ctgd_qr_code",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 1,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102000540324",
+          "ref_trans_id": "0",
+          "balance_snapshot": "20000",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": null,
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005617044",
+          "trans_type": 1,
+          "product_code": "TF007",
+          "app_id": "241",
+          "description": "Hùng dùng Zalopay chuyển tiền",
+          "trans_time": "2026-11-02T15:11:56Z",
+          "trans_amount": "20000",
+          "sign": -1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Số dư sinh lời",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Chuyển tiền",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_transfer_money.a4a72edbc723bb5d.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": {
+              "steps": [
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Zalopay trừ tiền thành công",
+                  "time": "2026-11-02T15:11:56Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Nhà cung cấp xử lý thành công",
+                  "time": "2026-11-02T15:11:56Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Giao dịch thành công",
+                  "time": "2026-11-02T15:11:56Z"
+                }
+              ]
+            },
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102901352844"
+              },
+              {
+                "name": "Người nhận",
+                "value": "Dinh Tuan Hung"
+              },
+              {
+                "name": "Ngân hàng",
+                "value": "Ngân hàng TMCP Phương Đông"
+              },
+              {
+                "name": "Số tài khoản",
+                "value": "0119100012826004"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển thêm",
+                "link": "/chuyen-tien?app_id=241&from_source=ctgd_ibft_more&order_no=261102901352844",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102901352844",
+          "ref_trans_id": "0",
+          "balance_snapshot": "-1",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": {
+            "scope": "chuyen_tien",
+            "module": "./CustomAreaTransHistory",
+            "remote_entry": "https://sapi.zalopay.vn/mfpublic/share-module/micro-app/9c5ee045-1b45-4197-9191-a5d8f3117d92",
+            "props": "{\"appID\":\"241\",\"appTransID\":\"261102901352844\",\"fromSource\":\"TRANSACTION\",\"productCode\":\"TF007\",\"zpTransID\":\"261102005617044\"}"
+          },
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T15:11:53.413358Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102005308498",
+          "trans_type": 1,
+          "product_code": "TF024",
+          "app_id": "241",
+          "description": "VQRLOAMB26031897828",
+          "trans_time": "2026-11-02T14:13:01Z",
+          "trans_amount": "30000",
+          "sign": -1,
+          "subtotal_amount": "30000",
+          "charge_amount": "30000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Số dư sinh lời",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Chuyển tiền",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_transfer_money.a4a72edbc723bb5d.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": {
+              "steps": [
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Zalopay trừ tiền thành công",
+                  "time": "2026-11-02T14:13:01Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Nhà cung cấp xử lý thành công",
+                  "time": "2026-11-02T14:13:01Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Giao dịch thành công",
+                  "time": "2026-11-02T14:13:01Z"
+                }
+              ]
+            },
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102901280634"
+              },
+              {
+                "name": "Người nhận",
+                "value": "TRAN THI THU"
+              },
+              {
+                "name": "Ngân hàng",
+                "value": "Ngân hàng TMCP Quân Đội"
+              },
+              {
+                "name": "Số tài khoản",
+                "value": "VQRQAHRRK4712"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển thêm",
+                "link": "/chuyen-tien?app_id=241&from_source=ctgd_ibft_more&order_no=261102901280634",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102901280634",
+          "ref_trans_id": "0",
+          "balance_snapshot": "-1",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": {
+            "scope": "chuyen_tien",
+            "module": "./CustomAreaTransHistory",
+            "remote_entry": "https://sapi.zalopay.vn/mfpublic/share-module/micro-app/9c5ee045-1b45-4197-9191-a5d8f3117d92",
+            "props": "{\"appID\":\"241\",\"appTransID\":\"261102901280634\",\"fromSource\":\"TRANSACTION\",\"productCode\":\"TF024\",\"zpTransID\":\"261102005308498\"}"
+          },
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T14:12:58.617888Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102004776378",
+          "trans_type": 1,
+          "product_code": "TF024",
+          "app_id": "241",
+          "description": "Hùng dùng Zalopay chuyển tiền",
+          "trans_time": "2026-11-02T12:45:57Z",
+          "trans_amount": "15000",
+          "sign": -1,
+          "subtotal_amount": "15000",
+          "charge_amount": "15000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Số dư sinh lời",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Chuyển tiền",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_transfer_money.a4a72edbc723bb5d.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": {
+              "steps": [
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Zalopay trừ tiền thành công",
+                  "time": "2026-11-02T12:45:57Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Nhà cung cấp xử lý thành công",
+                  "time": "2026-11-02T12:45:57Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Giao dịch thành công",
+                  "time": "2026-11-02T12:45:57Z"
+                }
+              ]
+            },
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102901141293"
+              },
+              {
+                "name": "Người nhận",
+                "value": "HO KINH DOANH NGUYEN THI HIEN"
+              },
+              {
+                "name": "Ngân hàng",
+                "value": "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam(*)"
+              },
+              {
+                "name": "Số tài khoản",
+                "value": "V3SMSHOP1005160"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển thêm",
+                "link": "/chuyen-tien?app_id=241&from_source=ctgd_ibft_more&order_no=261102901141293",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102901141293",
+          "ref_trans_id": "0",
+          "balance_snapshot": "-1",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": {
+            "scope": "chuyen_tien",
+            "module": "./CustomAreaTransHistory",
+            "remote_entry": "https://sapi.zalopay.vn/mfpublic/share-module/micro-app/9c5ee045-1b45-4197-9191-a5d8f3117d92",
+            "props": "{\"appID\":\"241\",\"appTransID\":\"261102901141293\",\"fromSource\":\"TRANSACTION\",\"productCode\":\"TF024\",\"zpTransID\":\"261102004776378\"}"
+          },
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T12:45:54.816795Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102004456952",
+          "trans_type": 1,
+          "product_code": "FS006",
+          "app_id": "1402",
+          "description": "Nhận tiền tự động vào Số dư sinh lời",
+          "trans_time": "2026-11-02T12:00:06Z",
+          "trans_amount": "50000",
+          "sign": -1,
+          "subtotal_amount": "50000",
+          "charge_amount": "50000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Số dư sinh lời",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_finance_sdsl.dca3f3bab8f89c1e.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102dbk7mhe64d9s73e13660"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": []
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102dbk7mhe64d9s73e13660",
+          "ref_trans_id": "0",
+          "balance_snapshot": "0",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T12:00:05.601680Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102004442095",
+          "trans_type": 11,
+          "product_code": "MS001",
+          "app_id": "3253",
+          "description": "Nhận tiền từ VU HUONG LY",
+          "trans_time": "2026-11-02T12:00:04Z",
+          "trans_amount": "50000",
+          "sign": 1,
+          "subtotal_amount": "50000",
+          "charge_amount": "50000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Nhận tiền qua mã QR",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_mywallet_qrreceive.b0e56bb9184754ba.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": " 261102000411415 "
+              },
+              {
+                "name": "Người gửi",
+                "value": " VU HUONG LY "
+              },
+              {
+                "name": "Ngân hàng",
+                "value": " MBBank - Ngân hàng TMCP Quân Đội "
+              },
+              {
+                "name": "Số tài khoản",
+                "value": " *****2007 "
+              },
+              {
+                "name": "Lời nhắn",
+                "value": " VU HUONG LY chuyen tien"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển tiền",
+                "link": "/chuyen-tien?app_id=3253&from_source=ctgd_qr_code",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 1,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102000411415",
+          "ref_trans_id": "0",
+          "balance_snapshot": "50000",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": null,
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102003749080",
+          "trans_type": 1,
+          "product_code": "FS006",
+          "app_id": "1402",
+          "description": "Nhận tiền tự động vào Số dư sinh lời",
+          "trans_time": "2026-11-02T10:13:06Z",
+          "trans_amount": "20000",
+          "sign": -1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Số dư sinh lời",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_finance_sdsl.dca3f3bab8f89c1e.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102dbk64ceb9kvs73d2diqg"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": []
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102dbk64ceb9kvs73d2diqg",
+          "ref_trans_id": "0",
+          "balance_snapshot": "0",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-02T10:13:06.003109Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102003730227",
+          "trans_type": 11,
+          "product_code": "MS001",
+          "app_id": "3253",
+          "description": "Nhận tiền từ MBBANK IBFT",
+          "trans_time": "2026-11-02T10:13:05Z",
+          "trans_amount": "20000",
+          "sign": 1,
+          "subtotal_amount": "20000",
+          "charge_amount": "20000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Nhận tiền qua mã QR",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_mywallet_qrreceive.b0e56bb9184754ba.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Người gửi",
+                "value": " MBBANK IBFT "
+              },
+              {
+                "name": "Ngân hàng",
+                "value": " MBBank - Ngân hàng TMCP Quân Đội "
+              },
+              {
+                "name": "Số tài khoản",
+                "value": " ***************3470 "
+              },
+              {
+                "name": "Lời nhắn",
+                "value": " CS42942 "
+              },
+              {
+                "name": "Mã đơn hàng",
+                "value": " 261102000332883"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển tiền",
+                "link": "/chuyen-tien?app_id=3253&from_source=ctgd_qr_code",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 1,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102000332883",
+          "ref_trans_id": "0",
+          "balance_snapshot": "20000",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": null,
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261102000097048",
+          "trans_type": 1,
+          "product_code": "TF024",
+          "app_id": "241",
+          "description": "Hùng dùng Zalopay chuyển tiền",
+          "trans_time": "2026-11-01T17:39:34Z",
+          "trans_amount": "81000",
+          "sign": -1,
+          "subtotal_amount": "81000",
+          "charge_amount": "81000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Số dư sinh lời",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Chuyển tiền",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_transfer_money.a4a72edbc723bb5d.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": {
+              "steps": [
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Zalopay trừ tiền thành công",
+                  "time": "2026-11-01T17:39:34Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Nhà cung cấp xử lý thành công",
+                  "time": "2026-11-01T17:39:34Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Giao dịch thành công",
+                  "time": "2026-11-01T17:39:34Z"
+                }
+              ]
+            },
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261102900013468"
+              },
+              {
+                "name": "Người nhận",
+                "value": "CONG TY TNHH THUONG MAI LOVE MINI HA NOI"
+              },
+              {
+                "name": "Ngân hàng",
+                "value": "Ngân hàng TMCP Á Châu"
+              },
+              {
+                "name": "Số tài khoản",
+                "value": "LM8CH100"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển thêm",
+                "link": "/chuyen-tien?app_id=241&from_source=ctgd_ibft_more&order_no=261102900013468",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261102900013468",
+          "ref_trans_id": "0",
+          "balance_snapshot": "-1",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": {
+            "scope": "chuyen_tien",
+            "module": "./CustomAreaTransHistory",
+            "remote_entry": "https://sapi.zalopay.vn/mfpublic/share-module/micro-app/9c5ee045-1b45-4197-9191-a5d8f3117d92",
+            "props": "{\"appID\":\"241\",\"appTransID\":\"261102900013468\",\"fromSource\":\"TRANSACTION\",\"productCode\":\"TF024\",\"zpTransID\":\"261102000097048\"}"
+          },
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-01T17:39:31.603634Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261101004657072",
+          "trans_type": 1,
+          "product_code": "TF007",
+          "app_id": "241",
+          "description": "Hùng dùng Zalopay chuyển tiền",
+          "trans_time": "2026-11-01T12:47:14Z",
+          "trans_amount": "250000",
+          "sign": -1,
+          "subtotal_amount": "250000",
+          "charge_amount": "250000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Số dư sinh lời",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Chuyển tiền",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_transfer_money.a4a72edbc723bb5d.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": {
+              "steps": [
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Zalopay trừ tiền thành công",
+                  "time": "2026-11-01T12:47:14Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Nhà cung cấp xử lý thành công",
+                  "time": "2026-11-01T12:47:14Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Giao dịch thành công",
+                  "time": "2026-11-01T12:47:14Z"
+                }
+              ]
+            },
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261101901181272"
+              },
+              {
+                "name": "Người nhận",
+                "value": "VU HUONG LY"
+              },
+              {
+                "name": "Ngân hàng",
+                "value": "Ngân hàng TMCP Quân Đội"
+              },
+              {
+                "name": "Số tài khoản",
+                "value": "616082007"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển thêm",
+                "link": "/chuyen-tien?app_id=241&from_source=ctgd_ibft_more&order_no=261101901181272",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261101901181272",
+          "ref_trans_id": "0",
+          "balance_snapshot": "-1",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": {
+            "scope": "chuyen_tien",
+            "module": "./CustomAreaTransHistory",
+            "remote_entry": "https://sapi.zalopay.vn/mfpublic/share-module/micro-app/9c5ee045-1b45-4197-9191-a5d8f3117d92",
+            "props": "{\"appID\":\"241\",\"appTransID\":\"261101901181272\",\"fromSource\":\"TRANSACTION\",\"productCode\":\"TF007\",\"zpTransID\":\"261101004657072\"}"
+          },
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-01T12:47:13.210862Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261101004653662",
+          "trans_type": 1,
+          "product_code": "TF007",
+          "app_id": "241",
+          "description": "Hùng dùng Zalopay chuyển tiền",
+          "trans_time": "2026-11-01T12:46:58Z",
+          "trans_amount": "150000",
+          "sign": -1,
+          "subtotal_amount": "150000",
+          "charge_amount": "150000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Số dư sinh lời",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Chuyển tiền",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_transfer_money.a4a72edbc723bb5d.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": {
+              "steps": [
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Zalopay trừ tiền thành công",
+                  "time": "2026-11-01T12:46:58Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Nhà cung cấp xử lý thành công",
+                  "time": "2026-11-01T12:46:58Z"
+                },
+                {
+                  "status": 1,
+                  "title": "Thành công",
+                  "message": "Giao dịch thành công",
+                  "time": "2026-11-01T12:46:58Z"
+                }
+              ]
+            },
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261101901182803"
+              },
+              {
+                "name": "Người nhận",
+                "value": "HOANG MINH QUANG"
+              },
+              {
+                "name": "Ngân hàng",
+                "value": "Ngân hàng TMCP Kỹ thương Việt Nam"
+              },
+              {
+                "name": "Số tài khoản",
+                "value": "19073754348011"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển thêm",
+                "link": "/chuyen-tien?app_id=241&from_source=ctgd_ibft_more&order_no=261101901182803",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261101901182803",
+          "ref_trans_id": "0",
+          "balance_snapshot": "-1",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": {
+            "scope": "chuyen_tien",
+            "module": "./CustomAreaTransHistory",
+            "remote_entry": "https://sapi.zalopay.vn/mfpublic/share-module/micro-app/9c5ee045-1b45-4197-9191-a5d8f3117d92",
+            "props": "{\"appID\":\"241\",\"appTransID\":\"261101901182803\",\"fromSource\":\"TRANSACTION\",\"productCode\":\"TF007\",\"zpTransID\":\"261101004653662\"}"
+          },
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-01T12:46:53.359094Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261101004492728",
+          "trans_type": 1,
+          "product_code": "FS006",
+          "app_id": "1402",
+          "description": "Nhận tiền tự động vào Số dư sinh lời",
+          "trans_time": "2026-11-01T12:22:10Z",
+          "trans_amount": "500000",
+          "sign": -1,
+          "subtotal_amount": "500000",
+          "charge_amount": "500000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Số dư sinh lời",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_finance_sdsl.dca3f3bab8f89c1e.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": "261101dbjitseb9kvs73d0v4b0"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": []
+          },
+          "mode": 2,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261101dbjitseb9kvs73d0v4b0",
+          "ref_trans_id": "0",
+          "balance_snapshot": "0",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": "2026-11-01T12:22:10.041936Z",
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    },
+    {
+      "data": {
+        "transaction": {
+          "trans_id": "261101004476012",
+          "trans_type": 11,
+          "product_code": "MS001",
+          "app_id": "3253",
+          "description": "Nhận tiền từ NGUYEN THI NGOC LAN",
+          "trans_time": "2026-11-01T12:22:09Z",
+          "trans_amount": "500000",
+          "sign": 1,
+          "subtotal_amount": "500000",
+          "charge_amount": "500000",
+          "fee_amount": "0",
+          "discount_amount": "0",
+          "pmc": "Ví Zalopay",
+          "status_info": {
+            "status": 1,
+            "title": "Thành công",
+            "message": "",
+            "code": "1"
+          },
+          "title": "Nhận tiền qua mã QR",
+          "icon": "https://simg.zalopay.com.vn/zst/spa/v2/micro-apps/pfm-app/static/assets/service_mywallet_qrreceive.b0e56bb9184754ba.svg",
+          "template_info": {
+            "template_id": "2",
+            "progress_view": null,
+            "custom_fields": [
+              {
+                "name": "Mã đơn hàng",
+                "value": " 261101000447992 "
+              },
+              {
+                "name": "Người gửi",
+                "value": " NGUYEN THI NGOC LAN "
+              },
+              {
+                "name": "Ngân hàng",
+                "value": " Vietinbank - Ngân hàng TMCP Công Thương Việt Nam "
+              },
+              {
+                "name": "Số tài khoản",
+                "value": " ********9355 "
+              },
+              {
+                "name": "Lời nhắn",
+                "value": " QR - NGUYEN THI NGOC LAN Chuyen tien"
+              }
+            ],
+            "custom_views": null,
+            "custom_buttons": [
+              {
+                "label": "Chuyển tiền",
+                "link": "/chuyen-tien?app_id=3253&from_source=ctgd_qr_code",
+                "priority": 1
+              }
+            ]
+          },
+          "mode": 1,
+          "trans_note": "",
+          "system_type": 1,
+          "app_trans_id": "261101000447992",
+          "ref_trans_id": "0",
+          "balance_snapshot": "500000",
+          "refund_ids": [],
+          "refund_detail": null,
+          "custom_block": null,
+          "parent_trans_id": "",
+          "sub_transactions": [],
+          "sept": null,
+          "pay_time": null,
+          "ref_refund_id": "0",
+          "installment_tenor": "",
+          "authorize_data": null
+        }
+      }
+    }
+  ],
+  "last_fetch_time": 1793636777.1920345,
+  "transactions": []
+}
