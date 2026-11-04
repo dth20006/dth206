@@ -1,4 +1,4 @@
-﻿import os
+import os
 import hmac
 import io
 import csv
@@ -32,7 +32,7 @@ def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if not is_admin_authenticated():
-            return jsonify({"success": False, "msg": "YÃªu cáº§u Ä‘Äƒng nháº­p quáº£n trá»‹ viÃªn."}), 401
+            return jsonify({"success": False, "msg": "Yêu cầu đăng nhập quản trị viên."}), 401
         return f(*args, **kwargs)
     return decorated
 
@@ -43,26 +43,26 @@ def admin_login():
     pwd = password.strip() if isinstance(password, str) else ""
     correct_pwd = get_admin_password()
     if correct_pwd is None:
-        return jsonify({"success": False, "msg": "ChÆ°a cáº¥u hÃ¬nh ADMIN_PASSWORD."}), 503
+        return jsonify({"success": False, "msg": "Chưa cấu hình ADMIN_PASSWORD."}), 503
 
     if hmac.compare_digest(pwd.encode("utf-8"), correct_pwd.encode("utf-8")):
         session.clear()
         session.permanent = True
         session["is_admin"] = True
         session["admin_expires_at"] = time.time() + ADMIN_SESSION_TTL
-        return jsonify({"success": True, "msg": "ÄÄƒng nháº­p thÃ nh cÃ´ng!"})
-    return jsonify({"success": False, "msg": "Máº­t kháº©u quáº£n trá»‹ viÃªn khÃ´ng chÃ­nh xÃ¡c."}), 401
+        return jsonify({"success": True, "msg": "Đăng nhập thành công!"})
+    return jsonify({"success": False, "msg": "Mật khẩu quản trị viên không chính xác."}), 401
 
 @admin_bp.route("/api/admin/logout", methods=["POST"])
 def admin_logout():
     session.clear()
-    return jsonify({"success": True, "msg": "ÄÃ£ Ä‘Äƒng xuáº¥t."})
+    return jsonify({"success": True, "msg": "Đã đăng xuất."})
 
 @admin_bp.route("/api/system/health", methods=["GET"])
 def system_health_status():
     """
-    Huy hiá»‡u Tráº¡ng thÃ¡i Há»‡ thá»‘ng Real-time (System Health Badge):
-    ðŸŸ¢ Server Chung Sá»©c: á»”n Ä‘á»‹nh | ðŸŸ¢ Locket API: Hoáº¡t Ä‘á»™ng | ðŸŸ¢ Tá»± Ä‘á»™ng duyá»‡t Ä‘Æ¡n: 2s
+    Huy hiệu Trạng thái Hệ thống Real-time (System Health Badge):
+    🟢 Server Chung Sức: Ổn định | 🟢 Locket API: Hoạt động | 🟢 Tự động duyệt đơn: 2s
     """
     db = models.SessionLocal()
     try:
@@ -79,7 +79,7 @@ def system_health_status():
         # Ensure default keys
         for key in ["chungsuc", "locket", "mxh", "premium"]:
             if key not in s_map:
-                s_map[key] = {"active": True, "state": "OPERATIONAL", "msg": "Hoáº¡t Ä‘á»™ng bÃ¬nh thÆ°á»ng", "reopen_at": None}
+                s_map[key] = {"active": True, "state": "OPERATIONAL", "msg": "Hoạt động bình thường", "reopen_at": None}
 
         return jsonify({
             "success": True,
@@ -112,7 +112,7 @@ def admin_popup_announcement_bp():
     )
     return jsonify({
         "success": True,
-        "msg": "Cáº­p nháº­t popup thÃ´ng bÃ¡o thÃ nh cÃ´ng!",
+        "msg": "Cập nhật popup thông báo thành công!",
         "data": updated,
         "announcement": updated
     })
@@ -122,7 +122,7 @@ def admin_popup_announcement_bp():
 @admin_bp.route("/api/admin/feature-flags", methods=["GET"])
 def get_feature_flags():
     """
-    Tráº£ vá» cá» tÃ­nh nÄƒng vÃ  tráº¡ng thÃ¡i báº£o trÃ¬/háº¹n giá» má»Ÿ láº¡i cá»§a tá»«ng dá»‹ch vá»¥:
+    Trả về cờ tính năng và trạng thái bảo trì/hẹn giờ mở lại của từng dịch vụ:
     chungsuc, locket, mxh, premium.
     """
     db = models.SessionLocal()
@@ -136,7 +136,7 @@ def get_feature_flags():
                 s.is_active = True
                 s.status_state = "OPERATIONAL"
                 s.reopen_at = None
-                s.maintenance_msg = "Dá»‹ch vá»¥ Ä‘Ã£ tá»± Ä‘á»™ng má»Ÿ láº¡i theo lá»‹ch háº¹n."
+                s.maintenance_msg = "Dịch vụ đã tự động mở lại theo lịch hẹn."
                 db.commit()
 
             flags[s.service_key] = s.to_dict()
@@ -147,7 +147,7 @@ def get_feature_flags():
                     "service_key": key,
                     "is_active": True,
                     "status_state": "OPERATIONAL",
-                    "maintenance_msg": "Hoáº¡t Ä‘á»™ng bÃ¬nh thÆ°á»ng",
+                    "maintenance_msg": "Hoạt động bình thường",
                     "reopen_at": None,
                     "reopen_at_ts": None
                 }
@@ -186,11 +186,11 @@ def normalize_service_key(key_raw: str) -> str:
 @admin_required
 def update_feature_flags():
     """
-    Cáº­p nháº­t cá» tÃ­nh nÄƒng báº£o trÃ¬ vÃ  háº¹n giá» reopen_at.
+    Cập nhật cờ tính năng bảo trì và hẹn giờ reopen_at.
     """
     data = request.get_json(silent=True) or {}
 
-    # Náº¿u payload gá»­i dáº¡ng batch/services_enabled thÃ¬ delegate sang admin_services_toggle_bp
+    # Nếu payload gửi dạng batch/services_enabled thì delegate sang admin_services_toggle_bp
     if "services" in data or "services_enabled" in data:
         return admin_services_toggle_bp()
 
@@ -200,7 +200,7 @@ def update_feature_flags():
 
     key = normalize_service_key(data.get("service") or data.get("key") or data.get("service_key") or data.get("id") or "")
     if key not in ("chungsuc", "locket", "mxh", "premium"):
-        return jsonify({"success": False, "msg": "Dá»‹ch vá»¥ khÃ´ng há»£p lá»‡."}), 400
+        return jsonify({"success": False, "msg": "Dịch vụ không hợp lệ."}), 400
 
     db = models.SessionLocal()
     try:
@@ -241,7 +241,7 @@ def update_feature_flags():
 
         return jsonify({
             "success": True,
-            "msg": f"ÄÃ£ cáº­p nháº­t tráº¡ng thÃ¡i {key.upper()}.",
+            "msg": f"Đã cập nhật trạng thái {key.upper()}.",
             "service": cfg.to_dict(),
             "services_enabled": se
         })
@@ -260,7 +260,7 @@ def admin_services_toggle_bp():
         data = request.get_json(silent=True) or {}
         updated = {}
 
-        # 1. Há»— trá»£ dáº¡ng nested { "services": { ... } } hoáº·c { "services_enabled": { ... } }
+        # 1. Hỗ trợ dạng nested { "services": { ... } } hoặc { "services_enabled": { ... } }
         nested = data.get("services") or data.get("services_enabled")
         if isinstance(nested, dict):
             for rk, rv in nested.items():
@@ -269,7 +269,7 @@ def admin_services_toggle_bp():
                     se[nk] = bool(rv)
                     updated[nk] = se[nk]
 
-        # 2. Há»— trá»£ dáº¡ng pháº³ng direct keys { "chungsuc": false, "locket": true, ... }
+        # 2. Hỗ trợ dạng phẳng direct keys { "chungsuc": false, "locket": true, ... }
         for k_candidate, v_candidate in data.items():
             if k_candidate in ("services", "services_enabled", "service", "key", "service_key", "id", "enabled", "active", "is_active", "status"):
                 continue
@@ -278,7 +278,7 @@ def admin_services_toggle_bp():
                 se[nk] = bool(v_candidate)
                 updated[nk] = se[nk]
 
-        # 3. Há»— trá»£ dáº¡ng single service { "service": "chungsuc", "enabled": false }
+        # 3. Hỗ trợ dạng single service { "service": "chungsuc", "enabled": false }
         single_key_raw = data.get("service") or data.get("key") or data.get("service_key") or data.get("id")
         if single_key_raw:
             nk = normalize_service_key(single_key_raw)
@@ -291,10 +291,10 @@ def admin_services_toggle_bp():
                 se[nk] = val
                 updated[nk] = val
             elif not updated:
-                return jsonify({"success": False, "msg": "Dá»‹ch vá»¥ khÃ´ng há»£p lá»‡."}), 400
+                return jsonify({"success": False, "msg": "Dịch vụ không hợp lệ."}), 400
 
         if not updated and not isinstance(nested, dict) and not any(k in data for k in ("chungsuc", "locket", "mxh", "premium")):
-            return jsonify({"success": False, "msg": "Dá»¯ liá»‡u dá»‹ch vá»¥ khÃ´ng há»£p lá»‡ hoáº·c thiáº¿u tÃªn dá»‹ch vá»¥."}), 400
+            return jsonify({"success": False, "msg": "Dữ liệu dịch vụ không hợp lệ hoặc thiếu tên dịch vụ."}), 400
 
         full_cfg["services_enabled"] = se
         config_manager.save_config(full_cfg, sync_github=False)
@@ -319,7 +319,7 @@ def admin_services_toggle_bp():
         return jsonify({
             "success": True,
             "services_enabled": se,
-            "msg": "âœ… ÄÃ£ lÆ°u tráº¡ng thÃ¡i hiá»ƒn thá»‹ dá»‹ch vá»¥ thÃ nh cÃ´ng!"
+            "msg": "✅ Đã lưu trạng thái hiển thị dịch vụ thành công!"
         })
 
     return jsonify({
@@ -393,7 +393,7 @@ def export_orders_csv():
         
         output = io.StringIO()
         writer = csv.writer(output, delimiter=",", quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(["MÃ£ ÄÆ¡n", "Dá»‹ch Vá»¥", "TÃªn GÃ³i", "Sá»‘ Tiá»n", "Tráº¡ng ThÃ¡i", "Zalo", "Username/Code", "MÃ£ GD Bank", "Thá»i Gian"])
+        writer.writerow(["Mã Đơn", "Dịch Vụ", "Tên Gói", "Số Tiền", "Trạng Thái", "Zalo", "Username/Code", "Mã GD Bank", "Thời Gian"])
 
         for o in orders:
             writer.writerow([
@@ -417,7 +417,7 @@ def export_orders_csv():
 @admin_bp.route("/api/admin/unmatched-transactions", methods=["GET"])
 @admin_required
 def get_unmatched_transactions():
-    """Láº¥y danh sÃ¡ch cÃ¡c giao dá»‹ch ngÃ¢n hÃ ng/ZaloPay chÆ°a khá»›p lá»‡nh."""
+    """Lấy danh sách các giao dịch ngân hàng/ZaloPay chưa khớp lệnh."""
     db = models.SessionLocal()
     try:
         items = db.query(models.UnmatchedTransaction).order_by(models.UnmatchedTransaction.trans_time.desc()).limit(50).all()
@@ -431,7 +431,7 @@ def get_unmatched_transactions():
 @admin_bp.route("/api/admin/match-transaction", methods=["POST"])
 @admin_required
 def admin_manual_match_transaction():
-    """GÃ¡n giao dá»‹ch chÆ°a khá»›p vÃ o Ä‘Æ¡n hÃ ng cá»¥ thá»ƒ vÃ  kÃ­ch hoáº¡t tráº£ hÃ ng tá»± Ä‘á»™ng 1-click."""
+    """Gán giao dịch chưa khớp vào đơn hàng cụ thể và kích hoạt trả hàng tự động 1-click."""
     import re
     from services.telegram_bot import notify_payment_success
     from services.partners import autonhanh_process_order, tangtim_process_order, queue_manager
@@ -441,7 +441,7 @@ def admin_manual_match_transaction():
     order_id = str(data.get("order_id") or "").strip().upper()
 
     if not trans_id or not order_id:
-        return jsonify({"success": False, "msg": "Thiáº¿u trans_id hoáº·c order_id."}), 400
+        return jsonify({"success": False, "msg": "Thiếu trans_id hoặc order_id."}), 400
 
     db = models.SessionLocal()
     try:
@@ -449,7 +449,7 @@ def admin_manual_match_transaction():
         order = db.query(models.Order).filter_by(order_id=order_id).first()
 
         if not order:
-            return jsonify({"success": False, "msg": f"KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n hÃ ng {order_id}."}), 404
+            return jsonify({"success": False, "msg": f"Không tìm thấy đơn hàng {order_id}."}), 404
 
         order.status = "PAID"
         order.is_notified = True
@@ -492,7 +492,7 @@ def admin_manual_match_transaction():
 
         return jsonify({
             "success": True,
-            "msg": f"ÄÃ£ gÃ¡n thÃ nh cÃ´ng giao dá»‹ch {trans_id} vÃ o Ä‘Æ¡n {order_id} vÃ  kÃ­ch hoáº¡t tráº£ hÃ ng tá»± Ä‘á»™ng!",
+            "msg": f"Đã gán thành công giao dịch {trans_id} vào đơn {order_id} và kích hoạt trả hàng tự động!",
             "order": order.to_dict()
         })
     finally:
@@ -507,7 +507,7 @@ def admin_get_orders():
 
     db = models.SessionLocal()
     try:
-        # Single source of truth: Äá»c trá»±c tiáº¿p tá»« Database
+        # Single source of truth: Đọc trực tiếp từ Database
         query = db.query(models.Order)
 
         if service_filter != "all":
@@ -527,7 +527,7 @@ def admin_get_orders():
                 (models.Order.package_name.ilike(like_q))
             )
 
-        # Báº¯t buá»™c sáº¯p xáº¿p Ä‘Æ¡n má»›i nháº¥t lÃªn Ä‘áº§u
+        # Bắt buộc sắp xếp đơn mới nhất lên đầu
         orders = query.order_by(models.Order.created_at.desc()).limit(500).all()
         out = [o.to_dict() for o in orders]
 
@@ -542,7 +542,7 @@ def admin_get_orders():
 @admin_bp.route("/api/admin/orders/sync-all", methods=["GET", "POST"])
 @admin_required
 def admin_sync_all_orders():
-    """Äá»“ng bá»™ táº¥t cáº£ Ä‘Æ¡n hÃ ng tá»« Web Máº¹ vÃ  orders.json vÃ o Database."""
+    """Đồng bộ tất cả đơn hàng từ Web Mẹ và orders.json vào Database."""
     models.migrate_legacy_json_to_db()
     db = models.SessionLocal()
     synced = []
@@ -559,7 +559,7 @@ def admin_sync_all_orders():
             except Exception:
                 pass
         db.commit()
-        res = jsonify({"success": True, "msg": f"ÄÃ£ Ä‘á»“ng bá»™ thÃ nh cÃ´ng {len(synced)} Ä‘Æ¡n MXH!", "synced": synced})
+        res = jsonify({"success": True, "msg": f"Đã đồng bộ thành công {len(synced)} đơn MXH!", "synced": synced})
         res.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
         return res
     finally:
@@ -574,11 +574,11 @@ def admin_delete_order_bp():
     data = request.get_json(silent=True) or {}
     oid = (data.get("order_id") or "").strip().upper()
     if not oid:
-        return jsonify({"success": False, "msg": "Thiáº¿u mÃ£ Ä‘Æ¡n cáº§n xÃ³a"}), 400
+        return jsonify({"success": False, "msg": "Thiếu mã đơn cần xóa"}), 400
 
     add_deleted_order_id(oid)
 
-    # 1. XÃ³a trong Database (Single Source of Truth)
+    # 1. Xóa trong Database (Single Source of Truth)
     db = models.SessionLocal()
     deleted_username = None
     deleted_uid = None
@@ -592,7 +592,7 @@ def admin_delete_order_bp():
             db.delete(db_order)
             db.commit()
 
-        # 2. Dá»n dáº¹p cache Locket náº¿u khÃ´ng cÃ²n Ä‘Æ¡n COMPLETED nÃ o khÃ¡c
+        # 2. Dọn dẹp cache Locket nếu không còn đơn COMPLETED nào khác
         if deleted_service == "locket" or oid.startswith("LK") or oid.startswith("DIRECT"):
             clean_u = clean_locket_username(deleted_username).lower() if deleted_username else ""
             has_other_completed = False
@@ -620,13 +620,13 @@ def admin_delete_order_bp():
     finally:
         db.close()
 
-    # 3. XÃ³a trong orders.json
+    # 3. Xóa trong orders.json
     orders = load_orders()
     if oid in orders:
         del orders[oid]
     save_orders(orders, sync_github=True)
     sync_file_to_github_async("deleted_orders.json")
-    return jsonify({"success": True, "msg": f"ÄÃ£ xÃ³a vÄ©nh viá»…n Ä‘Æ¡n #{oid}"})
+    return jsonify({"success": True, "msg": f"Đã xóa vĩnh viễn đơn #{oid}"})
 
 
 @admin_bp.route("/api/admin/orders/bulk-delete", methods=["POST"])

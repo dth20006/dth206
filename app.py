@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-DTH Portal - Há»‡ Thá»‘ng Dá»‹ch Vá»¥ Tá»•ng Há»£p 4-in-1
-1. Chung Sá»©c LiÃªn QuÃ¢n Mobile (Má»Ÿ RÆ°Æ¡ng SS & SSS 2026 qua AutoNhanh)
-2. NÃ¢ng Cáº¥p Locket Gold (KÃ­ch Hoáº¡t & Cáº¥u HÃ¬nh Giá»¯ Gold iOS)
-3. Dá»‹ch Vá»¥ Máº¡ng XÃ£ Há»™i (TikTok, FaceBook, Instagram, YouTube qua TangTim API)
-TÃ­ch há»£p:
-- Cá»•ng thanh toÃ¡n ZaloPay / BVBank tá»± Ä‘á»™ng qua ThueAPIBank (QuÃ©t mÃ£ VietQR)
-- Tra cá»©u Ä‘Æ¡n hÃ ng há»£p nháº¥t (CS..., LK..., TT...)
-- Há»‡ thá»‘ng thÃ´ng bÃ¡o Telegram Bot
-- Quáº£n trá»‹ viÃªn Admin Dashboard Ä‘a nÄƒng
-- Tá»± Ä‘á»™ng Ä‘á»“ng bá»™ cáº¥u hÃ¬nh vÃ  Ä‘Æ¡n hÃ ng lÃªn GitHub
+DTH Portal - Hệ Thống Dịch Vụ Tổng Hợp 4-in-1
+1. Chung Sức Liên Quân Mobile (Mở Rương SS & SSS 2026 qua AutoNhanh)
+2. Nâng Cấp Locket Gold (Kích Hoạt & Cấu Hình Giữ Gold iOS)
+3. Dịch Vụ Mạng Xã Hội (TikTok, FaceBook, Instagram, YouTube qua TangTim API)
+Tích hợp:
+- Cổng thanh toán ZaloPay / BVBank tự động qua ThueAPIBank (Quét mã VietQR)
+- Tra cứu đơn hàng hợp nhất (CS..., LK..., TT...)
+- Hệ thống thông báo Telegram Bot
+- Quản trị viên Admin Dashboard đa năng
+- Tự động đồng bộ cấu hình và đơn hàng lên GitHub
 """
 
 import os
@@ -27,7 +27,7 @@ import logging
 from datetime import datetime, timedelta
 from functools import wraps
 
-# Äáº£m báº£o in tiáº¿ng Viá»‡t chuáº©n trÃªn Windows console
+# Đảm bảo in tiếng Việt chuẩn trên Windows console
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
@@ -80,7 +80,7 @@ def get_deleted_order_ids():
     return s
 
 def clean_locket_account_cache(username=None, uid=None):
-    """Dá»n dáº¹p cache profile / whitelist khi tÃ i khoáº£n khÃ´ng cÃ²n Ä‘Æ¡n COMPLETED nÃ o."""
+    """Dọn dẹp cache profile / whitelist khi tài khoản không còn đơn COMPLETED nào."""
     try:
         cache_path = os.path.join(BASE_DIR, "profile_cache.json")
         if os.path.exists(cache_path):
@@ -104,10 +104,10 @@ def clean_locket_account_cache(username=None, uid=None):
 
 def check_locket_already_purchased(username, uid=None):
     """
-    Báº®T BUá»˜C chá»‰ tráº£ vá» (already_purchased, order_code) khi vÃ  chá»‰ khi:
-    Trong báº£ng orders cá»§a Database, tá»“n táº¡i Ã­t nháº¥t 1 Ä‘Æ¡n hÃ ng Locket Gold
-    (prefix LK hoáº·c DIRECT hoáº·c service == 'locket') khá»›p chÃ­nh xÃ¡c vá»›i username hoáº·c uid
-    VÃ€ cÃ³ status == 'COMPLETED' VÃ€ khÃ´ng bá»‹ Admin xÃ³a.
+    BẮT BUỘC chỉ trả về (already_purchased, order_code) khi và chỉ khi:
+    Trong bảng orders của Database, tồn tại ít nhất 1 đơn hàng Locket Gold
+    (prefix LK hoặc DIRECT hoặc service == 'locket') khớp chính xác với username hoặc uid
+    VÀ có status == 'COMPLETED' VÀ không bị Admin xóa.
     """
     clean_u = clean_locket_username(username).lower() if username else ""
     uid_val = str(uid).strip() if uid else ""
@@ -166,7 +166,7 @@ ORDERS_FILE = os.path.join(BASE_DIR, "orders.json")
 BANK_CACHE_FILE = os.path.join(BASE_DIR, "bank_cache.json")
 TANGTIM_CACHE_FILE = os.path.join(BASE_DIR, "tangtim_status_cache.json")
 
-# Há»— trá»£ Vercel Serverless (/tmp lÃ  phÃ¢n vÃ¹ng duy nháº¥t cho phÃ©p ghi)
+# Hỗ trợ Vercel Serverless (/tmp là phân vùng duy nhất cho phép ghi)
 if os.environ.get("VERCEL") == "1":
     import shutil
     TMP_DIR = "/tmp"
@@ -228,20 +228,20 @@ def require_admin_authentication():
         "/api/admin/logout",
         "/api/admin/check-auth",
     } and not is_admin_authenticated():
-        return jsonify({"success": False, "msg": "YÃªu cáº§u Ä‘Äƒng nháº­p quáº£n trá»‹ viÃªn."}), 401
+        return jsonify({"success": False, "msg": "Yêu cầu đăng nhập quản trị viên."}), 401
 
 @app.before_request
 def block_direct_video_access():
     if request.path.startswith("/static/videos/"):
-        return jsonify({"error": "Chá»‰ khÃ¡ch hÃ ng Ä‘Ã£ thanh toÃ¡n thÃ nh cÃ´ng má»›i cÃ³ quyá»n xem video nÃ y!"}), 403
+        return jsonify({"error": "Chỉ khách hàng đã thanh toán thành công mới có quyền xem video này!"}), 403
 
 @app.after_request
 def add_cache_headers(response):
     """
-    Tá»‘i Æ°u tÃ i nguyÃªn Vercel & trÃ¬nh duyá»‡t:
-    - Static files: Cache 1 nÄƒm (immutable)
-    - Public APIs (báº£ng giÃ¡, dá»‹ch vá»¥): Cache Edge CDN Vercel 3 phÃºt, stale-while-revalidate 10 phÃºt
-    - Ticker recent history: Cache Edge CDN 1 phÃºt, stale-while-revalidate 3 phÃºt
+    Tối ưu tài nguyên Vercel & trình duyệt:
+    - Static files: Cache 1 năm (immutable)
+    - Public APIs (bảng giá, dịch vụ): Cache Edge CDN Vercel 3 phút, stale-while-revalidate 10 phút
+    - Ticker recent history: Cache Edge CDN 1 phút, stale-while-revalidate 3 phút
     - Payment/Order/Admin/Webhook: no-store, no-cache
     """
     path = request.path
@@ -288,7 +288,7 @@ def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if not is_admin_authenticated():
-            return jsonify({"success": False, "msg": "YÃªu cáº§u Ä‘Äƒng nháº­p quáº£n trá»‹ viÃªn."}), 401
+            return jsonify({"success": False, "msg": "Yêu cầu đăng nhập quản trị viên."}), 401
         return f(*args, **kwargs)
     return decorated
 
@@ -301,7 +301,7 @@ def get_github_auth():
     cfg = load_config()
     gh = cfg.get("github", {})
     repo = os.environ.get("GITHUB_REPO") or gh.get("repo", "cheatdth206/chungsuclienquan")
-    # Sá»­ dá»¥ng token cáº¥u hÃ¬nh hoáº·c token dá»± phÃ²ng Ä‘Ã£ mÃ£ hÃ³a base64 Ä‘á»ƒ khÃ´ng kÃ­ch hoáº¡t GitHub Secret Scanning GH013
+    # Sử dụng token cấu hình hoặc token dự phòng đã mã hóa base64 để không kích hoạt GitHub Secret Scanning GH013
     token = os.environ.get("GITHUB_TOKEN") or gh.get("token", "")
     if not token:
         try:
@@ -386,7 +386,7 @@ def load_config():
         return config_manager.get_data()
 
 def save_config(cfg, sync_github=True):
-    # 1. Ghi file vÃ  cáº­p nháº­t bá»™ nhá»› trong Lock (chá»‰ máº¥t ~0.001s)
+    # 1. Ghi file và cập nhật bộ nhớ trong Lock (chỉ mất ~0.001s)
     with _file_locks["config"]:
         try:
             with open(CONFIG_FILE, "w", encoding="utf-8") as f:
@@ -403,7 +403,7 @@ def save_config(cfg, sync_github=True):
             print(f"[Error saving config] {e}")
             return False
 
-    # 2. Äá»“ng bá»™ GitHub CHáº Y Ná»€N Báº¤T Äá»’NG Bá»˜ - Tuyá»‡t Ä‘á»‘i khÃ´ng giá»¯ Lock, khÃ´ng lÃ m Ä‘Æ¡/lag server!
+    # 2. Đồng bộ GitHub CHẠY NỀN BẤT ĐỒNG BỘ - Tuyệt đối không giữ Lock, không làm đơ/lag server!
     if sync_github:
         sync_file_to_github_async("config.json")
     return True
@@ -443,7 +443,7 @@ def load_orders():
             except Exception as e:
                 print(f"[Error loading orders from {target_file}] {e}")
 
-        # KHÃ”NG BAO GIá»œ há»“i sinh Ä‘Æ¡n Ä‘Ã£ xÃ³a tá»« bundled file
+        # KHÔNG BAO GIỜ hồi sinh đơn đã xóa từ bundled file
         clean_data = {k: v for k, v in data.items() if str(k).upper() not in deleted_ids}
         return clean_data
 
@@ -556,54 +556,54 @@ def send_telegram_msg(msg_text, reply_markup=None, chat_id=None, debounce_sec=40
 def notify_new_order(order):
     stype = order.get("service_type")
     oid = order.get("order_id")
-    amt = order.get("amount_formatted") or f"{order.get('amount', 0):,}Ä‘"
-    zalo = order.get("zalo") or "ChÆ°a nháº­p"
+    amt = order.get("amount_formatted") or f"{order.get('amount', 0):,}đ"
+    zalo = order.get("zalo") or "Chưa nhập"
 
     if stype == "chungsuc":
-        title = "ðŸŽ® <b>[ÄÆ N CHUNG Sá»¨C Má»šI]</b>"
+        title = "🎮 <b>[ĐƠN CHUNG SỨC MỚI]</b>"
         detail = (
-            f"â€¢ GÃ³i: <b>{order.get('package_name')}</b> ({order.get('turns')} lÆ°á»£t)\n"
-            f"â€¢ MÃ£ má»i: <code>{order.get('code')}</code>\n"
+            f"• Gói: <b>{order.get('package_name')}</b> ({order.get('turns')} lượt)\n"
+            f"• Mã mời: <code>{order.get('code')}</code>\n"
         )
     elif stype == "locket":
-        title = "ðŸ’› <b>[ÄÆ N LOCKET GOLD Má»šI]</b>"
+        title = "💛 <b>[ĐƠN LOCKET GOLD MỚI]</b>"
         detail = (
-            f"â€¢ Username: <b>@{order.get('username')}</b>\n"
-            f"â€¢ GÃ³i: <b>{order.get('package_name')}</b>\n"
+            f"• Username: <b>@{order.get('username')}</b>\n"
+            f"• Gói: <b>{order.get('package_name')}</b>\n"
         )
     elif stype == "premium" or (oid and str(oid).startswith("PR")):
-        plat = order.get("platform_name") or "Chá»£ Premium"
-        title = f"ðŸ’Ž <b>[ÄÆ N CHá»¢ PREMIUM Má»šI - {plat.upper()}]</b>"
+        plat = order.get("platform_name") or "Chợ Premium"
+        title = f"💎 <b>[ĐƠN CHỢ PREMIUM MỚI - {plat.upper()}]</b>"
         detail = (
-            f"â€¢ Ná»n táº£ng: <b>{plat}</b>\n"
-            f"â€¢ GÃ³i: <b>{order.get('package_name')}</b> ({order.get('duration', '')})\n"
-            f"â€¢ TÃ i khoáº£n/Email: <code>{order.get('target')}</code>\n"
-            f"â€¢ Ghi chÃº: {order.get('note') or 'KhÃ´ng cÃ³'}\n"
+            f"• Nền tảng: <b>{plat}</b>\n"
+            f"• Gói: <b>{order.get('package_name')}</b> ({order.get('duration', '')})\n"
+            f"• Tài khoản/Email: <code>{order.get('target')}</code>\n"
+            f"• Ghi chú: {order.get('note') or 'Không có'}\n"
         )
     else:
-        title = "ðŸš€ <b>[ÄÆ N Máº NG XÃƒ Há»˜I Má»šI]</b>"
+        title = "🚀 <b>[ĐƠN MẠNG XÃ HỘI MỚI]</b>"
         detail = (
-            f"â€¢ Dá»‹ch vá»¥: <b>{order.get('package_name')}</b>\n"
-            f"â€¢ Link: <code>{order.get('link')}</code>\n"
-            f"â€¢ Sá»‘ lÆ°á»£ng: <b>{order.get('quantity', 0):,}</b>\n"
+            f"• Dịch vụ: <b>{order.get('package_name')}</b>\n"
+            f"• Link: <code>{order.get('link')}</code>\n"
+            f"• Số lượng: <b>{order.get('quantity', 0):,}</b>\n"
         )
 
     msg = (
         f"{title}\n"
-        f"â€¢ MÃ£ Ä‘Æ¡n: <b>#{oid}</b>\n"
+        f"• Mã đơn: <b>#{oid}</b>\n"
         f"{detail}"
-        f"â€¢ Sá»‘ tiá»n: <b>{amt}</b> | Zalo: <code>{zalo}</code>\n"
-        f"â³ <i>Tráº¡ng thÃ¡i: Chá» thanh toÃ¡n</i>"
+        f"• Số tiền: <b>{amt}</b> | Zalo: <code>{zalo}</code>\n"
+        f"⏳ <i>Trạng thái: Chờ thanh toán</i>"
     )
     reply_markup = {
         "inline_keyboard": [
             [
-                {"text": f"âœ… Duyá»‡t #{oid}", "callback_data": f"btn:duyet:{oid}"},
-                {"text": f"ðŸš€ Äáº©y #{oid}", "callback_data": f"btn:day:{oid}"}
+                {"text": f"✅ Duyệt #{oid}", "callback_data": f"btn:duyet:{oid}"},
+                {"text": f"🚀 Đẩy #{oid}", "callback_data": f"btn:day:{oid}"}
             ],
             [
-                {"text": "ðŸ¦ QuÃ©t Bank", "callback_data": "btn:bank"},
-                {"text": "ðŸ“Š Thá»‘ng KÃª", "callback_data": "btn:stats"}
+                {"text": "🏦 Quét Bank", "callback_data": "btn:bank"},
+                {"text": "📊 Thống Kê", "callback_data": "btn:stats"}
             ]
         ]
     }
@@ -621,36 +621,36 @@ def notify_payment_success(order, trans_id=None, force=False):
     order["notified_paid"] = True
     stype = order.get("service_type")
     oid = order.get("order_id")
-    amt = order.get("amount_formatted") or f"{order.get('amount', 0):,}Ä‘"
+    amt = order.get("amount_formatted") or f"{order.get('amount', 0):,}đ"
 
     if stype == "chungsuc":
-        svc_name = f"Chung Sá»©c - {order.get('package_name')}"
+        svc_name = f"Chung Sức - {order.get('package_name')}"
     elif stype == "locket":
         svc_name = f"Locket Gold - {order.get('package_name')} (@{order.get('username')})"
     elif stype == "premium" or (oid and str(oid).startswith("PR")):
-        plat = order.get("platform_name") or "Chá»£ Premium"
-        svc_name = f"Chá»£ Premium - {plat} ({order.get('package_name')})"
+        plat = order.get("platform_name") or "Chợ Premium"
+        svc_name = f"Chợ Premium - {plat} ({order.get('package_name')})"
     else:
         svc_name = f"MXH - {order.get('package_name')}"
 
     msg = (
-        f"ðŸ’° <b>[THANH TOÃN THÃ€NH CÃ”NG: #{oid}]</b> (+{amt})\n"
-        f"â€¢ Dá»‹ch vá»¥: <b>{svc_name}</b>\n"
-        f"â€¢ Zalo: <code>{order.get('zalo', 'N/A')}</code> | GD: <code>{trans_id or 'Auto VietQR'}</code>\n"
-        f"âš¡ <i>Há»‡ thá»‘ng Ä‘ang tá»± Ä‘á»™ng kÃ­ch hoáº¡t...</i>"
+        f"💰 <b>[THANH TOÁN THÀNH CÔNG: #{oid}]</b> (+{amt})\n"
+        f"• Dịch vụ: <b>{svc_name}</b>\n"
+        f"• Zalo: <code>{order.get('zalo', 'N/A')}</code> | GD: <code>{trans_id or 'Auto VietQR'}</code>\n"
+        f"⚡ <i>Hệ thống đang tự động kích hoạt...</i>"
     )
     reply_markup = {
         "inline_keyboard": [
             [
-                {"text": f"ðŸš€ Äáº©y Ngay #{oid}", "callback_data": f"btn:day:{oid}"},
-                {"text": "ðŸ”„ Check Web Máº¹", "callback_data": "btn:check"}
+                {"text": f"🚀 Đẩy Ngay #{oid}", "callback_data": f"btn:day:{oid}"},
+                {"text": "🔄 Check Web Mẹ", "callback_data": "btn:check"}
             ]
         ]
     }
     send_telegram_msg(msg, reply_markup=reply_markup)
 
 # ==========================================
-# SERVICE 1: CHUNG Sá»¨C LIÃŠN QUÃ‚N (AUTONHANH)
+# SERVICE 1: CHUNG SỨC LIÊN QUÂN (AUTONHANH)
 # ==========================================
 def extract_invite_code(text):
     if not text:
@@ -664,7 +664,7 @@ def extract_invite_code(text):
         if match_url:
             return match_url.group(1).strip()
     cleaned = re.sub(r"\[\[.*?\]\]", "", text).strip()
-    match_kw = re.search(r"(?:mÃ£\s*má»i|mÃ£|code)[:\s\-]*([A-Za-z0-9_-]{4,30})", cleaned, re.IGNORECASE)
+    match_kw = re.search(r"(?:mã\s*mời|mã|code)[:\s\-]*([A-Za-z0-9_-]{4,30})", cleaned, re.IGNORECASE)
     if match_kw:
         return match_kw.group(1).strip()
     match_pure = re.match(r"^([A-Za-z0-9_-]{4,35})$", cleaned.strip())
@@ -681,7 +681,7 @@ def autonhanh_login(username=None, password=None):
     user = username or an_cfg.get("username")
     pwd = password or an_cfg.get("password")
     if not user or not pwd:
-        return None, "ChÆ°a cáº¥u hÃ¬nh tÃ i khoáº£n AutoNhanh"
+        return None, "Chưa cấu hình tài khoản AutoNhanh"
 
     url = f"{AUTONHANH_API_BASE}/auth/login"
     headers = {"Content-Type": "application/json"}
@@ -741,7 +741,7 @@ def autonhanh_calculate_packs(order):
     return max(1, (turns + 37) // 38)
 
 def autonhanh_check_batch_status(batch_id, token=None):
-    """Kiá»ƒm tra trá»±c tiáº¿p tráº¡ng thÃ¡i tiáº¿n Ä‘á»™ lÆ°á»£t buff batch trÃªn AutoNhanh."""
+    """Kiểm tra trực tiếp trạng thái tiến độ lượt buff batch trên AutoNhanh."""
     if not batch_id:
         return None
     cfg = load_config()
@@ -777,7 +777,7 @@ def autonhanh_process_order(order, force=False):
     cfg = load_config()
     an_cfg = cfg.get("autonhanh", {})
     if not force and not an_cfg.get("enabled", True):
-        return False, "TÃ­nh nÄƒng AutoNhanh Ä‘ang táº¯t"
+        return False, "Tính năng AutoNhanh đang tắt"
 
     token = an_cfg.get("token")
     if not token:
@@ -802,13 +802,13 @@ def autonhanh_process_order(order, force=False):
     required_xu = packs * price_per_pack
 
     if balance is not None and balance < required_xu:
-        err_msg = f"Thiáº¿u {required_xu - balance:,} Xu (Cáº§n {required_xu:,} Xu, cÃ³ {balance:,} Xu)"
+        err_msg = f"Thiếu {required_xu - balance:,} Xu (Cần {required_xu:,} Xu, có {balance:,} Xu)"
         order["autonhanh_status"] = "OUT_OF_BALANCE"
         order["autonhanh_error"] = err_msg
         orders = load_orders()
         orders[order.get("order_id")] = order
         save_orders(orders)
-        send_telegram_msg(f"âš ï¸ <b>[Cáº¢NH BÃO AUTONHANH Háº¾T XU]</b>\nÄÆ¡n #{order.get('order_id')}: {err_msg}")
+        send_telegram_msg(f"⚠️ <b>[CẢNH BÁO AUTONHANH HẾT XU]</b>\nĐơn #{order.get('order_id')}: {err_msg}")
         return False, err_msg
 
     url = f"{AUTONHANH_API_BASE}/batches"
@@ -848,19 +848,19 @@ def autonhanh_process_order(order, force=False):
             reply_kb = {
                 "inline_keyboard": [
                     [
-                        {"text": "ðŸ”„ Check Tráº¡ng ThÃ¡i", "callback_data": "btn:check"},
-                        {"text": "ðŸ“Š Thá»‘ng KÃª", "callback_data": "btn:stats"}
+                        {"text": "🔄 Check Trạng Thái", "callback_data": "btn:check"},
+                        {"text": "📊 Thống Kê", "callback_data": "btn:stats"}
                     ]
                 ]
             }
             send_telegram_msg(
-                f"ðŸš€ <b>[AUTONHANH ÄÃƒ NHáº¬N BATCH CHUNG Sá»¨C]</b>\n"
-                f"â€¢ ÄÆ¡n: <b>#{order.get('order_id')}</b>\n"
-                f"â€¢ GÃ³i: {order.get('package_name')} ({packs} packs)\n"
-                f"â€¢ MÃ£ má»i: <code>{raw_code}</code>\n"
-                f"â€¢ Batch ID: <code>{batch_id}</code>\n"
-                f"â€¢ Tráº¡ng thÃ¡i mÃ¡y chá»§: <b>{order['autonhanh_status']}</b>\n"
-                f"<i>Há»‡ thá»‘ng cron sáº½ tá»± Ä‘á»™ng theo dÃµi vÃ  bÃ¡o Telegram khi hoÃ n táº¥t 100%!</i>",
+                f"🚀 <b>[AUTONHANH ĐÃ NHẬN BATCH CHUNG SỨC]</b>\n"
+                f"• Đơn: <b>#{order.get('order_id')}</b>\n"
+                f"• Gói: {order.get('package_name')} ({packs} packs)\n"
+                f"• Mã mời: <code>{raw_code}</code>\n"
+                f"• Batch ID: <code>{batch_id}</code>\n"
+                f"• Trạng thái máy chủ: <b>{order['autonhanh_status']}</b>\n"
+                f"<i>Hệ thống cron sẽ tự động theo dõi và báo Telegram khi hoàn tất 100%!</i>",
                 reply_markup=reply_kb
             )
             return True, res_data
@@ -870,7 +870,7 @@ def autonhanh_process_order(order, force=False):
             order["autonhanh_error"] = err
             order["needs_customer_update"] = True
             order["customer_update_type"] = "code"
-            order["customer_error_msg"] = "MÃ£ má»i LiÃªn QuÃ¢n cá»§a báº¡n khÃ´ng há»£p lá»‡ hoáº·c Ä‘Ã£ háº¿t háº¡n. Vui lÃ²ng dÃ¡n link sá»± kiá»‡n hoáº·c mÃ£ má»i má»›i bÃªn dÆ°á»›i Ä‘á»ƒ há»‡ thá»‘ng tiáº¿p tá»¥c xá»­ lÃ½ tá»± Ä‘á»™ng!"
+            order["customer_error_msg"] = "Mã mời Liên Quân của bạn không hợp lệ hoặc đã hết hạn. Vui lòng dán link sự kiện hoặc mã mời mới bên dưới để hệ thống tiếp tục xử lý tự động!"
             orders = load_orders()
             orders[order.get("order_id")] = order
             save_orders(orders)
@@ -879,32 +879,32 @@ def autonhanh_process_order(order, force=False):
             reply_kb = {
                 "inline_keyboard": [
                     [
-                        {"text": f"âœï¸ Sá»­a MÃ£ #{oid}", "callback_data": f"btn:sua:{oid}"},
-                        {"text": f"ðŸš€ Äáº©y Láº¡i #{oid}", "callback_data": f"btn:day:{oid}"}
+                        {"text": f"✏️ Sửa Mã #{oid}", "callback_data": f"btn:sua:{oid}"},
+                        {"text": f"🚀 Đẩy Lại #{oid}", "callback_data": f"btn:day:{oid}"}
                     ],
                     [
-                        {"text": f"ðŸ—‘ï¸ XÃ³a ÄÆ¡n #{oid}", "callback_data": f"btn:xoa:{oid}"},
-                        {"text": "ðŸ“‹ Xem ÄÆ¡n Lá»—i", "callback_data": "btn:orders_err"}
+                        {"text": f"🗑️ Xóa Đơn #{oid}", "callback_data": f"btn:xoa:{oid}"},
+                        {"text": "📋 Xem Đơn Lỗi", "callback_data": "btn:orders_err"}
                     ]
                 ]
             }
             send_telegram_msg(
-                f"âš ï¸ <b>[ÄÆ N CHUNG Sá»¨C: Lá»–I MÃƒ Má»œI]</b>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"â€¢ ÄÆ¡n hÃ ng: <b>#{oid}</b>\n"
-                f"â€¢ GÃ³i: {order.get('package_name')}\n"
-                f"â€¢ KhÃ¡ch Ä‘iá»n: <code>{raw_code}</code>\n"
-                f"â€¢ Tráº¡ng thÃ¡i tiá»n: <b>âœ… ÄÃƒ THANH TOÃN ({order.get('amount_formatted', '20.000Ä‘')})</b>\n"
-                f"â€¢ Lá»—i mÃ¡y chá»§: <b>MÃ£ má»i khÃ´ng há»£p lá»‡ hoáº·c Ä‘Ã£ háº¿t háº¡n</b>\n"
-                f"â€¢ Zalo khÃ¡ch: <code>{order.get('zalo', 'N/A')}</code>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"ðŸ‘‰ Admin sá»­a ngay báº±ng lá»‡nh: <code>/sua {oid} &lt;mÃ£_má»›i&gt;</code>\n"
-                f"<i>(KhÃ¡ch hÃ ng cÅ©ng Ä‘Ã£ nháº­n Ä‘Æ°á»£c thÃ´ng bÃ¡o yÃªu cáº§u dÃ¡n mÃ£ má»›i trÃªn web)</i>",
+                f"⚠️ <b>[ĐƠN CHUNG SỨC: LỖI MÃ MỜI]</b>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"• Đơn hàng: <b>#{oid}</b>\n"
+                f"• Gói: {order.get('package_name')}\n"
+                f"• Khách điền: <code>{raw_code}</code>\n"
+                f"• Trạng thái tiền: <b>✅ ĐÃ THANH TOÁN ({order.get('amount_formatted', '20.000đ')})</b>\n"
+                f"• Lỗi máy chủ: <b>Mã mời không hợp lệ hoặc đã hết hạn</b>\n"
+                f"• Zalo khách: <code>{order.get('zalo', 'N/A')}</code>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"👉 Admin sửa ngay bằng lệnh: <code>/sua {oid} &lt;mã_mới&gt;</code>\n"
+                f"<i>(Khách hàng cũng đã nhận được thông báo yêu cầu dán mã mới trên web)</i>",
                 reply_markup=reply_kb
             )
             return False, err
     except Exception as e:
-        err = f"Lá»—i gá»i AutoNhanh: {e}"
+        err = f"Lỗi gọi AutoNhanh: {e}"
         order["autonhanh_status"] = "ERROR"
         order["autonhanh_error"] = err
         orders = load_orders()
@@ -938,13 +938,13 @@ class QueueManager:
             if oid_clean:
                 last_t = self.recent_queued.get(f"oid_{oid_clean}", 0)
                 if now_t - last_t < 120:
-                    safe_print(f"[QueueManager] Bá» qua trÃ¹ng Ä‘Æ¡n {oid_clean} (trong 120s)")
+                    safe_print(f"[QueueManager] Bỏ qua trùng đơn {oid_clean} (trong 120s)")
                     return f"dup_{oid_clean}"
                 self.recent_queued[f"oid_{oid_clean}"] = now_t
             elif clean_u:
                 last_t = self.recent_queued.get(f"usr_{clean_u}", 0)
                 if now_t - last_t < 120:
-                    safe_print(f"[QueueManager] Bá» qua trÃ¹ng username {clean_u} (trong 120s)")
+                    safe_print(f"[QueueManager] Bỏ qua trùng username {clean_u} (trong 120s)")
                     return f"dup_{clean_u}"
                 self.recent_queued[f"usr_{clean_u}"] = now_t
         client_id = str(uuid.uuid4())
@@ -1040,11 +1040,11 @@ class QueueManager:
             if not already_notified and not recent_sent:
                 _recent_locket_telegram[u_key] = now_t
                 send_telegram_msg(
-                    f"ðŸŽ‰ <b>[KÃCH HOáº T LOCKET GOLD THÃ€NH CÃ”NG]</b>\n"
-                    f"â€¢ ÄÆ¡n: <b>#{order_id or 'Trá»±c tiáº¿p'}</b>\n"
-                    f"â€¢ Username: <b>@{username}</b>\n"
-                    f"â€¢ UID: <code>{uid or 'N/A'}</code>\n"
-                    f"â€¢ Tráº¡ng thÃ¡i: âœ… Gold Active (ÄÃ£ cáº¥p cáº¥u hÃ¬nh DNS VIP)"
+                    f"🎉 <b>[KÍCH HOẠT LOCKET GOLD THÀNH CÔNG]</b>\n"
+                    f"• Đơn: <b>#{order_id or 'Trực tiếp'}</b>\n"
+                    f"• Username: <b>@{username}</b>\n"
+                    f"• UID: <code>{uid or 'N/A'}</code>\n"
+                    f"• Trạng thái: ✅ Gold Active (Đã cấp cấu hình DNS VIP)"
                 )
         except Exception as e:
             safe_print(f"[QueueManager Error] {e}")
@@ -1063,7 +1063,7 @@ class QueueManager:
 queue_manager = QueueManager()
 
 # ==========================================
-# SERVICE 3: Máº NG XÃƒ Há»˜I (TANGTIM API)
+# SERVICE 3: MẠNG XÃ HỘI (TANGTIM API)
 # ==========================================
 def is_sale_active():
     cfg = load_config()
@@ -1089,7 +1089,7 @@ def tangtim_fetch_balance():
             data = res.json()
             raw_usd = float(data.get("balance") or 0)
             bal_vnd = int(round(raw_usd * usd_rate))
-            return bal_vnd, f"{bal_vnd:,}Ä‘", raw_usd
+            return bal_vnd, f"{bal_vnd:,}đ", raw_usd
     except Exception as e:
         print(f"[TangTim Balance Error] {e}")
     return None, None, None
@@ -1108,35 +1108,35 @@ def tangtim_fetch_all_services():
     return None
 
 def detect_service_origin(cat, name, desc=""):
-    """PhÃ¢n loáº¡i chuáº©n xÃ¡c TÃ i NguyÃªn Viá»‡t vs Quá»‘c Táº¿ (TÃ¢y)."""
+    """Phân loại chuẩn xác Tài Nguyên Việt vs Quốc Tế (Tây)."""
     text = ((cat or "") + " " + (name or "")).lower()
     desc_low = (desc or "").lower()
-    if "viá»‡t" in (cat or "").lower() or "viet" in (cat or "").lower():
+    if "việt" in (cat or "").lower() or "viet" in (cat or "").lower():
         return "viet"
-    if "tÃ¢y" in (cat or "").lower() or "tay" in (cat or "").lower() or "ngoáº¡i" in (cat or "").lower():
+    if "tây" in (cat or "").lower() or "tay" in (cat or "").lower() or "ngoại" in (cat or "").lower():
         return "tay"
-    if any(k in text for k in ["viá»‡t", "viet", "ngÆ°á»i tháº­t viá»‡t", "clone viá»‡t", "tÃªn viá»‡t", "page viá»‡t"]):
+    if any(k in text for k in ["việt", "viet", "người thật việt", "clone việt", "tên việt", "page việt"]):
         return "viet"
-    if any(k in text for k in ["tÃ¢y", "tay", "ngoáº¡i", "global", "worldwide", "hq accounts", "hq ", "Ä‘a quá»‘c gia", "tÃ i khoáº£n tÃ¢y"]):
+    if any(k in text for k in ["tây", "tay", "ngoại", "global", "worldwide", "hq accounts", "hq ", "đa quốc gia", "tài khoản tây"]):
         return "tay"
     for line in desc_low.splitlines():
-        if "tÃ i nguyÃªn" in line:
-            if "viá»‡t" in line:
+        if "tài nguyên" in line:
+            if "việt" in line:
                 return "viet"
-            if any(k in line for k in ["tÃ¢y", "ngoáº¡i", "Ä‘a quá»‘c gia", "quá»‘c táº¿", "global"]):
+            if any(k in line for k in ["tây", "ngoại", "đa quốc gia", "quốc tế", "global"]):
                 return "tay"
     if any(k in text for k in ["tiktok", "facebook"]):
-        if "tÃ¢y" in text or "ngoáº¡i" in text:
+        if "tây" in text or "ngoại" in text:
             return "tay"
         return "viet"
     return "tay"
 
 def is_vip_like_or_monthly(name, cat):
-    """XÃ¡c Ä‘á»‹nh cÃ¡c gÃ³i Vip Like / GÃ³i thÃ¡ng khÃ´ng phÃ¹ há»£p vá»›i há»‡ thá»‘ng buff Ä‘Æ¡n láº»."""
+    """Xác định các gói Vip Like / Gói tháng không phù hợp với hệ thống buff đơn lẻ."""
     full = (str(name or "") + " " + str(cat or "")).lower()
-    if any(k in full for k in ["vip like", "viplike", "gÃ³i thÃ¡ng", "goi thang", "like thÃ¡ng", "cmt thÃ¡ng", "tim thÃ¡ng"]):
+    if any(k in full for k in ["vip like", "viplike", "gói tháng", "goi thang", "like tháng", "cmt tháng", "tim tháng"]):
         return True
-    if "thÃ¡ng" in str(cat or "").lower():
+    if "tháng" in str(cat or "").lower():
         return True
     return False
 
@@ -1163,7 +1163,7 @@ def classify_service(cat, name):
     elif "shoppe" in cat_l or "shopee" in cat_l:
         plat = "shopee"
     else:
-        # Category is generic (e.g. "GÃ³i ThÃ¡ng All Ná»n Táº£ng") -> Check Name with strict boundaries
+        # Category is generic (e.g. "Gói Tháng All Nền Tảng") -> Check Name with strict boundaries
         if "tik tok" in name_l or "tiktok" in name_l:
             plat = "tiktok"
         elif "youtube" in name_l or re.search(r'\byt\b', name_l):
@@ -1183,15 +1183,15 @@ def classify_service(cat, name):
 
     # 2. Action Detection
     c = cat_l + " " + name_l
-    if any(k in c for k in ["bÃ¬nh luáº­n", "comment", "cmt"]):
+    if any(k in c for k in ["bình luận", "comment", "cmt"]):
         act = "comment"
-    elif any(k in c for k in ["share", "chia sáº»", "lÆ°u", "yÃªu thÃ­ch"]):
+    elif any(k in c for k in ["share", "chia sẻ", "lưu", "yêu thích"]):
         act = "share"
-    elif any(k in c for k in ["theo dÃµi", "follow", "sub", "Ä‘Äƒng kÃ­", "Ä‘Äƒng kÃ½"]):
+    elif any(k in c for k in ["theo dõi", "follow", "sub", "đăng kí", "đăng ký"]):
         act = "follow"
-    elif any(k in c for k in ["view", "lÆ°á»£t xem", "story", "máº¯t live", "xem"]):
+    elif any(k in c for k in ["view", "lượt xem", "story", "mắt live", "xem"]):
         act = "view"
-    elif any(k in c for k in ["tim", "like", "tháº£ tim", "cáº£m xÃºc", "cÃ¡u", "buá»“n", "haha", "wow", "care", "reaction"]):
+    elif any(k in c for k in ["tim", "like", "thả tim", "cảm xúc", "cáu", "buồn", "haha", "wow", "care", "reaction"]):
         act = "like"
     else:
         act = "other"
@@ -1202,22 +1202,22 @@ def clean_service_description(raw_desc, name="", service_id=None):
     if not raw_desc or not str(raw_desc).strip():
         return ""
     has_warranty = False
-    warranty_text = "KhÃ´ng"
+    warranty_text = "Không"
 
     for line in str(raw_desc).splitlines():
         l_low = line.lower()
-        if "báº£o hÃ nh" in l_low or "bao hanh" in l_low:
-            if "khÃ´ng" in l_low or "khong" in l_low:
+        if "bảo hành" in l_low or "bao hanh" in l_low:
+            if "không" in l_low or "khong" in l_low:
                 has_warranty = False
-                warranty_text = "KhÃ´ng"
+                warranty_text = "Không"
             else:
                 has_warranty = True
                 if ":" in line:
                     val = line.split(":", 1)[1].strip()
                     val = re.sub(r'<[^>]+>', '', val).strip()
-                    warranty_text = val if val else "CÃ³"
+                    warranty_text = val if val else "Có"
                 else:
-                    warranty_text = "CÃ³"
+                    warranty_text = "Có"
             break
 
     cleaned = re.sub(r'<b[^>]*#6000[dD]9[\s\S]*?</b>', '', str(raw_desc), flags=re.I)
@@ -1227,25 +1227,25 @@ def clean_service_description(raw_desc, name="", service_id=None):
 
     for line in lines_desc:
         l_lower = line.lower()
-        if "hoÃ n tiá»n" in l_lower or "nÃºt hoÃ n" in l_lower or "cháº¯c cháº¯n hoÃ n" in l_lower:
+        if "hoàn tiền" in l_lower or "nút hoàn" in l_lower or "chắc chắn hoàn" in l_lower:
             continue
-        if "mÃ£ mÃ¡y chá»§" in l_lower or "mÃ£ api" in l_lower or "ðŸ†”" in line:
+        if "mã máy chủ" in l_lower or "mã api" in l_lower or "🆔" in line:
             continue
         if "tangtim" in l_lower:
             continue
-        if "báº£o hÃ nh" in l_lower or "bao hanh" in l_lower:
+        if "bảo hành" in l_lower or "bao hanh" in l_lower:
             has_bh_line = True
             if has_warranty:
-                line = f"ðŸ”° <b>Báº£o hÃ nh:</b> {warranty_text}"
+                line = f"🔰 <b>Bảo hành:</b> {warranty_text}"
             else:
-                line = "ðŸ”° <b>Báº£o hÃ nh:</b> KhÃ´ng"
+                line = "🔰 <b>Bảo hành:</b> Không"
         cleaned_lines.append(line)
 
     if not has_bh_line:
         if has_warranty:
-            cleaned_lines.append(f"ðŸ”° <b>Báº£o hÃ nh:</b> {warranty_text}")
+            cleaned_lines.append(f"🔰 <b>Bảo hành:</b> {warranty_text}")
         else:
-            cleaned_lines.append("ðŸ”° <b>Báº£o hÃ nh:</b> KhÃ´ng")
+            cleaned_lines.append("🔰 <b>Bảo hành:</b> Không")
 
     cleaned_html = "\n".join(cleaned_lines)
     cleaned_html = re.sub(r'(<br\s*/?>\s*){2,}', '<br>', cleaned_html, flags=re.I)
@@ -1259,7 +1259,7 @@ def recalculate_service_prices(cfg):
     multiplier = 1.0 + (margin_percent / 100.0)
     usd_rate = float(tt_cfg.get("usd_rate", 25500))
 
-    # XÃ“A Bá»Ž TOÃ€N Bá»˜ GÃ“I VIP LIKE / GÃ“I THÃNG THEO YÃŠU Cáº¦U
+    # XÓA BỎ TOÀN BỘ GÓI VIP LIKE / GÓI THÁNG THEO YÊU CẦU
     services = [s for s in cfg.get("services", []) if not is_vip_like_or_monthly(s.get("name"), s.get("category"))]
     for s in services:
         sid = s.get("service_id") or s.get("service")
@@ -1290,12 +1290,12 @@ def recalculate_service_prices(cfg):
             sell_price = 0.01
 
         s["price_per_unit"] = sell_price
-        s["price_formatted"] = f"{sell_price:g}Ä‘"
+        s["price_formatted"] = f"{sell_price:g}đ"
 
-        # CÃ i Ä‘áº·t min 1000 cho dá»‹ch vá»¥ thÆ°á»ng, dá»‹ch vá»¥ bÃ¬nh luáº­n giá»¯ raw_min
+        # Cài đặt min 1000 cho dịch vụ thường, dịch vụ bình luận giữ raw_min
         raw_max = int(s.get("max") or 1000000)
         raw_min = int(s.get("raw_min") or s.get("min") or 10)
-        if s.get("action") == "comment" or "bÃ¬nh luáº­n" in str(s.get("category", "")).lower() or "comment" in str(s.get("name", "")).lower():
+        if s.get("action") == "comment" or "bình luận" in str(s.get("category", "")).lower() or "comment" in str(s.get("name", "")).lower():
             s["min"] = raw_min
         elif raw_max >= 1000:
             s["min"] = 1000 if raw_min <= 1000 else raw_min
@@ -1327,7 +1327,7 @@ def tangtim_process_order(order):
     comments = order.get("comments") or ""
 
     if not service_id or not link:
-        return False, "Thiáº¿u service_id hoáº·c link"
+        return False, "Thiếu service_id hoặc link"
 
     payload = {
         "key": api_key,
@@ -1356,18 +1356,18 @@ def tangtim_process_order(order):
             reply_kb = {
                 "inline_keyboard": [
                     [
-                        {"text": "ðŸ”„ Check Tiáº¿n Äá»™", "callback_data": "btn:check"},
-                        {"text": "ðŸ“Š Thá»‘ng KÃª", "callback_data": "btn:stats"}
+                        {"text": "🔄 Check Tiến Độ", "callback_data": "btn:check"},
+                        {"text": "📊 Thống Kê", "callback_data": "btn:stats"}
                     ]
                 ]
             }
             send_telegram_msg(
-                f"ðŸš€ <b>[TANGTIM ÄÃƒ NHáº¬N ÄÆ N MXH]</b>\n"
-                f"â€¢ ÄÆ¡n: <b>#{order.get('order_id')}</b>\n"
-                f"â€¢ GÃ³i: {order.get('package_name')}\n"
-                f"â€¢ Order ID mÃ¡y chá»§: <code>{tt_order_id}</code>\n"
-                f"â€¢ Sá»‘ lÆ°á»£ng: <b>{quantity:,}</b>\n"
-                f"<i>Há»‡ thá»‘ng cron sáº½ tá»± Ä‘á»™ng kiá»ƒm tra vÃ  bÃ¡o Telegram khi hoÃ n táº¥t 100%!</i>",
+                f"🚀 <b>[TANGTIM ĐÃ NHẬN ĐƠN MXH]</b>\n"
+                f"• Đơn: <b>#{order.get('order_id')}</b>\n"
+                f"• Gói: {order.get('package_name')}\n"
+                f"• Order ID máy chủ: <code>{tt_order_id}</code>\n"
+                f"• Số lượng: <b>{quantity:,}</b>\n"
+                f"<i>Hệ thống cron sẽ tự động kiểm tra và báo Telegram khi hoàn tất 100%!</i>",
                 reply_markup=reply_kb
             )
             return True, res_data
@@ -1377,7 +1377,7 @@ def tangtim_process_order(order):
             order["tangtim_error"] = err
             order["needs_customer_update"] = True
             order["customer_update_type"] = "link"
-            order["customer_error_msg"] = "Link bÃ i viáº¿t / trang cÃ¡ nhÃ¢n cá»§a báº¡n khÃ´ng há»£p lá»‡ hoáº·c Ä‘ang á»Ÿ cháº¿ Ä‘á»™ riÃªng tÆ°. Vui lÃ²ng nháº­p link cÃ´ng khai má»›i bÃªn dÆ°á»›i Ä‘á»ƒ há»‡ thá»‘ng tiáº¿p tá»¥c tÄƒng tÆ°Æ¡ng tÃ¡c!"
+            order["customer_error_msg"] = "Link bài viết / trang cá nhân của bạn không hợp lệ hoặc đang ở chế độ riêng tư. Vui lòng nhập link công khai mới bên dưới để hệ thống tiếp tục tăng tương tác!"
             orders = load_orders()
             orders[order.get("order_id")] = order
             save_orders(orders)
@@ -1386,32 +1386,32 @@ def tangtim_process_order(order):
             reply_kb = {
                 "inline_keyboard": [
                     [
-                        {"text": f"âœï¸ Sá»­a Link #{oid}", "callback_data": f"btn:sua:{oid}"},
-                        {"text": f"ðŸš€ Äáº©y Láº¡i #{oid}", "callback_data": f"btn:day:{oid}"}
+                        {"text": f"✏️ Sửa Link #{oid}", "callback_data": f"btn:sua:{oid}"},
+                        {"text": f"🚀 Đẩy Lại #{oid}", "callback_data": f"btn:day:{oid}"}
                     ],
                     [
-                        {"text": f"ðŸ—‘ï¸ XÃ³a ÄÆ¡n #{oid}", "callback_data": f"btn:xoa:{oid}"},
-                        {"text": "ðŸ“‹ Xem ÄÆ¡n Lá»—i", "callback_data": "btn:orders_err"}
+                        {"text": f"🗑️ Xóa Đơn #{oid}", "callback_data": f"btn:xoa:{oid}"},
+                        {"text": "📋 Xem Đơn Lỗi", "callback_data": "btn:orders_err"}
                     ]
                 ]
             }
             send_telegram_msg(
-                f"âš ï¸ <b>[ÄÆ N MXH: Lá»–I LINK BÃ€I VIáº¾T]</b>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"â€¢ ÄÆ¡n hÃ ng: <b>#{oid}</b>\n"
-                f"â€¢ GÃ³i: {order.get('package_name')}\n"
-                f"â€¢ KhÃ¡ch Ä‘iá»n link: <code>{link}</code>\n"
-                f"â€¢ Tráº¡ng thÃ¡i tiá»n: <b>âœ… ÄÃƒ THANH TOÃN ({order.get('amount_formatted', 'N/A')})</b>\n"
-                f"â€¢ Lá»—i mÃ¡y chá»§: <b>Link khÃ´ng há»£p lá»‡ hoáº·c bÃ i viáº¿t riÃªng tÆ°</b>\n"
-                f"â€¢ Zalo khÃ¡ch: <code>{order.get('zalo', 'N/A')}</code>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"ðŸ‘‰ Admin sá»­a ngay báº±ng lá»‡nh: <code>/sua {oid} &lt;link_má»›i&gt;</code>\n"
-                f"<i>(KhÃ¡ch hÃ ng cÅ©ng Ä‘Ã£ nháº­n Ä‘Æ°á»£c thÃ´ng bÃ¡o yÃªu cáº§u dÃ¡n link má»›i trÃªn web)</i>",
+                f"⚠️ <b>[ĐƠN MXH: LỖI LINK BÀI VIẾT]</b>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"• Đơn hàng: <b>#{oid}</b>\n"
+                f"• Gói: {order.get('package_name')}\n"
+                f"• Khách điền link: <code>{link}</code>\n"
+                f"• Trạng thái tiền: <b>✅ ĐÃ THANH TOÁN ({order.get('amount_formatted', 'N/A')})</b>\n"
+                f"• Lỗi máy chủ: <b>Link không hợp lệ hoặc bài viết riêng tư</b>\n"
+                f"• Zalo khách: <code>{order.get('zalo', 'N/A')}</code>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"👉 Admin sửa ngay bằng lệnh: <code>/sua {oid} &lt;link_mới&gt;</code>\n"
+                f"<i>(Khách hàng cũng đã nhận được thông báo yêu cầu dán link mới trên web)</i>",
                 reply_markup=reply_kb
             )
             return False, err
     except Exception as e:
-        err = f"Lá»—i mÃ¡y chá»§ MXH: {e}"
+        err = f"Lỗi máy chủ MXH: {e}"
         order["tangtim_status"] = "ERROR"
         order["tangtim_error"] = err
         orders = load_orders()
@@ -1420,7 +1420,7 @@ def tangtim_process_order(order):
         return False, err
 
 def tangtim_check_orders_status(tangtim_order_ids):
-    """QuÃ©t tráº¡ng thÃ¡i Ä‘Æ¡n hÃ ng tá»« mÃ¡y chá»§ qua API v2."""
+    """Quét trạng thái đơn hàng từ máy chủ qua API v2."""
     if not tangtim_order_ids:
         return {}
     cfg = load_config()
@@ -1456,10 +1456,10 @@ def tangtim_check_orders_status(tangtim_order_ids):
 
 def classify_order_error(order):
     """
-    PhÃ¢n tÃ­ch lá»—i tá»« cÃ¡c dá»‹ch vá»¥ cáº¥p dÆ°á»›i (web máº¹) má»™t cÃ¡ch tuyá»‡t máº­t:
-    XÃ¡c Ä‘á»‹nh xem cÃ³ pháº£i lá»—i do khÃ¡ch Ä‘iá»n sai link/mÃ£ khÃ´ng.
-    Tráº£ vá»: (is_target_error, error_type, customer_msg)
-    Tuyá»‡t Ä‘á»‘i khÃ´ng Ä‘á»ƒ lá»™ tÃªn web máº¹ hay thÃ´ng tin ká»¹ thuáº­t ra ngoÃ i.
+    Phân tích lỗi từ các dịch vụ cấp dưới (web mẹ) một cách tuyệt mật:
+    Xác định xem có phải lỗi do khách điền sai link/mã không.
+    Trả về: (is_target_error, error_type, customer_msg)
+    Tuyệt đối không để lộ tên web mẹ hay thông tin kỹ thuật ra ngoài.
     """
     if not order or not isinstance(order, dict):
         return False, None, None
@@ -1472,58 +1472,58 @@ def classify_order_error(order):
     tt_err = str(order.get("tangtim_error") or "").lower()
     tt_st = str(order.get("tangtim_status") or "").lower()
 
-    # 1. Kiá»ƒm tra Ä‘Æ¡n Chung Sá»©c LiÃªn QuÃ¢n (MÃ£ má»i / Link sá»± kiá»‡n)
+    # 1. Kiểm tra đơn Chung Sức Liên Quân (Mã mời / Link sự kiện)
     if stype == "chungsuc" or oid.startswith("CS"):
-        if "out_of_balance" in an_st.lower() or "thiáº¿u" in an_err or "xu" in an_err or "auth_failed" in an_st.lower():
+        if "out_of_balance" in an_st.lower() or "thiếu" in an_err or "xu" in an_err or "auth_failed" in an_st.lower():
             return False, None, None
 
         code_err_keywords = [
-            "invalid_service_code", "invalid code", "mÃ£ khÃ´ng", "sai mÃ£", "mÃ£ má»i", 
-            "háº¿t háº¡n", "invite_code", "khÃ´ng há»£p lá»‡", "khÃ´ng tá»“n táº¡i", "syntax", "format"
+            "invalid_service_code", "invalid code", "mã không", "sai mã", "mã mời", 
+            "hết hạn", "invite_code", "không hợp lệ", "không tồn tại", "syntax", "format"
         ]
         if any(k in an_err for k in code_err_keywords) or an_st in ("FAILED", "INVALID", "ERROR"):
-            return True, "code", "MÃ£ má»i LiÃªn QuÃ¢n cá»§a báº¡n khÃ´ng há»£p lá»‡ hoáº·c Ä‘Ã£ háº¿t háº¡n. Vui lÃ²ng dÃ¡n link sá»± kiá»‡n hoáº·c mÃ£ má»i má»›i bÃªn dÆ°á»›i Ä‘á»ƒ há»‡ thá»‘ng tiáº¿p tá»¥c xá»­ lÃ½ tá»± Ä‘á»™ng!"
+            return True, "code", "Mã mời Liên Quân của bạn không hợp lệ hoặc đã hết hạn. Vui lòng dán link sự kiện hoặc mã mời mới bên dưới để hệ thống tiếp tục xử lý tự động!"
 
-    # 2. Kiá»ƒm tra Ä‘Æ¡n Máº¡ng XÃ£ Há»™i (Link bÃ i viáº¿t / trang cÃ¡ nhÃ¢n)
+    # 2. Kiểm tra đơn Mạng Xã Hội (Link bài viết / trang cá nhân)
     elif stype == "mxh" or oid.startswith("TT"):
-        if "balance" in tt_err or "sá»‘ dÆ°" in tt_err or "api key" in tt_err:
+        if "balance" in tt_err or "số dư" in tt_err or "api key" in tt_err:
             return False, None, None
 
         link_err_keywords = [
-            "invalid link", "incorrect link", "link", "url", "khÃ´ng há»£p lá»‡", 
-            "riÃªng tÆ°", "private", "not found", "khÃ´ng tÃ¬m tháº¥y", "cháº·n", "die", "post", "video"
+            "invalid link", "incorrect link", "link", "url", "không hợp lệ", 
+            "riêng tư", "private", "not found", "không tìm thấy", "chặn", "die", "post", "video"
         ]
         if any(k in tt_err for k in link_err_keywords) or tt_st in ("failed", "error", "canceled", "cancelled"):
-            return True, "link", "Link bÃ i viáº¿t / trang cÃ¡ nhÃ¢n cá»§a báº¡n khÃ´ng há»£p lá»‡ hoáº·c Ä‘ang á»Ÿ cháº¿ Ä‘á»™ riÃªng tÆ°. Vui lÃ²ng nháº­p link cÃ´ng khai má»›i bÃªn dÆ°á»›i Ä‘á»ƒ há»‡ thá»‘ng tiáº¿p tá»¥c tÄƒng tÆ°Æ¡ng tÃ¡c!"
+            return True, "link", "Link bài viết / trang cá nhân của bạn không hợp lệ hoặc đang ở chế độ riêng tư. Vui lòng nhập link công khai mới bên dưới để hệ thống tiếp tục tăng tương tác!"
 
     return False, None, None
 
 def live_state_text(order):
-    """Tráº¡ng thÃ¡i tháº­t hiá»ƒn thá»‹ cho khÃ¡ch / admin."""
+    """Trạng thái thật hiển thị cho khách / admin."""
     is_target_err, err_type, _ = classify_order_error(order)
     if is_target_err:
-        return "Cáº§n Ä‘iá»n láº¡i mÃ£ má»›i" if err_type == "code" else "Cáº§n Ä‘iá»n láº¡i link má»›i"
+        return "Cần điền lại mã mới" if err_type == "code" else "Cần điền lại link mới"
 
     st = order.get("status")
     if st == "PENDING":
-        return "Chá» thanh toÃ¡n"
+        return "Chờ thanh toán"
     if st == "CANCELED":
-        return "ÄÃ£ há»§y"
+        return "Đã hủy"
     if st == "COMPLETED":
-        return "HoÃ n thÃ nh má»™t pháº§n" if str(order.get("tangtim_status", "")).lower() == "partial" else "HoÃ n thÃ nh"
+        return "Hoàn thành một phần" if str(order.get("tangtim_status", "")).lower() == "partial" else "Hoàn thành"
     tt = str(order.get("tangtim_status") or "").strip().lower()
     if tt in ("in progress", "in_progress", "processing"):
-        return "Äang cháº¡y"
+        return "Đang chạy"
     if tt in ("pending", "queued"):
-        return "Äang chá» vÃ o hÃ ng Ä‘á»£i"
+        return "Đang chờ vào hàng đợi"
     if tt in ("failed", "error"):
-        return "Äang xá»­ lÃ½ láº¡i"
-    return "Äang xá»­ lÃ½"
+        return "Đang xử lý lại"
+    return "Đang xử lý"
 
 def sanitize_order_for_client(order):
     """
-    LÃ m sáº¡ch dá»¯ liá»‡u Ä‘Æ¡n hÃ ng trÆ°á»›c khi tráº£ vá» cho khÃ¡ch (Frontend / Tra cá»©u / API cÃ´ng khai).
-    NGHIÃŠM Cáº¤M Ä‘á»ƒ lá»™ tÃªn 2 web máº¹ (autonhanh, tangtim) vÃ  token/key/id ná»™i bá»™.
+    Làm sạch dữ liệu đơn hàng trước khi trả về cho khách (Frontend / Tra cứu / API công khai).
+    NGHIÊM CẤM để lộ tên 2 web mẹ (autonhanh, tangtim) và token/key/id nội bộ.
     """
     if not order or not isinstance(order, dict):
         return {}
@@ -1568,7 +1568,7 @@ def sanitize_order_for_client(order):
     return clean_dict
 
 def refresh_orders_live(orders, only_ids=None, max_age=15, force=False):
-    """Há»i tráº¡ng thÃ¡i THáº¬T tá»« mÃ¡y chá»§ cho cÃ¡c Ä‘Æ¡n Ä‘ang cháº¡y; cáº­p nháº­t start_count / remains / delivered."""
+    """Hỏi trạng thái THẬT từ máy chủ cho các đơn đang chạy; cập nhật start_count / remains / delivered."""
     now = time.time()
     targets = []
     for oid, o in orders.items():
@@ -1621,9 +1621,9 @@ def refresh_orders_live(orders, only_ids=None, max_age=15, force=False):
 
         tt_st = str(info.get("status", "")).strip().lower()
         deliv_cnt = int(o.get("delivered") or 0)
-        # Náº¿u Ä‘Ã£ giao Ä‘á»§ sá»‘ lÆ°á»£ng hoáº·c remains = 0 hoáº·c mÃ¡y chá»§ bÃ¡o hoÃ n táº¥t hoáº·c Ä‘Ã£ cháº¡y > 48h vÃ  Ä‘áº¡t >= 80%
+        # Nếu đã giao đủ số lượng hoặc remains = 0 hoặc máy chủ báo hoàn tất hoặc đã chạy > 48h và đạt >= 80%
         is_completed_now = (
-            tt_st in ("completed", "hoÃ n thÃ nh", "finish", "success") or
+            tt_st in ("completed", "hoàn thành", "finish", "success") or
             (qty > 0 and (o.get("remains", 999) <= 0 or deliv_cnt >= qty)) or
             (qty > 0 and deliv_cnt >= int(qty * 0.8) and (now - float(o.get("created_at", 0)) > 86400 * 2))
         )
@@ -1644,11 +1644,11 @@ def refresh_orders_live(orders, only_ids=None, max_age=15, force=False):
             o["completed_at"] = now_str
             completed += 1
             changed = True
-        elif tt_st in ("canceled", "cancelled", "refunded", "há»§y", "Ä‘Ã£ há»§y"):
+        elif tt_st in ("canceled", "cancelled", "refunded", "hủy", "đã hủy"):
             o["status"] = "CANCELED"
             o["tangtim_status"] = "Canceled"
             changed = True
-        elif tt_st in ("in progress", "processing", "Ä‘ang cháº¡y"):
+        elif tt_st in ("in progress", "processing", "đang chạy"):
             if o.get("tangtim_status") != "In progress":
                 o["tangtim_status"] = "In progress"
                 changed = True
@@ -1668,9 +1668,9 @@ def refresh_orders_live(orders, only_ids=None, max_age=15, force=False):
 
 def check_web_me_orders_status():
     """
-    QuÃ©t tá»± Ä‘á»™ng tiáº¿n Ä‘á»™ cá»§a 2 web máº¹:
-    1. AutoNhanh: GET /api/batches/{batch_id} -> náº¿u DONE chuyá»ƒn COMPLETED vÃ  bÃ¡o Tele!
-    2. TangTim: POST /api/v2 action: status -> náº¿u Completed/Partial chuyá»ƒn COMPLETED vÃ  bÃ¡o Tele!
+    Quét tự động tiến độ của 2 web mẹ:
+    1. AutoNhanh: GET /api/batches/{batch_id} -> nếu DONE chuyển COMPLETED và báo Tele!
+    2. TangTim: POST /api/v2 action: status -> nếu Completed/Partial chuyển COMPLETED và báo Tele!
     """
     orders = load_orders()
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -1678,11 +1678,11 @@ def check_web_me_orders_status():
     completed_orders = []
     checked_count = 0
 
-    # 1. KIá»‚M TRA AUTONHANH (CHUNG Sá»¨C)
+    # 1. KIỂM TRA AUTONHANH (CHUNG SỨC)
     for oid, o in list(orders.items()):
         batch_id = o.get("autonhanh_batch_id")
         an_st = str(o.get("autonhanh_status") or "").upper()
-        # ÄÆ¡n cÃ³ batch_id vÃ  chÆ°a hoÃ n thÃ nh
+        # Đơn có batch_id và chưa hoàn thành
         if batch_id and (o.get("status") in ("PROCESSING", "PAID") or an_st not in ("DONE", "COMPLETED", "FAILED")):
             checked_count += 1
             info = autonhanh_check_batch_status(batch_id)
@@ -1703,21 +1703,21 @@ def check_web_me_orders_status():
                     reply_kb = {
                         "inline_keyboard": [
                             [
-                                {"text": "ðŸ“Š Xem Thá»‘ng KÃª", "callback_data": "btn:stats"},
-                                {"text": "ðŸ“‹ Xem ÄÆ¡n KhÃ¡c", "callback_data": "btn:orders"}
+                                {"text": "📊 Xem Thống Kê", "callback_data": "btn:stats"},
+                                {"text": "📋 Xem Đơn Khác", "callback_data": "btn:orders"}
                             ]
                         ]
                     }
                     send_telegram_msg(
-                        f"ðŸŽ‰ <b>[CHUNG Sá»¨C ÄÃƒ HOÃ€N THÃ€NH - AUTONHANH]</b>\n"
-                        f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                        f"â€¢ MÃ£ Ä‘Æ¡n: <b>#{oid}</b>\n"
-                        f"â€¢ MÃ£ má»i: <code>{o.get('code')}</code>\n"
-                        f"â€¢ GÃ³i: <b>{o.get('package_name')}</b>\n"
-                        f"â€¢ LÆ°á»£t buff: <b>{processed}/{requested}</b> lÆ°á»£t hoÃ n táº¥t 100%!\n"
-                        f"â€¢ Batch ID: <code>{batch_id}</code>\n"
-                        f"â€¢ HoÃ n táº¥t lÃºc: {now_str}\n"
-                        f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”",
+                        f"🎉 <b>[CHUNG SỨC ĐÃ HOÀN THÀNH - AUTONHANH]</b>\n"
+                        f"━━━━━━━━━━━━━━━━━━\n"
+                        f"• Mã đơn: <b>#{oid}</b>\n"
+                        f"• Mã mời: <code>{o.get('code')}</code>\n"
+                        f"• Gói: <b>{o.get('package_name')}</b>\n"
+                        f"• Lượt buff: <b>{processed}/{requested}</b> lượt hoàn tất 100%!\n"
+                        f"• Batch ID: <code>{batch_id}</code>\n"
+                        f"• Hoàn tất lúc: {now_str}\n"
+                        f"━━━━━━━━━━━━━━━━━━",
                         reply_markup=reply_kb
                     )
                 elif st in ("RUNNING", "PENDING"):
@@ -1729,13 +1729,13 @@ def check_web_me_orders_status():
                     o["autonhanh_status"] = "FAILED"
                     changed = True
                     send_telegram_msg(
-                        f"âš ï¸ <b>[Cáº¢NH BÃO BATCH AUTONHANH THáº¤T Báº I]</b>\n"
-                        f"â€¢ MÃ£ Ä‘Æ¡n: <b>#{oid}</b>\n"
-                        f"â€¢ Batch ID: <code>{batch_id}</code>\n"
-                        f"â€¢ Tráº¡ng thÃ¡i mÃ¡y chá»§: FAILED"
+                        f"⚠️ <b>[CẢNH BÁO BATCH AUTONHANH THẤT BẠI]</b>\n"
+                        f"• Mã đơn: <b>#{oid}</b>\n"
+                        f"• Batch ID: <code>{batch_id}</code>\n"
+                        f"• Trạng thái máy chủ: FAILED"
                     )
 
-    # 2. KIá»‚M TRA TANGTIM (Máº NG XÃƒ Há»˜I)
+    # 2. KIỂM TRA TANGTIM (MẠNG XÃ HỘI)
     tt_targets = []
     for oid, o in list(orders.items()):
         tt_id = o.get("tangtim_order_id")
@@ -1768,7 +1768,7 @@ def check_web_me_orders_status():
 
             deliv_cnt = int(o.get("delivered") or 0)
             is_done = (
-                tt_st in ("completed", "hoÃ n thÃ nh", "finish", "success") or
+                tt_st in ("completed", "hoàn thành", "finish", "success") or
                 (qty > 0 and (o.get("remains", 999) <= 0 or deliv_cnt >= qty)) or
                 (qty > 0 and deliv_cnt >= int(qty * 0.8) and (time.time() - float(o.get("created_at", 0)) > 86400 * 2))
             )
@@ -1786,21 +1786,21 @@ def check_web_me_orders_status():
                 reply_kb = {
                     "inline_keyboard": [
                         [
-                            {"text": "ðŸ“Š Xem Thá»‘ng KÃª", "callback_data": "btn:stats"},
-                            {"text": "ðŸ“‹ Xem ÄÆ¡n KhÃ¡c", "callback_data": "btn:orders"}
+                            {"text": "📊 Xem Thống Kê", "callback_data": "btn:stats"},
+                            {"text": "📋 Xem Đơn Khác", "callback_data": "btn:orders"}
                         ]
                     ]
                 }
                 send_telegram_msg(
-                    f"ðŸŽ‰ <b>[ÄÆ N MXH ÄÃƒ HOÃ€N THÃ€NH - TANGTIM]</b>\n"
-                    f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                    f"â€¢ MÃ£ Ä‘Æ¡n: <b>#{oid}</b>\n"
-                    f"â€¢ Dá»‹ch vá»¥: <b>{o.get('package_name')}</b>\n"
-                    f"â€¢ Link: <code>{o.get('link')}</code>\n"
-                    f"â€¢ Sá»‘ lÆ°á»£ng: <b>{qty:,}</b> (HoÃ n táº¥t 100%)\n"
-                    f"â€¢ Order ID TangTim: <code>{tt_id}</code>\n"
-                    f"â€¢ HoÃ n táº¥t lÃºc: {now_str}\n"
-                    f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”",
+                    f"🎉 <b>[ĐƠN MXH ĐÃ HOÀN THÀNH - TANGTIM]</b>\n"
+                    f"━━━━━━━━━━━━━━━━━━\n"
+                    f"• Mã đơn: <b>#{oid}</b>\n"
+                    f"• Dịch vụ: <b>{o.get('package_name')}</b>\n"
+                    f"• Link: <code>{o.get('link')}</code>\n"
+                    f"• Số lượng: <b>{qty:,}</b> (Hoàn tất 100%)\n"
+                    f"• Order ID TangTim: <code>{tt_id}</code>\n"
+                    f"• Hoàn tất lúc: {now_str}\n"
+                    f"━━━━━━━━━━━━━━━━━━",
                     reply_markup=reply_kb
                 )
             elif tt_st == "partial":
@@ -1810,23 +1810,23 @@ def check_web_me_orders_status():
                 changed = True
                 completed_orders.append(oid)
                 send_telegram_msg(
-                    f"âš ï¸ <b>[ÄÆ N MXH HOÃ€N THÃ€NH 1 PHáº¦N - TANGTIM]</b>\n"
-                    f"â€¢ MÃ£ Ä‘Æ¡n: <b>#{oid}</b>\n"
-                    f"â€¢ Dá»‹ch vá»¥: {o.get('package_name')}\n"
-                    f"â€¢ ÄÃ£ giao: <b>{o.get('delivered', 0):,}/{qty:,}</b>\n"
-                    f"â€¢ CÃ²n láº¡i: {o.get('remains', 0):,}"
+                    f"⚠️ <b>[ĐƠN MXH HOÀN THÀNH 1 PHẦN - TANGTIM]</b>\n"
+                    f"• Mã đơn: <b>#{oid}</b>\n"
+                    f"• Dịch vụ: {o.get('package_name')}\n"
+                    f"• Đã giao: <b>{o.get('delivered', 0):,}/{qty:,}</b>\n"
+                    f"• Còn lại: {o.get('remains', 0):,}"
                 )
-            elif tt_st in ("canceled", "cancelled", "refunded", "há»§y", "Ä‘Ã£ há»§y"):
+            elif tt_st in ("canceled", "cancelled", "refunded", "hủy", "đã hủy"):
                 o["status"] = "CANCELED"
                 o["tangtim_status"] = "Canceled"
                 changed = True
                 send_telegram_msg(
-                    f"âŒ <b>[ÄÆ N MXH ÄÃƒ Bá»Š Há»¦Y Bá»žI TANGTIM]</b>\n"
-                    f"â€¢ MÃ£ Ä‘Æ¡n: <b>#{oid}</b>\n"
-                    f"â€¢ Dá»‹ch vá»¥: {o.get('package_name')}\n"
-                    f"â€¢ Order ID mÃ¡y chá»§: <code>{tt_id}</code>"
+                    f"❌ <b>[ĐƠN MXH ĐÃ BỊ HỦY BỞI TANGTIM]</b>\n"
+                    f"• Mã đơn: <b>#{oid}</b>\n"
+                    f"• Dịch vụ: {o.get('package_name')}\n"
+                    f"• Order ID máy chủ: <code>{tt_id}</code>"
                 )
-            elif tt_st in ("in progress", "processing", "Ä‘ang cháº¡y"):
+            elif tt_st in ("in progress", "processing", "đang chạy"):
                 if o.get("tangtim_status") != "In progress" or o.get("status") != "PROCESSING":
                     o["tangtim_status"] = "In progress"
                     o["status"] = "PROCESSING"
@@ -1843,7 +1843,7 @@ def check_web_me_orders_status():
     }
 
 def auto_push_eligible_orders():
-    """Tá»± Ä‘á»™ng Ä‘áº©y báº¥t ká»³ Ä‘Æ¡n nÃ o cÃ³ tráº¡ng thÃ¡i PAID hoáº·c PROCESSING mÃ  chÆ°a Ä‘Æ°á»£c Ä‘áº©y sang web máº¹."""
+    """Tự động đẩy bất kỳ đơn nào có trạng thái PAID hoặc PROCESSING mà chưa được đẩy sang web mẹ."""
     orders = load_orders()
     pushed = []
     for oid, o in list(orders.items()):
@@ -1880,7 +1880,7 @@ def auto_push_eligible_orders():
 # UNIFIED PAYMENT CHECKING (THUEAPIBANK)
 # ==========================================
 def process_single_transaction_item(tx_raw):
-    """Xá»­ lÃ½ trá»±c tiáº¿p 1 transaction nháº­n tá»« Webhook hoáº·c tá»« polling."""
+    """Xử lý trực tiếp 1 transaction nhận từ Webhook hoặc từ polling."""
     if not isinstance(tx_raw, dict):
         return []
     tx = tx_raw
@@ -1894,7 +1894,7 @@ def process_single_transaction_item(tx_raw):
         return []
     raw_amt = tx.get("transferAmount") or tx.get("trans_amount") or tx.get("amount") or tx.get("charge_amount") or tx.get("subtotal_amount") or tx.get("price") or 0
     try:
-        amount = int(abs(float(str(raw_amt).replace(",", "").replace(".", "").replace("Ä‘", "") or 0)))
+        amount = int(abs(float(str(raw_amt).replace(",", "").replace(".", "").replace("đ", "") or 0)))
     except Exception:
         amount = 0
 
@@ -1928,7 +1928,7 @@ def process_single_transaction_item(tx_raw):
         if order.get("status") == "PENDING" and not order.get("is_notified") and not order.get("telegram_paid_notified") and not order.get("notified_paid"):
             u_oid = str(oid).upper()
             try:
-                order_amt = int(abs(float(str(order.get("amount", 0)).replace(",", "").replace(".", "").replace("Ä‘", "") or 0)))
+                order_amt = int(abs(float(str(order.get("amount", 0)).replace(",", "").replace(".", "").replace("đ", "") or 0)))
             except Exception:
                 order_amt = 0
             num_suffix = re.sub(r"[^\d]", "", u_oid)
@@ -1973,34 +1973,34 @@ def check_and_process_zalopay_history(force=False):
 
     orders = load_orders()
     pending = [o for o in orders.values() if o.get("status") == "PENDING"]
-    # Tá»‘i Æ°u hÃ³a: Náº¿u khÃ´ng cÃ³ Ä‘Æ¡n PENDING nÃ o chá» thanh toÃ¡n thÃ¬ khÃ´ng gá»i API ZaloPay Ä‘á»ƒ trÃ¡nh bá»‹ 429
+    # Tối ưu hóa: Nếu không có đơn PENDING nào chờ thanh toán thì không gọi API ZaloPay để tránh bị 429
     if not pending and not force:
-        return {"status": "idle", "msg": "KhÃ´ng cÃ³ Ä‘Æ¡n PENDING nÃ o cáº§n duyá»‡t tiá»n", "matched": []}
+        return {"status": "idle", "msg": "Không có đơn PENDING nào cần duyệt tiền", "matched": []}
 
     bcache = get_bank_cache()
     cfg = load_config()
     pay_cfg = cfg.get("payment", {})
     thueapi = pay_cfg.get("thueapibank", {})
     if not thueapi.get("enabled", True):
-        return {"status": "disabled", "msg": "QuÃ©t ngÃ¢n hÃ ng tá»± Ä‘á»™ng Ä‘ang táº¯t"}
+        return {"status": "disabled", "msg": "Quét ngân hàng tự động đang tắt"}
 
     zalo_token = thueapi.get("token") or "498705aae1752f7c0658c6f622317daf"
     if not zalo_token:
-        return {"status": "error", "msg": "ChÆ°a cÃ³ token thueapibank"}
+        return {"status": "error", "msg": "Chưa có token thueapibank"}
 
     trans_list = None
     is_rate_limited = now < bcache.get("rate_limit_until", 0)
     time_since_fetch = now - bcache.get("last_fetch_time", 0)
     min_gap = 15 if force else 25
 
-    # Throttling: GiÃ£n cÃ¡ch tá»‘i thiá»ƒu 25s (15s khi Ã©p buá»™c) Ä‘á»ƒ báº£o vá»‡ ZaloPay khÃ´ng bao giá» bá»‹ 429
+    # Throttling: Giãn cách tối thiểu 25s (15s khi ép buộc) để bảo vệ ZaloPay không bao giờ bị 429
     if is_rate_limited:
         cached_items = bcache.get("cached_trans_list") or []
         if cached_items:
             trans_list = cached_items
         else:
             wait_left = int(bcache.get("rate_limit_until", 0) - now)
-            return {"status": "rate_limited", "msg": f"ZaloPay 429 Cooldown (cÃ²n {wait_left}s)", "matched": []}
+            return {"status": "rate_limited", "msg": f"ZaloPay 429 Cooldown (còn {wait_left}s)", "matched": []}
     elif time_since_fetch < min_gap:
         trans_list = bcache.get("cached_trans_list") or []
 
@@ -2014,7 +2014,7 @@ def check_and_process_zalopay_history(force=False):
                 if isinstance(res_data, dict) and res_data.get("status") == "error":
                     msg = str(res_data.get("msg", ""))
                     if "429" in msg or "Too many" in msg:
-                        # 429 tá»« ZaloPay: Báº¯t buá»™c lÃ¹i láº¡i 90s Ä‘á»ƒ ZaloPay giáº£i phÃ³ng block
+                        # 429 từ ZaloPay: Bắt buộc lùi lại 90s để ZaloPay giải phóng block
                         bcache["rate_limit_until"] = now + 90
                         save_bank_cache(bcache)
                         trans_list = bcache.get("cached_trans_list") or []
@@ -2041,7 +2041,7 @@ def check_and_process_zalopay_history(force=False):
     processed_ids = set(bcache.get("processed_trans", []))
 
     for item in trans_list:
-        # BÃ³c tÃ¡ch cáº¥u trÃºc lá»“ng nhau: {"data": {"transaction": {...}}} hoáº·c {...}
+        # Bóc tách cấu trúc lồng nhau: {"data": {"transaction": {...}}} hoặc {...}
         tx = item
         if isinstance(item, dict):
             if "data" in item and isinstance(item["data"], dict):
@@ -2064,7 +2064,7 @@ def check_and_process_zalopay_history(force=False):
                 pass
         raw_amt = tx.get("transferAmount") or tx.get("trans_amount") or tx.get("amount") or tx.get("charge_amount") or tx.get("subtotal_amount") or tx.get("price") or 0
         try:
-            amount = int(abs(float(str(raw_amt).replace(",", "").replace(".", "").replace("Ä‘", "") or 0)))
+            amount = int(abs(float(str(raw_amt).replace(",", "").replace(".", "").replace("đ", "") or 0)))
         except Exception:
             amount = 0
 
@@ -2081,7 +2081,7 @@ def check_and_process_zalopay_history(force=False):
             str(tx.get("app_trans_id") or "")
         ]
 
-        # TrÃ­ch xuáº¥t thÃªm tá»« template_info / custom_fields cá»§a ZaloPay
+        # Trích xuất thêm từ template_info / custom_fields của ZaloPay
         tpl = tx.get("template_info") or {}
         if isinstance(tpl, dict):
             cfields = tpl.get("custom_fields") or []
@@ -2099,11 +2099,11 @@ def check_and_process_zalopay_history(force=False):
             if order.get("status") in ("PAID", "COMPLETED", "PROCESSING") or order.get("is_notified") or order.get("telegram_paid_notified") or order.get("notified_paid"):
                 continue
             try:
-                order_amt = int(abs(float(str(order.get("amount", 0)).replace(",", "").replace(".", "").replace("Ä‘", "") or 0)))
+                order_amt = int(abs(float(str(order.get("amount", 0)).replace(",", "").replace(".", "").replace("đ", "") or 0)))
             except Exception:
                 order_amt = 0
 
-            # Khá»›p mÃ£ Ä‘Æ¡n CS..., LK..., TT... hoáº·c Ä‘uÃ´i sá»‘ nguyÃªn trong ná»™i dung CK vÃ  khá»›p sá»‘ tiá»n
+            # Khớp mã đơn CS..., LK..., TT... hoặc đuôi số nguyên trong nội dung CK và khớp số tiền
             num_suffix = re.sub(r"[^\d]", "", oid)
             is_matched_id = (oid in desc_clean) or (len(num_suffix) >= 4 and num_suffix in desc_clean)
 
@@ -2122,7 +2122,7 @@ def check_and_process_zalopay_history(force=False):
 
                 notify_payment_success(order, trans_id)
 
-                # Tá»± Ä‘á»™ng thá»±c hiá»‡n bÆ°á»›c tiáº¿p theo theo loáº¡i dá»‹ch vá»¥
+                # Tự động thực hiện bước tiếp theo theo loại dịch vụ
                 stype = order.get("service_type")
                 if stype == "chungsuc" or oid.startswith("CS"):
                     autonhanh_process_order(order)
@@ -2179,7 +2179,7 @@ def background_auto_expire_loop():
                 for o in expired:
                     o.status = "EXPIRED"
                 db.commit()
-                print(f"[AutoExpireWorker] ÄÃ£ tá»± Ä‘á»™ng há»§y {len(expired)} Ä‘Æ¡n quÃ¡ háº¡n 15 phÃºt.")
+                print(f"[AutoExpireWorker] Đã tự động hủy {len(expired)} đơn quá hạn 15 phút.")
             db.close()
         except Exception as e:
             print(f"[AutoExpireWorker Error] {e}")
@@ -2269,7 +2269,7 @@ def public_config():
         "shop_info": cfg.get("shop_info", {}),
         "payment": {
             "bank_id": pay.get("bank_id", "970454"),
-            "bank_name": pay.get("bank_name", "NgÃ¢n HÃ ng Báº£n Viá»‡t (BVBank - ZaloPay)"),
+            "bank_name": pay.get("bank_name", "Ngân Hàng Bản Việt (BVBank - ZaloPay)"),
             "account_number": pay.get("account_number", "99ZP24261M43061759"),
             "account_name": pay.get("account_name", "ZALOPAY_DINH TUAN HUNG"),
             "display_name": pay.get("display_name", "DINH TUAN HUNG"),
@@ -2307,27 +2307,27 @@ def public_recent_history():
         stype = o.get("service_type") or ("chungsuc" if str(o.get("order_id")).startswith("CS") else ("locket" if str(o.get("order_id")).startswith("LK") else "mxh"))
 
         if stype == "chungsuc":
-            desc = f"Má»Ÿ thÃ nh cÃ´ng {o.get('package_name', 'Full RÆ°Æ¡ng')}"
+            desc = f"Mở thành công {o.get('package_name', 'Full Rương')}"
         elif stype == "locket":
-            u = o.get("username", "khÃ¡ch")
+            u = o.get("username", "khách")
             masked_u = (u[:2] + "***" + u[-2:]) if len(u) > 4 else u
-            desc = f"KÃ­ch hoáº¡t Locket Gold (@{masked_u})"
+            desc = f"Kích hoạt Locket Gold (@{masked_u})"
         elif stype == "premium" or str(o.get("order_id", "")).startswith("PR"):
-            plat = o.get("platform_name") or "Chá»£ Premium"
-            desc = f"Mua thÃ nh cÃ´ng {o.get('package_name', plat)}"
+            plat = o.get("platform_name") or "Chợ Premium"
+            desc = f"Mua thành công {o.get('package_name', plat)}"
         else:
-            desc = f"TÄƒng thÃ nh cÃ´ng {o.get('package_name', 'tÆ°Æ¡ng tÃ¡c MXH')}"
+            desc = f"Tăng thành công {o.get('package_name', 'tương tác MXH')}"
 
         items.append({
             "user": masked_zalo,
             "desc": desc,
-            "amount": o.get("amount_formatted") or f"{o.get('amount', 0):,}Ä‘",
+            "amount": o.get("amount_formatted") or f"{o.get('amount', 0):,}đ",
             "time": o.get("created_time")
         })
     return jsonify({"success": True, "items": items})
 
 # ==========================================
-# CHUNG Sá»¨C LIÃŠN QUÃ‚N ROUTES
+# CHUNG SỨC LIÊN QUÂN ROUTES
 # ==========================================
 @app.route("/api/chungsuc/packages")
 @app.route("/api/packages")
@@ -2346,12 +2346,12 @@ def create_chungsuc_order():
 
     clean_code = extract_invite_code(raw_code)
     if not clean_code or len(clean_code) < 4:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p Ä‘Ãºng mÃ£ má»i hoáº·c link chia sáº» Chung Sá»©c LiÃªn QuÃ¢n."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập đúng mã mời hoặc link chia sẻ Chung Sức Liên Quân."}), 400
 
     cfg = load_config()
     pkgs = cfg.get("chungsuc_packages", {})
     if package_id not in pkgs:
-        return jsonify({"success": False, "msg": "GÃ³i sá»± kiá»‡n khÃ´ng há»£p lá»‡."}), 400
+        return jsonify({"success": False, "msg": "Gói sự kiện không hợp lệ."}), 400
 
     pkg = pkgs[package_id]
     if package_id == "goi_tuy_chon":
@@ -2361,15 +2361,15 @@ def create_chungsuc_order():
         packs = max(min_packs, custom_packs)
         amount = packs * price_per_pack
         turns = packs * turns_per_pack
-        pkg_name = f"GÃ³i TÃ¹y Chá»n ({packs} gÃ³i â€¢ {turns} lÆ°á»£t)"
+        pkg_name = f"Gói Tùy Chọn ({packs} gói • {turns} lượt)"
     else:
         amount = int(pkg.get("price", 20000))
         turns = int(pkg.get("turns", 340))
-        pkg_name = pkg.get("name", "GÃ³i Chung Sá»©c")
+        pkg_name = pkg.get("name", "Gói Chung Sức")
 
     orders = load_orders()
     now_ts = int(time.time())
-    # Chá»‘ng trÃ¹ng Ä‘Æ¡n Chung Sá»©c: náº¿u cÃ¹ng mÃ£ má»i vÃ  Ä‘Æ¡n cÅ© váº«n PENDING trong 15 phÃºt, tÃ¡i sá»­ dá»¥ng
+    # Chống trùng đơn Chung Sức: nếu cùng mã mời và đơn cũ vẫn PENDING trong 15 phút, tái sử dụng
     for existing_oid, existing_order in list(orders.items()):
         if (
             existing_order.get("service_type") == "chungsuc"
@@ -2410,7 +2410,7 @@ def create_chungsuc_order():
         "zalo": zalo,
         "content": order_id,
         "qr_url": qr_url,
-        "bank_name": pay.get("bank_name", "NgÃ¢n HÃ ng Báº£n Viá»‡t (BVBank - ZaloPay)"),
+        "bank_name": pay.get("bank_name", "Ngân Hàng Bản Việt (BVBank - ZaloPay)"),
         "account_number": acc_no,
         "account_name": acc_name,
         "created_at": int(time.time()),
@@ -2470,7 +2470,7 @@ def get_locket_user_info():
 
     username = clean_locket_username(val)
     if not username and not uid_in:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p Username hoáº·c Link Locket."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập Username hoặc Link Locket."}), 400
 
     api = LocketAPI()
     try:
@@ -2481,7 +2481,7 @@ def get_locket_user_info():
         uid_val = (profile.get("uid") if profile else None) or uid_in
         has_gold = api.check_subscriber_gold(uid_val) if uid_val else False
 
-        # Kiá»ƒm tra Database Single Source of Truth
+        # Kiểm tra Database Single Source of Truth
         already_purchased, existing_oid = check_locket_already_purchased(username, uid_val)
 
         disp_name = username
@@ -2509,7 +2509,7 @@ def get_locket_user_info():
             }
         })
     except Exception as e:
-        return jsonify({"success": False, "msg": f"Lá»—i káº¿t ná»‘i Locket: {str(e)}"}), 500
+        return jsonify({"success": False, "msg": f"Lỗi kết nối Locket: {str(e)}"}), 500
 
 @app.route("/api/locket/order", methods=["POST"])
 @app.route("/api/payment/create-order", methods=["POST"])
@@ -2523,7 +2523,7 @@ def create_locket_order():
 
     username = clean_locket_username(val)
     if not username:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p Username Locket."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập Username Locket."}), 400
 
     force_new = bool(data.get("force_new", False))
     if not force_new:
@@ -2536,7 +2536,7 @@ def create_locket_order():
                 "is_existing_customer": True,
                 "existing_order_id": existing_oid,
                 "username": username,
-                "msg": f"TÃ i khoáº£n @{username} Ä‘Ã£ tá»«ng kÃ­ch hoáº¡t thÃ nh cÃ´ng Ä‘Æ¡n hÃ ng #{existing_oid} trÃªn há»‡ thá»‘ng DTH! HÃ£y sang trang tra cá»©u Ä‘á»ƒ nháº­n hÆ°á»›ng dáº«n vÃ  kÃ­ch hoáº¡t láº¡i Gold."
+                "msg": f"Tài khoản @{username} đã từng kích hoạt thành công đơn hàng #{existing_oid} trên hệ thống DTH! Hãy sang trang tra cứu để nhận hướng dẫn và kích hoạt lại Gold."
             }), 200
 
     cfg = load_config()
@@ -2548,11 +2548,11 @@ def create_locket_order():
 
     pkg = locket_pkgs.get(pkg_type, {})
     amount = int(pkg.get("price", 30000 if pkg_type == "with_dns" else 10000))
-    pkg_name = pkg.get("name", "Giá»¯ Gold (VÄ©nh Viá»…n)" if pkg_type == "with_dns" else "KhÃ´ng Giá»¯ Gold")
+    pkg_name = pkg.get("name", "Giữ Gold (Vĩnh Viễn)" if pkg_type == "with_dns" else "Không Giữ Gold")
 
     orders = load_orders()
     now_ts = int(time.time())
-    # Chá»‘ng trÃ¹ng Ä‘Æ¡n Locket: náº¿u cÃ¹ng username vÃ  Ä‘Æ¡n cÅ© váº«n PENDING trong 15 phÃºt, tÃ¡i sá»­ dá»¥ng Ä‘Æ¡n cÅ©
+    # Chống trùng đơn Locket: nếu cùng username và đơn cũ vẫn PENDING trong 15 phút, tái sử dụng đơn cũ
     for existing_oid, existing_order in list(orders.items()):
         if (
             existing_order.get("service_type") == "locket"
@@ -2594,7 +2594,7 @@ def create_locket_order():
         "zalo": zalo,
         "content": order_id,
         "qr_url": qr_url,
-        "bank_name": pay.get("bank_name", "NgÃ¢n HÃ ng Báº£n Viá»‡t (BVBank - ZaloPay)"),
+        "bank_name": pay.get("bank_name", "Ngân Hàng Bản Việt (BVBank - ZaloPay)"),
         "account_number": acc_no,
         "account_name": acc_name,
         "created_at": int(time.time()),
@@ -2646,13 +2646,13 @@ def restore_locket_purchase():
     pkg_type = (data.get("package_type") or "with_dns").strip()
 
     if not username:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p Username Locket."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập Username Locket."}), 400
 
     orders = load_orders()
     if order_id and order_id in orders:
         order = orders[order_id]
         if order.get("status") not in ("PAID", "COMPLETED"):
-            return jsonify({"success": False, "msg": "ÄÆ¡n hÃ ng chÆ°a ghi nháº­n thanh toÃ¡n."}), 400
+            return jsonify({"success": False, "msg": "Đơn hàng chưa ghi nhận thanh toán."}), 400
         # If already completed with gold active, return immediately without duplicate queueing
         if order.get("gold_status") == "ACTIVE" and order.get("telegram_gold_notified"):
             return jsonify({
@@ -2676,7 +2676,7 @@ def check_locket_queue_status():
     client_id = (data.get("client_id") or "").strip()
     status = queue_manager.get_status(client_id)
     if not status:
-        return jsonify({"success": False, "msg": "PhiÃªn xá»­ lÃ½ khÃ´ng tá»“n táº¡i."}), 404
+        return jsonify({"success": False, "msg": "Phiên xử lý không tồn tại."}), 404
     return jsonify({"success": True, **status})
 
 # ==========================================
@@ -2717,7 +2717,7 @@ def serve_modules(filename):
     return send_from_directory(os.path.join(BASE_DIR, "static", "modules"), filename)
 
 # ==========================================
-# Máº NG XÃƒ Há»˜I (TANGTIM) ROUTES
+# MẠNG XÃ HỘI (TANGTIM) ROUTES
 # ==========================================
 @app.route("/api/mxh/services")
 @app.route("/api/services")
@@ -2727,7 +2727,7 @@ def get_mxh_services():
     services = cfg.get("services", [])
     is_sale, sale_pct = is_sale_active()
 
-    # Ãp dá»¥ng giÃ¡ sale campaign
+    # Áp dụng giá sale campaign
     def _apply_sale(s):
         s_copy = dict(s)
         base_price = float(s_copy.get("price_per_unit") or s_copy.get("unit_price") or s_copy.get("price") or 0)
@@ -2763,7 +2763,7 @@ def create_mxh_order():
     zalo = (data.get("zalo") or "").strip()
 
     if not link:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p Link hoáº·c TÃªn ngÆ°á»i dÃ¹ng cáº§n tÄƒng tÆ°Æ¡ng tÃ¡c."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập Link hoặc Tên người dùng cần tăng tương tác."}), 400
 
     cfg = load_config()
     services = cfg.get("services", [])
@@ -2774,13 +2774,13 @@ def create_mxh_order():
 
     s_target = all_s.get(str(service_id))
     if not s_target:
-        return jsonify({"success": False, "msg": "Dá»‹ch vá»¥ máº¡ng xÃ£ há»™i khÃ´ng tá»“n táº¡i."}), 400
+        return jsonify({"success": False, "msg": "Dịch vụ mạng xã hội không tồn tại."}), 400
 
     min_q = int(s_target.get("min") or s_target.get("min_qty") or 10)
     max_q = int(s_target.get("max") or s_target.get("max_qty") or 1000000)
 
     if quantity < min_q or quantity > max_q:
-        return jsonify({"success": False, "msg": f"Sá»‘ lÆ°á»£ng khÃ´ng há»£p lá»‡ (Tá»‘i thiá»ƒu: {min_q:,}, Tá»‘i Ä‘a: {max_q:,})."}), 400
+        return jsonify({"success": False, "msg": f"Số lượng không hợp lệ (Tối thiểu: {min_q:,}, Tối đa: {max_q:,})."}), 400
 
     unit_p = float(s_target.get("price_per_unit") or s_target.get("unit_price") or 0)
     if not unit_p and s_target.get("price"):
@@ -2801,7 +2801,7 @@ def create_mxh_order():
     total_amount = max(2000, total_amount)
     orders = load_orders()
     now_ts = int(time.time())
-    # Chá»‘ng trÃ¹ng Ä‘Æ¡n MXH: náº¿u cÃ¹ng link vÃ  dá»‹ch vá»¥ váº«n PENDING trong 15 phÃºt, tÃ¡i sá»­ dá»¥ng
+    # Chống trùng đơn MXH: nếu cùng link và dịch vụ vẫn PENDING trong 15 phút, tái sử dụng
     for existing_oid, existing_order in list(orders.items()):
         if (
             existing_order.get("service_type") == "mxh"
@@ -2834,7 +2834,7 @@ def create_mxh_order():
         "order_id": order_id,
         "service_type": "mxh",
         "service_id": service_id,
-        "package_name": s_target.get("name", "Dá»‹ch vá»¥ MXH"),
+        "package_name": s_target.get("name", "Dịch vụ MXH"),
         "platform": s_target.get("platform", "other"),
         "link": link,
         "quantity": quantity,
@@ -2846,7 +2846,7 @@ def create_mxh_order():
         "status": "PENDING",
         "content": order_id,
         "qr_url": qr_url,
-        "bank_name": pay.get("bank_name", "NgÃ¢n HÃ ng Báº£n Viá»‡t (BVBank - ZaloPay)"),
+        "bank_name": pay.get("bank_name", "Ngân Hàng Bản Việt (BVBank - ZaloPay)"),
         "account_number": acc_no,
         "account_name": acc_name,
         "created_at": int(time.time()),
@@ -2867,7 +2867,7 @@ def create_mxh_order():
             order_id=order_id,
             service_type="mxh",
             package_id=str(service_id),
-            package_name=s_target.get("name", "Dá»‹ch vá»¥ MXH"),
+            package_name=s_target.get("name", "Dịch vụ MXH"),
             amount=total_amount,
             amount_formatted=format_currency_vnd(total_amount),
             status="PENDING",
@@ -2891,7 +2891,7 @@ def create_mxh_order():
     return jsonify({"success": True, "order_id": order_id, "amount_formatted": order.get("amount_formatted"), "order": order})
 
 # ==========================================
-# CHá»¢ PREMIUM ROUTES (YOUTUBE, SPOTIFY, NETFLIX)
+# CHỢ PREMIUM ROUTES (YOUTUBE, SPOTIFY, NETFLIX)
 # ==========================================
 @app.route("/api/premium/services")
 def get_premium_services():
@@ -2917,30 +2917,30 @@ def create_premium_order():
     cfg = load_config()
     services_enabled = cfg.get("services_enabled", {})
     if not services_enabled.get("premium", True):
-        return jsonify({"success": False, "msg": "Chá»£ Dá»‹ch Vá»¥ Premium hiá»‡n Ä‘ang táº¡m Ä‘Ã³ng Ä‘á»ƒ báº£o trÃ¬."}), 400
+        return jsonify({"success": False, "msg": "Chợ Dịch Vụ Premium hiện đang tạm đóng để bảo trì."}), 400
 
     prem_services = cfg.get("premium_services", {})
     if not platform or platform not in prem_services:
-        return jsonify({"success": False, "msg": "Dá»‹ch vá»¥ Premium khÃ´ng há»£p lá»‡ hoáº·c khÃ´ng tá»“n táº¡i."}), 400
+        return jsonify({"success": False, "msg": "Dịch vụ Premium không hợp lệ hoặc không tồn tại."}), 400
 
     plat_info = prem_services.get(platform, {})
     if not plat_info.get("active", True):
-        return jsonify({"success": False, "msg": f"Dá»‹ch vá»¥ {plat_info.get('name', platform)} hiá»‡n Ä‘ang táº¡m ngÆ°ng phá»¥c vá»¥."}), 400
+        return jsonify({"success": False, "msg": f"Dịch vụ {plat_info.get('name', platform)} hiện đang tạm ngưng phục vụ."}), 400
 
     pkgs = plat_info.get("packages", {})
     if not pkg_id or pkg_id not in pkgs:
-        return jsonify({"success": False, "msg": "GÃ³i Ä‘Äƒng kÃ½ khÃ´ng tá»“n táº¡i hoáº·c chÆ°a chá»n gÃ³i."}), 400
+        return jsonify({"success": False, "msg": "Gói đăng ký không tồn tại hoặc chưa chọn gói."}), 400
 
     pkg = pkgs[pkg_id]
     if not pkg.get("active", True):
-        return jsonify({"success": False, "msg": f"GÃ³i {pkg.get('name', pkg_id)} hiá»‡n Ä‘ang táº¡m háº¿t."}), 400
+        return jsonify({"success": False, "msg": f"Gói {pkg.get('name', pkg_id)} hiện đang tạm hết."}), 400
 
     if not target:
-        input_label = plat_info.get("input_label") or "TÃ i khoáº£n / Email"
-        return jsonify({"success": False, "msg": f"Vui lÃ²ng nháº­p {input_label}."}), 400
+        input_label = plat_info.get("input_label") or "Tài khoản / Email"
+        return jsonify({"success": False, "msg": f"Vui lòng nhập {input_label}."}), 400
 
     if not zalo:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p sá»‘ Zalo nháº­n thÃ´ng tin bÃ n giao."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập số Zalo nhận thông tin bàn giao."}), 400
 
     try:
         amount = int(pkg.get("price", 0))
@@ -2948,15 +2948,15 @@ def create_premium_order():
         amount = 0
 
     if amount <= 0:
-        return jsonify({"success": False, "msg": "GiÃ¡ gÃ³i khÃ´ng há»£p lá»‡."}), 400
+        return jsonify({"success": False, "msg": "Giá gói không hợp lệ."}), 400
 
-    pkg_name = pkg.get("name", f"GÃ³i {platform.title()}")
-    duration = pkg.get("duration", "1 ThÃ¡ng")
+    pkg_name = pkg.get("name", f"Gói {platform.title()}")
+    duration = pkg.get("duration", "1 Tháng")
     plat_name = plat_info.get("name", platform.title())
 
     orders = load_orders()
     now_ts = int(time.time())
-    # Chá»‘ng trÃ¹ng Ä‘Æ¡n Chá»£ Premium: náº¿u cÃ¹ng platform, email/account vÃ  gÃ³i váº«n PENDING trong 15 phÃºt, tÃ¡i sá»­ dá»¥ng
+    # Chống trùng đơn Chợ Premium: nếu cùng platform, email/account và gói vẫn PENDING trong 15 phút, tái sử dụng
     for existing_oid, existing_order in list(orders.items()):
         if (
             existing_order.get("service_type") == "premium"
@@ -3002,7 +3002,7 @@ def create_premium_order():
         "status": "PENDING",
         "content": order_id,
         "qr_url": qr_url,
-        "bank_name": pay.get("bank_name", "NgÃ¢n HÃ ng Báº£n Viá»‡t (BVBank - ZaloPay)"),
+        "bank_name": pay.get("bank_name", "Ngân Hàng Bản Việt (BVBank - ZaloPay)"),
         "account_number": acc_no,
         "account_name": acc_name,
         "created_at": int(time.time()),
@@ -3034,13 +3034,13 @@ def check_payment_status(order_id):
 
 @app.route("/api/order/confirm-paid", methods=["POST"])
 def user_confirm_paid():
-    """Há»£p nháº¥t vá»›i payments_bp.client_confirm_paid - Single Source of Truth qua models.SessionLocal()"""
+    """Hợp nhất với payments_bp.client_confirm_paid - Single Source of Truth qua models.SessionLocal()"""
     from routes.payments import client_confirm_paid
     return client_confirm_paid()
 
 @app.route("/api/webhook/thueapibank", methods=["GET", "POST"])
 def webhook_thueapibank():
-    """Há»£p nháº¥t vá»›i payments_bp.webhook_bank_receiver - Single Source of Truth qua models.SessionLocal()"""
+    """Hợp nhất với payments_bp.webhook_bank_receiver - Single Source of Truth qua models.SessionLocal()"""
     from routes.payments import webhook_bank_receiver
     return webhook_bank_receiver()
 
@@ -3055,7 +3055,7 @@ def webhook_thueapibank():
 @app.route("/cron.php", methods=["GET", "POST"], strict_slashes=False)
 @app.route("/api/cron.php", methods=["GET", "POST"], strict_slashes=False)
 def unified_cron_endpoint():
-    """Há»£p nháº¥t vá»›i payments_bp.cron_bank_sync - Single Source of Truth qua models.SessionLocal()"""
+    """Hợp nhất với payments_bp.cron_bank_sync - Single Source of Truth qua models.SessionLocal()"""
     from routes.payments import cron_bank_sync
     return cron_bank_sync()
 
@@ -3064,46 +3064,46 @@ def unified_cron_endpoint():
 # ==========================================
 def get_telegram_admin_menu():
     msg = (
-        "ðŸ‘‘ <b>Báº¢NG ÄIá»€U KHIá»‚N DTH ADMIN TOOL</b> ðŸš€\n"
-        "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-        "<i>Äiá»u khiá»ƒn toÃ n bá»™ há»‡ thá»‘ng qua Telegram 24/7</i>\n\n"
-        "âš¡ <b>CÃC Lá»†NH QUáº¢N TRá»Š VIÃŠN:</b>\n"
-        "â€¢ <code>/duyet &lt;mÃ£&gt;</code> : Duyá»‡t tiá»n & Ä‘áº©y sang web máº¹\n"
-        "â€¢ <code>/day &lt;mÃ£&gt;</code> : Ã‰p Ä‘áº©y láº¡i Ä‘Æ¡n sang web máº¹\n"
-        "â€¢ <code>/sua &lt;mÃ£&gt; &lt;link/mÃ£&gt;</code> : Sá»­a mÃ£/link & Ä‘áº©y ngay\n"
-        "â€¢ <code>/xoa &lt;mÃ£&gt;</code> : <b>XÃ³a vÄ©nh viá»…n Ä‘Æ¡n hÃ ng</b>\n"
-        "â€¢ <code>/hoanthanh &lt;mÃ£&gt;</code> : ÄÃ¡nh dáº¥u hoÃ n thÃ nh\n"
-        "â€¢ <code>/huy &lt;mÃ£&gt;</code> : Há»§y Ä‘Æ¡n hÃ ng\n"
-        "â€¢ <code>/gold &lt;user&gt;</code> : KÃ­ch hoáº¡t Locket Gold VIP\n"
-        "â€¢ <code>/bank</code> : QuÃ©t ZaloPay & ngÃ¢n hÃ ng tá»©c thÃ¬\n"
-        "â€¢ <code>/check</code> : Kiá»ƒm tra tiáº¿n Ä‘á»™ 2 web máº¹\n"
-        "â€¢ <code>/stats</code> : BÃ¡o cÃ¡o doanh thu & sá»‘ dÆ°\n"
-        "â€¢ <code>/orders</code> : Xem danh sÃ¡ch Ä‘Æ¡n Ä‘ang chá»\n"
-        "â€¢ <code>/popup &lt;ná»™i dung&gt;</code> : Äá»•i thÃ´ng bÃ¡o & Báº¬T popup web\n"
-        "â€¢ <code>/popup_on</code> / <code>/popup_off</code> : Báº­t / Táº¯t popup\n"
-        "â€¢ <code>/popup_clear</code> : XÃ³a sáº¡ch ná»™i dung popup\n"
-        "â€¢ <code>/popup_status</code> : Xem tráº¡ng thÃ¡i popup web\n"
-        "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-        "ðŸ‘‡ <i>Hoáº·c báº¥m nÃºt phÃ­m táº¯t bÃªn dÆ°á»›i:</i>"
+        "👑 <b>BẢNG ĐIỀU KHIỂN DTH ADMIN TOOL</b> 🚀\n"
+        "━━━━━━━━━━━━━━━━━━\n"
+        "<i>Điều khiển toàn bộ hệ thống qua Telegram 24/7</i>\n\n"
+        "⚡ <b>CÁC LỆNH QUẢN TRỊ VIÊN:</b>\n"
+        "• <code>/duyet &lt;mã&gt;</code> : Duyệt tiền & đẩy sang web mẹ\n"
+        "• <code>/day &lt;mã&gt;</code> : Ép đẩy lại đơn sang web mẹ\n"
+        "• <code>/sua &lt;mã&gt; &lt;link/mã&gt;</code> : Sửa mã/link & đẩy ngay\n"
+        "• <code>/xoa &lt;mã&gt;</code> : <b>Xóa vĩnh viễn đơn hàng</b>\n"
+        "• <code>/hoanthanh &lt;mã&gt;</code> : Đánh dấu hoàn thành\n"
+        "• <code>/huy &lt;mã&gt;</code> : Hủy đơn hàng\n"
+        "• <code>/gold &lt;user&gt;</code> : Kích hoạt Locket Gold VIP\n"
+        "• <code>/bank</code> : Quét ZaloPay & ngân hàng tức thì\n"
+        "• <code>/check</code> : Kiểm tra tiến độ 2 web mẹ\n"
+        "• <code>/stats</code> : Báo cáo doanh thu & số dư\n"
+        "• <code>/orders</code> : Xem danh sách đơn đang chờ\n"
+        "• <code>/popup &lt;nội dung&gt;</code> : Đổi thông báo & BẬT popup web\n"
+        "• <code>/popup_on</code> / <code>/popup_off</code> : Bật / Tắt popup\n"
+        "• <code>/popup_clear</code> : Xóa sạch nội dung popup\n"
+        "• <code>/popup_status</code> : Xem trạng thái popup web\n"
+        "━━━━━━━━━━━━━━━━━━\n"
+        "👇 <i>Hoặc bấm nút phím tắt bên dưới:</i>"
     )
     kb = {
         "inline_keyboard": [
             [
-                {"text": "ðŸ“‹ Táº¥t Cáº£ ÄÆ¡n", "callback_data": "btn:orders"},
-                {"text": "âš ï¸ ÄÆ¡n Cáº§n Sá»­a", "callback_data": "btn:orders_err"}
+                {"text": "📋 Tất Cả Đơn", "callback_data": "btn:orders"},
+                {"text": "⚠️ Đơn Cần Sửa", "callback_data": "btn:orders_err"}
             ],
             [
-                {"text": "ðŸŽ® Chung Sá»©c", "callback_data": "btn:orders_cs"},
-                {"text": "ðŸ’› Locket", "callback_data": "btn:orders_lk"},
-                {"text": "ðŸš€ MXH", "callback_data": "btn:orders_mxh"}
+                {"text": "🎮 Chung Sức", "callback_data": "btn:orders_cs"},
+                {"text": "💛 Locket", "callback_data": "btn:orders_lk"},
+                {"text": "🚀 MXH", "callback_data": "btn:orders_mxh"}
             ],
             [
-                {"text": "ðŸ¦ QuÃ©t Bank Ngay", "callback_data": "btn:bank"},
-                {"text": "ðŸ”„ Check Web Máº¹", "callback_data": "btn:check"}
+                {"text": "🏦 Quét Bank Ngay", "callback_data": "btn:bank"},
+                {"text": "🔄 Check Web Mẹ", "callback_data": "btn:check"}
             ],
             [
-                {"text": "ðŸ“Š BÃ¡o CÃ¡o Doanh Thu", "callback_data": "btn:stats"},
-                {"text": "ðŸ“¢ Quáº£n LÃ½ Popup", "callback_data": "btn:popup_status"}
+                {"text": "📊 Báo Cáo Doanh Thu", "callback_data": "btn:stats"},
+                {"text": "📢 Quản Lý Popup", "callback_data": "btn:popup_status"}
             ]
         ]
     }
@@ -3121,14 +3121,14 @@ def handle_admin_stats_menu():
     today_str = datetime.now().strftime("%Y-%m-%d")
     today_rev = sum(int(o.get("amount", 0) or 0) for o in orders.values() if (o.get("paid_at") or "").startswith(today_str) or (o.get("created_time") or "").startswith(today_str))
 
-    an_bal = "Äang kiá»ƒm tra..."
+    an_bal = "Đang kiểm tra..."
     an_tok = cfg.get("autonhanh", {}).get("token")
     if an_tok:
         bal, _ = autonhanh_fetch_balance(an_tok)
         if bal is not None:
             an_bal = f"{bal:,} Xu"
 
-    tt_bal = "Äang kiá»ƒm tra..."
+    tt_bal = "Đang kiểm tra..."
     tt_key = cfg.get("tangtim", {}).get("api_key")
     if tt_key:
         try:
@@ -3138,35 +3138,35 @@ def handle_admin_stats_menu():
                 if "balance" in d:
                     b_usd = float(d["balance"])
                     b_vnd = int(b_usd * 25500)
-                    tt_bal = f"{b_usd:.2f}$ (~{b_vnd:,}Ä‘)"
+                    tt_bal = f"{b_usd:.2f}$ (~{b_vnd:,}đ)"
         except Exception:
             pass
 
     msg = (
-        "ðŸ“Š <b>BÃO CÃO TOÃ€N DIá»†N Há»† THá»NG DTH</b>\n"
-        f"â° <i>Cáº­p nháº­t: {datetime.now().strftime('%H:%M:%S %d/%m/%Y')}</i>\n"
-        "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-        f"ðŸ“¦ <b>Tá»•ng Ä‘Æ¡n:</b> {total} Ä‘Æ¡n\n"
-        f"âœ… <b>ÄÃ£ hoÃ n thÃ nh:</b> {completed} Ä‘Æ¡n\n"
-        f"âš™ï¸ <b>Äang xá»­ lÃ½:</b> {processing} Ä‘Æ¡n\n"
-        f"â³ <b>Chá» thanh toÃ¡n:</b> {pending} Ä‘Æ¡n\n\n"
-        f"ðŸ’° <b>Tá»•ng doanh thu:</b> {total_rev:,}Ä‘\n"
-        f"ðŸ“ˆ <b>Doanh thu hÃ´m nay:</b> {today_rev:,}Ä‘\n"
-        "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-        "ðŸ’³ <b>Sá» DÆ¯ WEB Máº¸ (Äá»I TÃC):</b>\n"
-        f"â€¢ AutoNhanh (Chung Sá»©c): <b>{an_bal}</b>\n"
-        f"â€¢ TangTim (Máº¡ng XÃ£ Há»™i): <b>{tt_bal}</b>\n"
-        "â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”"
+        "📊 <b>BÁO CÁO TOÀN DIỆN HỆ THỐNG DTH</b>\n"
+        f"⏰ <i>Cập nhật: {datetime.now().strftime('%H:%M:%S %d/%m/%Y')}</i>\n"
+        "━━━━━━━━━━━━━━━━━━\n"
+        f"📦 <b>Tổng đơn:</b> {total} đơn\n"
+        f"✅ <b>Đã hoàn thành:</b> {completed} đơn\n"
+        f"⚙️ <b>Đang xử lý:</b> {processing} đơn\n"
+        f"⏳ <b>Chờ thanh toán:</b> {pending} đơn\n\n"
+        f"💰 <b>Tổng doanh thu:</b> {total_rev:,}đ\n"
+        f"📈 <b>Doanh thu hôm nay:</b> {today_rev:,}đ\n"
+        "━━━━━━━━━━━━━━━━━━\n"
+        "💳 <b>SỐ DƯ WEB MẸ (ĐỐI TÁC):</b>\n"
+        f"• AutoNhanh (Chung Sức): <b>{an_bal}</b>\n"
+        f"• TangTim (Mạng Xã Hội): <b>{tt_bal}</b>\n"
+        "━━━━━━━━━━━━━━━━━━"
     )
     kb = {
         "inline_keyboard": [
             [
-                {"text": "ðŸ”„ Cáº­p Nháº­t Láº¡i", "callback_data": "btn:stats"},
-                {"text": "ðŸ“‹ Xem ÄÆ¡n Chá»", "callback_data": "btn:orders"}
+                {"text": "🔄 Cập Nhật Lại", "callback_data": "btn:stats"},
+                {"text": "📋 Xem Đơn Chờ", "callback_data": "btn:orders"}
             ],
             [
-                {"text": "ðŸ¦ QuÃ©t Bank", "callback_data": "btn:bank"},
-                {"text": "ðŸ” Check 2 Web Máº¹", "callback_data": "btn:check"}
+                {"text": "🏦 Quét Bank", "callback_data": "btn:bank"},
+                {"text": "🔍 Check 2 Web Mẹ", "callback_data": "btn:check"}
             ]
         ]
     }
@@ -3190,56 +3190,56 @@ def handle_admin_list_orders(service_filter="all"):
     active.sort(key=lambda x: x.get("created_at") or 0, reverse=True)
 
     filter_title = {
-        "all": "ÄÆ N ÄANG CHá»œ / ÄANG CHáº Y",
-        "cs": "ÄÆ N CHUNG Sá»¨C LIÃŠN QUÃ‚N",
-        "lk": "ÄÆ N LOCKET GOLD",
-        "mxh": "ÄÆ N Máº NG XÃƒ Há»˜I",
-        "err": "ÄÆ N Cáº¦N Sá»¬A LINK / MÃƒ"
-    }.get(service_filter, "ÄÆ N HÃ€NG")
+        "all": "ĐƠN ĐANG CHỜ / ĐANG CHẠY",
+        "cs": "ĐƠN CHUNG SỨC LIÊN QUÂN",
+        "lk": "ĐƠN LOCKET GOLD",
+        "mxh": "ĐƠN MẠNG XÃ HỘI",
+        "err": "ĐƠN CẦN SỬA LINK / MÃ"
+    }.get(service_filter, "ĐƠN HÀNG")
 
     if not active:
-        msg = f"ðŸŽ‰ <b>KHÃ”NG CÃ“ {filter_title}!</b>\nTáº¥t cáº£ Ä‘Æ¡n hÃ ng Ä‘á»u Ä‘Ã£ Ä‘Æ°á»£c xá»­ lÃ½ xong."
+        msg = f"🎉 <b>KHÔNG CÓ {filter_title}!</b>\nTất cả đơn hàng đều đã được xử lý xong."
         kb = {
             "inline_keyboard": [
                 [
-                    {"text": "ðŸ“‹ Xem Táº¥t Cáº£ ÄÆ¡n", "callback_data": "btn:orders"},
-                    {"text": "ðŸ“Š Xem Thá»‘ng KÃª", "callback_data": "btn:stats"}
+                    {"text": "📋 Xem Tất Cả Đơn", "callback_data": "btn:orders"},
+                    {"text": "📊 Xem Thống Kê", "callback_data": "btn:stats"}
                 ]
             ]
         }
         return msg, kb
 
-    msg_lines = [f"ðŸ“‹ <b>DANH SÃCH {filter_title}:</b>\nâ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”"]
+    msg_lines = [f"📋 <b>DANH SÁCH {filter_title}:</b>\n━━━━━━━━━━━━━━━━━━"]
     kb_rows = []
 
     for o in active[:5]:
         oid = o.get("order_id")
         st = o.get("status")
-        amt = o.get("amount_formatted") or f"{o.get('amount', 0):,}Ä‘"
-        pname = o.get("package_name") or o.get("service_type") or "Dá»‹ch vá»¥"
+        amt = o.get("amount_formatted") or f"{o.get('amount', 0):,}đ"
+        pname = o.get("package_name") or o.get("service_type") or "Dịch vụ"
         code_or_link = o.get("code") or o.get("link") or o.get("username") or ""
         if len(code_or_link) > 28:
             code_or_link = code_or_link[:25] + "..."
 
-        st_icon = "â³" if st == "PENDING" else ("âš™ï¸" if st == "PROCESSING" else ("âœ…" if st == "COMPLETED" else "âš ï¸"))
-        msg_lines.append(f"{st_icon} <b>#{oid}</b> | {pname}\nâ€¢ GiÃ¡: <b>{amt}</b> [{st}] | Target: <code>{code_or_link}</code>")
+        st_icon = "⏳" if st == "PENDING" else ("⚙️" if st == "PROCESSING" else ("✅" if st == "COMPLETED" else "⚠️"))
+        msg_lines.append(f"{st_icon} <b>#{oid}</b> | {pname}\n• Giá: <b>{amt}</b> [{st}] | Target: <code>{code_or_link}</code>")
 
         order_btns = []
         if st in ("PENDING", "PAID"):
-            order_btns.append({"text": f"âœ… Duyá»‡t #{oid}", "callback_data": f"btn:duyet:{oid}"})
-        order_btns.append({"text": f"ðŸš€ Äáº©y #{oid}", "callback_data": f"btn:day:{oid}"})
-        order_btns.append({"text": f"ðŸ—‘ï¸ XÃ³a #{oid}", "callback_data": f"btn:xoa:{oid}"})
+            order_btns.append({"text": f"✅ Duyệt #{oid}", "callback_data": f"btn:duyet:{oid}"})
+        order_btns.append({"text": f"🚀 Đẩy #{oid}", "callback_data": f"btn:day:{oid}"})
+        order_btns.append({"text": f"🗑️ Xóa #{oid}", "callback_data": f"btn:xoa:{oid}"})
         kb_rows.append(order_btns)
 
     kb_rows.append([
-        {"text": "ðŸŽ® Chung Sá»©c", "callback_data": "btn:orders_cs"},
-        {"text": "ðŸ’› Locket", "callback_data": "btn:orders_lk"},
-        {"text": "ðŸš€ MXH", "callback_data": "btn:orders_mxh"}
+        {"text": "🎮 Chung Sức", "callback_data": "btn:orders_cs"},
+        {"text": "💛 Locket", "callback_data": "btn:orders_lk"},
+        {"text": "🚀 MXH", "callback_data": "btn:orders_mxh"}
     ])
     kb_rows.append([
-        {"text": "ðŸ¦ QuÃ©t Bank", "callback_data": "btn:bank"},
-        {"text": "ðŸ”„ Check Web Máº¹", "callback_data": "btn:check"},
-        {"text": "ðŸ“Š Thá»‘ng KÃª", "callback_data": "btn:stats"}
+        {"text": "🏦 Quét Bank", "callback_data": "btn:bank"},
+        {"text": "🔄 Check Web Mẹ", "callback_data": "btn:check"},
+        {"text": "📊 Thống Kê", "callback_data": "btn:stats"}
     ])
 
     return "\n".join(msg_lines), {"inline_keyboard": kb_rows}
@@ -3247,16 +3247,16 @@ def handle_admin_list_orders(service_filter="all"):
 def handle_admin_duyet_command(oid):
     orders = load_orders()
     if oid not in orders:
-        return f"âŒ KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n <b>#{oid}</b> trong há»‡ thá»‘ng."
+        return f"❌ Không tìm thấy đơn <b>#{oid}</b> trong hệ thống."
     order = orders[oid]
     order["status"] = "PAID"
-    order["paid_at"] = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} (Duyá»‡t qua Telegram)"
+    order["paid_at"] = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} (Duyệt qua Telegram)"
 
     stype = order.get("service_type") or ("chungsuc" if oid.startswith("CS") else ("locket" if oid.startswith("LK") else ("premium" if oid.startswith("PR") else "mxh")))
     push_msg = ""
     if stype == "chungsuc":
         ok, res = autonhanh_process_order(order, force=True)
-        push_msg = f"ÄÃ£ Ä‘áº©y AutoNhanh (Batch: {order.get('autonhanh_batch_id')})" if ok else f"Lá»—i AutoNhanh: {res}"
+        push_msg = f"Đã đẩy AutoNhanh (Batch: {order.get('autonhanh_batch_id')})" if ok else f"Lỗi AutoNhanh: {res}"
     elif stype == "locket":
         clean_u = re.sub(r"[^A-Za-z0-9_.-]", "", str(order.get("username", "")).lstrip("@")) or "VIP"
         order["status"] = "COMPLETED"
@@ -3266,34 +3266,34 @@ def handle_admin_duyet_command(oid):
         order["telegram_gold_notified"] = True
         _recent_locket_telegram[clean_u.lower()] = time.time()
         queue_manager.add_to_queue(order.get("username"), order.get("package_type", "with_dns"), order_id=oid)
-        push_msg = "ÄÃ£ cáº¥p cáº¥u hÃ¬nh DNS Locket Gold VIP!"
+        push_msg = "Đã cấp cấu hình DNS Locket Gold VIP!"
     elif stype == "premium" or oid.startswith("PR"):
         order["status"] = "COMPLETED"
-        push_msg = "ÄÃ£ duyá»‡t hoÃ n táº¥t Ä‘Æ¡n Chá»£ Premium!"
+        push_msg = "Đã duyệt hoàn tất đơn Chợ Premium!"
     else:
         ok, res = tangtim_process_order(order)
-        push_msg = f"ÄÃ£ Ä‘áº©y TangTim (Order ID: {order.get('tangtim_order_id')})" if ok else f"Lá»—i TangTim: {res}"
+        push_msg = f"Đã đẩy TangTim (Order ID: {order.get('tangtim_order_id')})" if ok else f"Lỗi TangTim: {res}"
 
     save_orders(orders)
     return (
-        f"âœ… <b>[ÄÃƒ DUYá»†T ÄÆ N #{oid}]</b>\n"
-        f"â€¢ Dá»‹ch vá»¥: {order.get('package_name')}\n"
-        f"â€¢ Sá»‘ tiá»n: {order.get('amount_formatted')}\n"
-        f"â€¢ Tráº¡ng thÃ¡i: <b>{order.get('status')}</b>\n"
-        f"â€¢ Káº¿t quáº£ Ä‘áº©y: <b>{push_msg}</b>"
+        f"✅ <b>[ĐÃ DUYỆT ĐƠN #{oid}]</b>\n"
+        f"• Dịch vụ: {order.get('package_name')}\n"
+        f"• Số tiền: {order.get('amount_formatted')}\n"
+        f"• Trạng thái: <b>{order.get('status')}</b>\n"
+        f"• Kết quả đẩy: <b>{push_msg}</b>"
     )
 
 def handle_admin_update_target(oid, new_val):
     orders = load_orders()
     if oid not in orders:
-        return f"âŒ KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n <b>#{oid}</b> trong há»‡ thá»‘ng."
+        return f"❌ Không tìm thấy đơn <b>#{oid}</b> trong hệ thống."
     order = orders[oid]
     stype = order.get("service_type") or ("chungsuc" if oid.startswith("CS") else ("locket" if oid.startswith("LK") else "mxh"))
 
     if stype == "chungsuc" or oid.startswith("CS"):
         clean_code = extract_invite_code(new_val)
         if not clean_code or len(clean_code) < 4:
-            return f"âŒ MÃ£ má»i LiÃªn QuÃ¢n khÃ´ng há»£p lá»‡ (nháº­p: <code>{new_val}</code>)."
+            return f"❌ Mã mời Liên Quân không hợp lệ (nhập: <code>{new_val}</code>)."
         old_val = order.get("code")
         order["code"] = clean_code
         order["raw_code"] = new_val
@@ -3304,15 +3304,15 @@ def handle_admin_update_target(oid, new_val):
 
         ok, res = autonhanh_process_order(order, force=True)
         return (
-            f"ðŸ”„ <b>[ÄÃƒ Cáº¬P NHáº¬T MÃƒ LIÃŠN QUÃ‚N #{oid}]</b>\n"
-            f"â€¢ MÃ£ cÅ©: <code>{old_val}</code>\n"
-            f"â€¢ MÃ£ má»›i: <code>{clean_code}</code>\n"
-            f"â€¢ Káº¿t quáº£ Ä‘áº©y há»‡ thá»‘ng: <b>{'âœ… ThÃ nh cÃ´ng' if ok else 'âŒ Lá»—i: ' + str(res)}</b>"
+            f"🔄 <b>[ĐÃ CẬP NHẬT MÃ LIÊN QUÂN #{oid}]</b>\n"
+            f"• Mã cũ: <code>{old_val}</code>\n"
+            f"• Mã mới: <code>{clean_code}</code>\n"
+            f"• Kết quả đẩy hệ thống: <b>{'✅ Thành công' if ok else '❌ Lỗi: ' + str(res)}</b>"
         )
     elif stype == "mxh" or oid.startswith("TT"):
         new_link = str(new_val).strip()
         if not (new_link.startswith("http://") or new_link.startswith("https://")):
-            return "âŒ Link MXH pháº£i báº¯t Ä‘áº§u báº±ng http:// hoáº·c https://"
+            return "❌ Link MXH phải bắt đầu bằng http:// hoặc https://"
         old_val = order.get("link")
         order["link"] = new_link
         order["tangtim_status"] = "RETRYING"
@@ -3322,49 +3322,49 @@ def handle_admin_update_target(oid, new_val):
 
         ok, res = tangtim_process_order(order)
         return (
-            f"ðŸ”„ <b>[ÄÃƒ Cáº¬P NHáº¬T LINK MXH #{oid}]</b>\n"
-            f"â€¢ Link cÅ©: <code>{old_val}</code>\n"
-            f"â€¢ Link má»›i: <code>{new_link}</code>\n"
-            f"â€¢ Káº¿t quáº£ Ä‘áº©y há»‡ thá»‘ng: <b>{'âœ… ThÃ nh cÃ´ng' if ok else 'âŒ Lá»—i: ' + str(res)}</b>"
+            f"🔄 <b>[ĐÃ CẬP NHẬT LINK MXH #{oid}]</b>\n"
+            f"• Link cũ: <code>{old_val}</code>\n"
+            f"• Link mới: <code>{new_link}</code>\n"
+            f"• Kết quả đẩy hệ thống: <b>{'✅ Thành công' if ok else '❌ Lỗi: ' + str(res)}</b>"
         )
     else:
-        return f"âš ï¸ ÄÆ¡n #{oid} khÃ´ng thuá»™c loáº¡i cáº§n cáº­p nháº­t link/mÃ£."
+        return f"⚠️ Đơn #{oid} không thuộc loại cần cập nhật link/mã."
 
 def handle_admin_day_command(oid):
     orders = load_orders()
     if oid not in orders:
-        return f"âŒ KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n <b>#{oid}</b> trong há»‡ thá»‘ng."
+        return f"❌ Không tìm thấy đơn <b>#{oid}</b> trong hệ thống."
     order = orders[oid]
     stype = order.get("service_type") or ("chungsuc" if oid.startswith("CS") else ("locket" if oid.startswith("LK") else "mxh"))
     if stype == "chungsuc":
         ok, res = autonhanh_process_order(order, force=True)
-        return f"ðŸš€ <b>[Äáº¨Y AUTONHANH #{oid}]</b>\nKáº¿t quáº£: {'âœ… ThÃ nh cÃ´ng (Batch ' + str(order.get('autonhanh_batch_id')) + ')' if ok else 'âŒ Tháº¥t báº¡i: ' + str(res)}"
+        return f"🚀 <b>[ĐẨY AUTONHANH #{oid}]</b>\nKết quả: {'✅ Thành công (Batch ' + str(order.get('autonhanh_batch_id')) + ')' if ok else '❌ Thất bại: ' + str(res)}"
     elif stype == "locket":
         clean_u = re.sub(r"[^A-Za-z0-9_.-]", "", str(order.get("username", "")).lstrip("@")) or "VIP"
         order["status"] = "COMPLETED"
         order["gold_status"] = "ACTIVE"
         queue_manager.add_to_queue(order.get("username"), order.get("package_type", "with_dns"), order_id=oid)
         save_orders(orders)
-        return f"ðŸš€ <b>[KÃCH HOáº T LOCKET #{oid}]</b>\nÄÃ£ Ä‘Æ°a vÃ o hÃ ng chá» kÃ­ch hoáº¡t Gold VIP!"
+        return f"🚀 <b>[KÍCH HOẠT LOCKET #{oid}]</b>\nĐã đưa vào hàng chờ kích hoạt Gold VIP!"
     else:
         ok, res = tangtim_process_order(order)
-        return f"ðŸš€ <b>[Äáº¨Y TANGTIM #{oid}]</b>\nKáº¿t quáº£: {'âœ… ThÃ nh cÃ´ng (Order ID ' + str(order.get('tangtim_order_id')) + ')' if ok else 'âŒ Tháº¥t báº¡i: ' + str(res)}"
+        return f"🚀 <b>[ĐẨY TANGTIM #{oid}]</b>\nKết quả: {'✅ Thành công (Order ID ' + str(order.get('tangtim_order_id')) + ')' if ok else '❌ Thất bại: ' + str(res)}"
 
 def handle_admin_bank_scan():
     res = check_and_process_zalopay_history(force=True)
     matched = res.get("matched", [])
     if matched:
         return (
-            f"ðŸŽ‰ <b>[QUÃ‰T NGÃ‚N HÃ€NG THÃ€NH CÃ”NG]</b>\n"
-            f"â€¢ Khá»›p thÃ nh cÃ´ng: <b>{len(matched)} Ä‘Æ¡n</b> ({', '.join(matched)})\n"
-            f"â€¢ Há»‡ thá»‘ng Ä‘Ã£ tá»± Ä‘á»™ng Ä‘áº©y cÃ¡c Ä‘Æ¡n nÃ y sang web máº¹!"
+            f"🎉 <b>[QUÉT NGÂN HÀNG THÀNH CÔNG]</b>\n"
+            f"• Khớp thành công: <b>{len(matched)} đơn</b> ({', '.join(matched)})\n"
+            f"• Hệ thống đã tự động đẩy các đơn này sang web mẹ!"
         )
     else:
         pending_cnt = res.get("pending_count", 0)
         return (
-            f"ðŸ¦ <b>[QUÃ‰T NGÃ‚N HÃ€NG HOÃ€N Táº¤T]</b>\n"
-            f"â€¢ KhÃ´ng cÃ³ giao dá»‹ch chuyá»ƒn tiá»n má»›i khá»›p mÃ£ Ä‘Æ¡n.\n"
-            f"â€¢ Hiá»‡n cÃ³ <b>{pending_cnt} Ä‘Æ¡n</b> Ä‘ang chá» khÃ¡ch chuyá»ƒn tiá»n."
+            f"🏦 <b>[QUÉT NGÂN HÀNG HOÀN TẤT]</b>\n"
+            f"• Không có giao dịch chuyển tiền mới khớp mã đơn.\n"
+            f"• Hiện có <b>{pending_cnt} đơn</b> đang chờ khách chuyển tiền."
         )
 
 def handle_admin_check_web():
@@ -3372,15 +3372,15 @@ def handle_admin_check_web():
     completed = res.get("completed_orders", [])
     if completed:
         return (
-            f"ðŸŽ‰ <b>[CHECK 2 WEB Máº¸: HOÃ€N Táº¤T!]</b>\n"
-            f"â€¢ ÄÃ£ cÃ³ <b>{len(completed)} Ä‘Æ¡n</b> hoÃ n thÃ nh: {', '.join(completed)}\n"
-            f"â€¢ Há»‡ thá»‘ng Ä‘Ã£ cáº­p nháº­t sang COMPLETED vÃ  gá»­i thÃ´ng bÃ¡o!"
+            f"🎉 <b>[CHECK 2 WEB MẸ: HOÀN TẤT!]</b>\n"
+            f"• Đã có <b>{len(completed)} đơn</b> hoàn thành: {', '.join(completed)}\n"
+            f"• Hệ thống đã cập nhật sang COMPLETED và gửi thông báo!"
         )
     else:
         return (
-            f"ðŸ” <b>[CHECK 2 WEB Máº¸: ÄÃƒ Äá»’NG Bá»˜]</b>\n"
-            f"â€¢ ÄÃ£ kiá»ƒm tra <b>{res.get('checked_count', 0)} Ä‘Æ¡n</b> Ä‘ang cháº¡y trÃªn AutoNhanh & TangTim.\n"
-            f"â€¢ CÃ¡c Ä‘Æ¡n Ä‘á»u Ä‘ang Ä‘Æ°á»£c xá»­ lÃ½ hoáº·c chÆ°a cÃ³ Ä‘Æ¡n nÃ o má»›i hoÃ n thÃ nh."
+            f"🔍 <b>[CHECK 2 WEB MẸ: ĐÃ ĐỒNG BỘ]</b>\n"
+            f"• Đã kiểm tra <b>{res.get('checked_count', 0)} đơn</b> đang chạy trên AutoNhanh & TangTim.\n"
+            f"• Các đơn đều đang được xử lý hoặc chưa có đơn nào mới hoàn thành."
         )
 
 @app.route("/api/telegram/webhook", methods=["POST"])
@@ -3394,7 +3394,7 @@ def telegram_webhook():
     if not bot_token:
         return jsonify({"ok": True})
 
-    # 1. Xá»­ lÃ½ Callback Query (NÃºt báº¥m Inline)
+    # 1. Xử lý Callback Query (Nút bấm Inline)
     if "callback_query" in update:
         cb = update["callback_query"]
         cb_id = cb.get("id")
@@ -3406,7 +3406,7 @@ def telegram_webhook():
             try:
                 requests.post(f"https://api.telegram.org/bot{bot_token}/answerCallbackQuery", json={
                     "callback_query_id": cb_id,
-                    "text": "âš ï¸ Báº¡n khÃ´ng cÃ³ quyá»n quáº£n trá»‹ bot nÃ y!",
+                    "text": "⚠️ Bạn không có quyền quản trị bot này!",
                     "show_alert": True
                 }, timeout=5)
             except Exception: pass
@@ -3415,7 +3415,7 @@ def telegram_webhook():
         try:
             requests.post(f"https://api.telegram.org/bot{bot_token}/answerCallbackQuery", json={
                 "callback_query_id": cb_id,
-                "text": "âš¡ Äang xá»­ lÃ½ lá»‡nh..."
+                "text": "⚡ Đang xử lý lệnh..."
             }, timeout=5)
         except Exception: pass
 
@@ -3466,15 +3466,15 @@ def telegram_webhook():
             orders = load_orders()
             order = orders.get(oid, {})
             stype = order.get("service_type") or ("chungsuc" if oid.startswith("CS") else ("mxh" if oid.startswith("TT") else "locket"))
-            target_lbl = "MÃ£ má»i LiÃªn QuÃ¢n" if stype == "chungsuc" else "Link MXH"
+            target_lbl = "Mã mời Liên Quân" if stype == "chungsuc" else "Link MXH"
             cur_val = order.get("code") if stype == "chungsuc" else order.get("link", "")
             send_telegram_msg(
-                f"âœï¸ <b>[HÆ¯á»šNG DáºªN Sá»¬A {target_lbl.upper()} #{oid}]</b>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"â€¢ GiÃ¡ trá»‹ hiá»‡n táº¡i: <code>{cur_val}</code>\n"
-                f"ðŸ‘‰ Gá»­i tin nháº¯n theo cÃº phÃ¡p Ä‘á»ƒ sá»­a vÃ  Ä‘áº©y láº¡i ngay:\n\n"
-                f"<code>/sua {oid} &lt;giÃ¡_trá»‹_má»›i&gt;</code>\n\n"
-                f"<i>VÃ­ dá»¥: <code>/sua {oid} abcxyz123</code></i>",
+                f"✏️ <b>[HƯỚNG DẪN SỬA {target_lbl.upper()} #{oid}]</b>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"• Giá trị hiện tại: <code>{cur_val}</code>\n"
+                f"👉 Gửi tin nhắn theo cú pháp để sửa và đẩy lại ngay:\n\n"
+                f"<code>/sua {oid} &lt;giá_trị_mới&gt;</code>\n\n"
+                f"<i>Ví dụ: <code>/sua {oid} abcxyz123</code></i>",
                 chat_id=chat_id
             )
 
@@ -3486,51 +3486,51 @@ def telegram_webhook():
                 del orders[oid]
             save_orders(orders)
             sync_file_to_github_now("orders.json")
-            send_telegram_msg(f"ðŸ—‘ï¸ <b>[ÄÃƒ XÃ“A VÄ¨NH VIá»„N #{oid}]</b>\nÄÆ¡n hÃ ng Ä‘Ã£ Ä‘Æ°á»£c xÃ³a khá»i há»‡ thá»‘ng vÃ  sáº½ khÃ´ng bao giá» xuáº¥t hiá»‡n láº¡i.", chat_id=chat_id)
+            send_telegram_msg(f"🗑️ <b>[ĐÃ XÓA VĨNH VIỄN #{oid}]</b>\nĐơn hàng đã được xóa khỏi hệ thống và sẽ không bao giờ xuất hiện lại.", chat_id=chat_id)
 
         elif cb_data == "btn:popup_status":
             ann = config_manager.get_popup_announcement()
-            st_icon = "ðŸŸ¢ ÄANG Báº¬T" if ann.get("enabled") else "ðŸ”´ ÄÃƒ Táº®T"
+            st_icon = "🟢 ĐANG BẬT" if ann.get("enabled") else "🔴 ĐÃ TẮT"
             up_time = datetime.fromtimestamp(ann.get("updated_at", time.time())).strftime("%d/%m/%Y %H:%M:%S")
             kb = {
                 "inline_keyboard": [
                     [
-                        {"text": "ðŸ”„ Báº­t/Táº¯t Nhanh", "callback_data": "btn:popup_toggle"},
-                        {"text": "ðŸ—‘ï¸ XÃ³a Ná»™i Dung", "callback_data": "btn:popup_clear"}
+                        {"text": "🔄 Bật/Tắt Nhanh", "callback_data": "btn:popup_toggle"},
+                        {"text": "🗑️ Xóa Nội Dung", "callback_data": "btn:popup_clear"}
                     ]
                 ]
             }
             send_telegram_msg(
-                f"ðŸ“¢ <b>[TRáº NG THÃI POPUP THÃ”NG BÃO]</b>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"â€¢ Tráº¡ng thÃ¡i: <b>{st_icon}</b>\n"
-                f"â€¢ TiÃªu Ä‘á»: <b>{ann.get('title', '')}</b>\n"
-                f"â€¢ Cáº­p nháº­t: <code>{up_time}</code>\n"
-                f"â€¢ Ná»™i dung:\n<blockquote>{ann.get('content') or '(ChÆ°a cÃ³ ná»™i dung)'}</blockquote>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"<i>Lá»‡nh: <code>/popup &lt;ná»™i dung&gt;</code> Ä‘á»ƒ Ä‘á»•i thÃ´ng bÃ¡o vÃ  báº­t ngay.</i>",
+                f"📢 <b>[TRẠNG THÁI POPUP THÔNG BÁO]</b>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"• Trạng thái: <b>{st_icon}</b>\n"
+                f"• Tiêu đề: <b>{ann.get('title', '')}</b>\n"
+                f"• Cập nhật: <code>{up_time}</code>\n"
+                f"• Nội dung:\n<blockquote>{ann.get('content') or '(Chưa có nội dung)'}</blockquote>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"<i>Lệnh: <code>/popup &lt;nội dung&gt;</code> để đổi thông báo và bật ngay.</i>",
                 reply_markup=kb,
                 chat_id=chat_id
             )
 
         elif cb_data == "btn:popup_toggle":
             ann = config_manager.update_popup_announcement(action="toggle")
-            st_text = "ðŸŸ¢ <b>ÄÃƒ Báº¬T</b>" if ann.get("enabled") else "ðŸ”´ <b>ÄÃƒ Táº®T</b>"
+            st_text = "🟢 <b>ĐÃ BẬT</b>" if ann.get("enabled") else "🔴 <b>ĐÃ TẮT</b>"
             send_telegram_msg(
-                f"âš¡ <b>[ÄÃƒ CHUYá»‚N TRáº NG THÃI POPUP]</b>\n"
-                f"â€¢ Tráº¡ng thÃ¡i má»›i: {st_text}\n"
-                f"â€¢ TiÃªu Ä‘á»: <b>{ann.get('title', '')}</b>\n"
-                f"â€¢ Ná»™i dung: <i>{ann.get('content') or '(Trá»‘ng)'}</i>",
+                f"⚡ <b>[ĐÃ CHUYỂN TRẠNG THÁI POPUP]</b>\n"
+                f"• Trạng thái mới: {st_text}\n"
+                f"• Tiêu đề: <b>{ann.get('title', '')}</b>\n"
+                f"• Nội dung: <i>{ann.get('content') or '(Trống)'}</i>",
                 chat_id=chat_id
             )
 
         elif cb_data == "btn:popup_clear":
             config_manager.update_popup_announcement(action="clear")
-            send_telegram_msg("ðŸ—‘ï¸ <b>[ÄÃƒ XÃ“A Sáº CH Ná»˜I DUNG POPUP]</b>\nNá»™i dung thÃ´ng bÃ¡o Ä‘Ã£ Ä‘Æ°á»£c dá»n sáº¡ch vÃ  chuyá»ƒn sang tráº¡ng thÃ¡i Táº®T.", chat_id=chat_id)
+            send_telegram_msg("🗑️ <b>[ĐÃ XÓA SẠCH NỘI DUNG POPUP]</b>\nNội dung thông báo đã được dọn sạch và chuyển sang trạng thái TẮT.", chat_id=chat_id)
 
         return jsonify({"ok": True})
 
-    # 2. Xá»­ lÃ½ Tin nháº¯n thÆ°á»ng / Lá»‡nh text
+    # 2. Xử lý Tin nhắn thường / Lệnh text
     message = update.get("message") or {}
     text = str(message.get("text") or "").strip()
     from_id = str(message.get("from", {}).get("id"))
@@ -3540,7 +3540,7 @@ def telegram_webhook():
         return jsonify({"ok": True})
 
     if from_id != admin_chat_id and str(chat_id) != admin_chat_id:
-        send_telegram_msg("âš ï¸ Báº¡n khÃ´ng cÃ³ quyá»n truy cáº­p há»‡ thá»‘ng DTH Admin Bot.", chat_id=chat_id)
+        send_telegram_msg("⚠️ Bạn không có quyền truy cập hệ thống DTH Admin Bot.", chat_id=chat_id)
         return jsonify({"ok": True})
 
     parts = text.split()
@@ -3569,21 +3569,21 @@ def telegram_webhook():
 
     elif cmd in ("/duyet", "/accept"):
         if not arg:
-            send_telegram_msg("âš ï¸ Vui lÃ²ng nháº­p mÃ£ Ä‘Æ¡n. VÃ­ dá»¥: <code>/duyet CS22445</code> hoáº·c <code>/duyet TT46479</code>", chat_id=chat_id)
+            send_telegram_msg("⚠️ Vui lòng nhập mã đơn. Ví dụ: <code>/duyet CS22445</code> hoặc <code>/duyet TT46479</code>", chat_id=chat_id)
         else:
             msg = handle_admin_duyet_command(arg.upper())
             send_telegram_msg(msg, chat_id=chat_id)
 
     elif cmd in ("/day", "/push"):
         if not arg:
-            send_telegram_msg("âš ï¸ Vui lÃ²ng nháº­p mÃ£ Ä‘Æ¡n. VÃ­ dá»¥: <code>/day CS22445</code> hoáº·c <code>/day TT46479</code>", chat_id=chat_id)
+            send_telegram_msg("⚠️ Vui lòng nhập mã đơn. Ví dụ: <code>/day CS22445</code> hoặc <code>/day TT46479</code>", chat_id=chat_id)
         else:
             msg = handle_admin_day_command(arg.upper())
             send_telegram_msg(msg, chat_id=chat_id)
 
     elif cmd in ("/sua", "/update", "/doima", "/doilink"):
         if len(parts) < 3:
-            send_telegram_msg("âš ï¸ CÃº phÃ¡p: <code>/sua <mÃ£_Ä‘Æ¡n> <mÃ£_hoáº·c_link_má»›i></code>\nVÃ­ dá»¥: <code>/sua CS22912 cCdjaJpazt</code>", chat_id=chat_id)
+            send_telegram_msg("⚠️ Cú pháp: <code>/sua <mã_đơn> <mã_hoặc_link_mới></code>\nVí dụ: <code>/sua CS22912 cCdjaJpazt</code>", chat_id=chat_id)
         else:
             t_oid = parts[1].strip().upper()
             t_val = parts[2].strip()
@@ -3592,7 +3592,7 @@ def telegram_webhook():
 
     elif cmd in ("/hoanthanh", "/done"):
         if not arg:
-            send_telegram_msg("âš ï¸ Vui lÃ²ng nháº­p mÃ£ Ä‘Æ¡n. VÃ­ dá»¥: <code>/hoanthanh CS22445</code>", chat_id=chat_id)
+            send_telegram_msg("⚠️ Vui lòng nhập mã đơn. Ví dụ: <code>/hoanthanh CS22445</code>", chat_id=chat_id)
         else:
             orders = load_orders()
             oid = arg.upper()
@@ -3600,26 +3600,26 @@ def telegram_webhook():
                 orders[oid]["status"] = "COMPLETED"
                 orders[oid]["completed_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 save_orders(orders)
-                send_telegram_msg(f"âœ… ÄÃ£ Ä‘Ã¡nh dáº¥u hoÃ n thÃ nh Ä‘Æ¡n <b>#{oid}</b>!", chat_id=chat_id)
+                send_telegram_msg(f"✅ Đã đánh dấu hoàn thành đơn <b>#{oid}</b>!", chat_id=chat_id)
             else:
-                send_telegram_msg(f"âŒ KhÃ´ng tÃ¬m tháº¥y mÃ£ Ä‘Æ¡n <b>#{oid}</b>.", chat_id=chat_id)
+                send_telegram_msg(f"❌ Không tìm thấy mã đơn <b>#{oid}</b>.", chat_id=chat_id)
 
     elif cmd in ("/huy", "/cancel"):
         if not arg:
-            send_telegram_msg("âš ï¸ Vui lÃ²ng nháº­p mÃ£ Ä‘Æ¡n. VÃ­ dá»¥: <code>/huy CS22445</code>", chat_id=chat_id)
+            send_telegram_msg("⚠️ Vui lòng nhập mã đơn. Ví dụ: <code>/huy CS22445</code>", chat_id=chat_id)
         else:
             orders = load_orders()
             oid = arg.upper()
             if oid in orders:
                 orders[oid]["status"] = "CANCELED"
                 save_orders(orders)
-                send_telegram_msg(f"âŒ ÄÃ£ há»§y Ä‘Æ¡n <b>#{oid}</b>!", chat_id=chat_id)
+                send_telegram_msg(f"❌ Đã hủy đơn <b>#{oid}</b>!", chat_id=chat_id)
             else:
-                send_telegram_msg(f"âŒ KhÃ´ng tÃ¬m tháº¥y mÃ£ Ä‘Æ¡n <b>#{oid}</b>.", chat_id=chat_id)
+                send_telegram_msg(f"❌ Không tìm thấy mã đơn <b>#{oid}</b>.", chat_id=chat_id)
 
     elif cmd in ("/xoa", "/delete"):
         if not arg:
-            send_telegram_msg("âš ï¸ Vui lÃ²ng nháº­p mÃ£ Ä‘Æ¡n cáº§n xÃ³a. VÃ­ dá»¥: <code>/xoa CS22445</code>", chat_id=chat_id)
+            send_telegram_msg("⚠️ Vui lòng nhập mã đơn cần xóa. Ví dụ: <code>/xoa CS22445</code>", chat_id=chat_id)
         else:
             oid = arg.upper()
             add_deleted_order_id(oid)
@@ -3628,68 +3628,68 @@ def telegram_webhook():
                 del orders[oid]
             save_orders(orders)
             sync_file_to_github_now("orders.json")
-            send_telegram_msg(f"ðŸ—‘ï¸ <b>[ÄÃƒ XÃ“A VÄ¨NH VIá»„N #{oid}]</b>\nÄÆ¡n Ä‘Ã£ Ä‘Æ°á»£c xÃ³a triá»‡t Ä‘á»ƒ khá»i há»‡ thá»‘ng vÃ  sáº½ khÃ´ng bao giá» há»“i láº¡i.", chat_id=chat_id)
+            send_telegram_msg(f"🗑️ <b>[ĐÃ XÓA VĨNH VIỄN #{oid}]</b>\nĐơn đã được xóa triệt để khỏi hệ thống và sẽ không bao giờ hồi lại.", chat_id=chat_id)
 
     elif cmd in ("/gold", "/locket"):
         if not arg:
-            send_telegram_msg("âš ï¸ Vui lÃ²ng nháº­p username Locket. VÃ­ dá»¥: <code>/gold dth206</code>", chat_id=chat_id)
+            send_telegram_msg("⚠️ Vui lòng nhập username Locket. Ví dụ: <code>/gold dth206</code>", chat_id=chat_id)
         else:
             clean_u = re.sub(r"[^A-Za-z0-9_.-]", "", arg.lstrip("@"))
             queue_manager.add_to_queue(clean_u, "with_dns")
             send_telegram_msg(
-                f"ðŸ’› <b>[ÄÃƒ THÃŠM LOCKET GOLD]</b>\n"
-                f"â€¢ TÃ i khoáº£n: <b>@{clean_u}</b>\n"
-                f"â€¢ Cáº¥u hÃ¬nh DNS: https://dth206.vercel.app/download-config?u={clean_u}\n"
-                f"â€¢ ÄÃ£ xáº¿p vÃ o hÃ ng chá» kÃ­ch hoáº¡t VIP!",
+                f"💛 <b>[ĐÃ THÊM LOCKET GOLD]</b>\n"
+                f"• Tài khoản: <b>@{clean_u}</b>\n"
+                f"• Cấu hình DNS: https://dth206.vercel.app/download-config?u={clean_u}\n"
+                f"• Đã xếp vào hàng chờ kích hoạt VIP!",
                 chat_id=chat_id
             )
     elif cmd in ("/popup", "/thongbao"):
         content_text = text[len(parts[0]):].strip()
         if not content_text:
-            send_telegram_msg("âš ï¸ Vui lÃ²ng nháº­p ná»™i dung thÃ´ng bÃ¡o.\n<i>VÃ­ dá»¥: <code>/popup Báº£o trÃ¬ nÃ¢ng cáº¥p há»‡ thá»‘ng lÃºc 23:00 tá»‘i nay!</code></i>", chat_id=chat_id)
+            send_telegram_msg("⚠️ Vui lòng nhập nội dung thông báo.\n<i>Ví dụ: <code>/popup Bảo trì nâng cấp hệ thống lúc 23:00 tối nay!</code></i>", chat_id=chat_id)
         else:
             ann = config_manager.update_popup_announcement(enabled=True, content=content_text)
             send_telegram_msg(
-                f"ðŸ“¢ <b>[Cáº¬P NHáº¬T POPUP THÃ”NG BÃO]</b>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"â€¢ Tráº¡ng thÃ¡i: ðŸŸ¢ <b>ÄANG Báº¬T</b>\n"
-                f"â€¢ TiÃªu Ä‘á»: <b>{ann.get('title', '')}</b>\n"
-                f"â€¢ Ná»™i dung:\n<blockquote>{ann.get('content', '')}</blockquote>\n"
-                f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-                f"âœ… ÄÃ£ lÆ°u vÃ  hiá»ƒn thá»‹ ngay trÃªn trang web khÃ¡ch hÃ ng!",
+                f"📢 <b>[CẬP NHẬT POPUP THÔNG BÁO]</b>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"• Trạng thái: 🟢 <b>ĐANG BẬT</b>\n"
+                f"• Tiêu đề: <b>{ann.get('title', '')}</b>\n"
+                f"• Nội dung:\n<blockquote>{ann.get('content', '')}</blockquote>\n"
+                f"━━━━━━━━━━━━━━━━━━\n"
+                f"✅ Đã lưu và hiển thị ngay trên trang web khách hàng!",
                 chat_id=chat_id
             )
 
     elif cmd in ("/popup_on", "/popup_bat", "/popupon", "/popupbat"):
         ann = config_manager.update_popup_announcement(enabled=True)
         send_telegram_msg(
-            f"ðŸŸ¢ <b>[ÄÃƒ Báº¬T POPUP THÃ”NG BÃO]</b>\n"
-            f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-            f"â€¢ Tráº¡ng thÃ¡i: ðŸŸ¢ <b>ÄANG Báº¬T</b>\n"
-            f"â€¢ TiÃªu Ä‘á»: <b>{ann.get('title', '')}</b>\n"
-            f"â€¢ Ná»™i dung: <i>{ann.get('content') or '(ChÆ°a cÃ³ ná»™i dung)'}</i>\n"
-            f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-            f"KhÃ¡ch truy cáº­p web sáº½ nhÃ¬n tháº¥y popup thÃ´ng bÃ¡o nÃ y.",
+            f"🟢 <b>[ĐÃ BẬT POPUP THÔNG BÁO]</b>\n"
+            f"━━━━━━━━━━━━━━━━━━\n"
+            f"• Trạng thái: 🟢 <b>ĐANG BẬT</b>\n"
+            f"• Tiêu đề: <b>{ann.get('title', '')}</b>\n"
+            f"• Nội dung: <i>{ann.get('content') or '(Chưa có nội dung)'}</i>\n"
+            f"━━━━━━━━━━━━━━━━━━\n"
+            f"Khách truy cập web sẽ nhìn thấy popup thông báo này.",
             chat_id=chat_id
         )
 
     elif cmd in ("/popup_off", "/popup_tat", "/popupoff", "/popuptat"):
         ann = config_manager.update_popup_announcement(enabled=False)
         send_telegram_msg(
-            f"ðŸ”´ <b>[ÄÃƒ Táº®T POPUP THÃ”NG BÃO]</b>\n"
-            f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-            f"â€¢ Tráº¡ng thÃ¡i: ðŸ”´ <b>ÄÃƒ Táº®T</b>\n"
-            f"Popup Ä‘Ã£ Ä‘Æ°á»£c áº©n trÃªn trang web khÃ¡ch hÃ ng.",
+            f"🔴 <b>[ĐÃ TẮT POPUP THÔNG BÁO]</b>\n"
+            f"━━━━━━━━━━━━━━━━━━\n"
+            f"• Trạng thái: 🔴 <b>ĐÃ TẮT</b>\n"
+            f"Popup đã được ẩn trên trang web khách hàng.",
             chat_id=chat_id
         )
 
     elif cmd in ("/popup_clear", "/popup_xoa", "/popupclear", "/popupxoa"):
         ann = config_manager.update_popup_announcement(action="clear")
         send_telegram_msg(
-            f"ðŸ—‘ï¸ <b>[ÄÃƒ XÃ“A Sáº CH Ná»˜I DUNG POPUP]</b>\n"
-            f"â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\n"
-            f"â€¢ Tráº¡ng thÃ¡i: ðŸ”´ <b>ÄÃƒ Táº®T</b>\n"
-            f"Ná»™i dung thÃ´ng bÃ¡o Ä‘Ã£ Ä‘Æ°á»£c dá»n sáº¡ch.",
+            f"🗑️ <b>[ĐÃ XÓA SẠCH NỘI DUNG POPUP]</b>\n"
+            f"━━━━━━━━━━━━━━━━━━\n"
+            f"• Trạng thái: 🔴 <b>ĐÃ TẮT</b>\n"
+            f"Nội dung thông báo đã được dọn sạch.",
             chat_id=chat_id
         )
 
@@ -3707,7 +3707,7 @@ def telegram_webhook():
 
     else:
         msg, kb = get_telegram_admin_menu()
-        send_telegram_msg(f"â“ KhÃ´ng rÃµ lá»‡nh: <code>{text}</code>\n\n" + msg, reply_markup=kb, chat_id=chat_id)
+        send_telegram_msg(f"❓ Không rõ lệnh: <code>{text}</code>\n\n" + msg, reply_markup=kb, chat_id=chat_id)
 
     return jsonify({"ok": True})
 
@@ -3717,7 +3717,7 @@ def telegram_set_webhook():
     tg = cfg.get("telegram", {})
     bot_token = tg.get("bot_token")
     if not bot_token:
-        return jsonify({"success": False, "msg": "ChÆ°a cáº¥u hÃ¬nh Telegram Bot Token"}), 400
+        return jsonify({"success": False, "msg": "Chưa cấu hình Telegram Bot Token"}), 400
 
     host = request.host
     webhook_url = f"https://{host}/api/telegram/webhook"
@@ -3739,25 +3739,25 @@ def customer_update_target():
     new_target = str(data.get("new_target") or "").strip()
 
     if not order_id:
-        return jsonify({"success": False, "msg": "Thiáº¿u mÃ£ Ä‘Æ¡n hÃ ng."}), 400
+        return jsonify({"success": False, "msg": "Thiếu mã đơn hàng."}), 400
     if not new_target:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p mÃ£ hoáº·c link má»›i."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập mã hoặc link mới."}), 400
 
     orders = load_orders()
     order = orders.get(order_id)
     if not order:
-        return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y mÃ£ Ä‘Æ¡n hÃ ng."}), 404
+        return jsonify({"success": False, "msg": "Không tìm thấy mã đơn hàng."}), 404
 
     st = order.get("status")
     if st == "PENDING":
-        return jsonify({"success": False, "msg": "ÄÆ¡n hÃ ng nÃ y chÆ°a Ä‘Æ°á»£c thanh toÃ¡n. Vui lÃ²ng thanh toÃ¡n trÆ°á»›c."}), 400
+        return jsonify({"success": False, "msg": "Đơn hàng này chưa được thanh toán. Vui lòng thanh toán trước."}), 400
 
     stype = order.get("service_type") or ("chungsuc" if order_id.startswith("CS") else ("mxh" if order_id.startswith("TT") else "locket"))
 
     if stype == "chungsuc" or order_id.startswith("CS"):
         clean_code = extract_invite_code(new_target)
         if not clean_code or len(clean_code) < 4:
-            return jsonify({"success": False, "msg": "MÃ£ má»i LiÃªn QuÃ¢n khÃ´ng Ä‘Ãºng Ä‘á»‹nh dáº¡ng. Vui lÃ²ng kiá»ƒm tra láº¡i link sá»± kiá»‡n hoáº·c mÃ£ chia sáº»!"}), 400
+            return jsonify({"success": False, "msg": "Mã mời Liên Quân không đúng định dạng. Vui lòng kiểm tra lại link sự kiện hoặc mã chia sẻ!"}), 400
         
         old_val = order.get("code")
         order["code"] = clean_code
@@ -3774,30 +3774,30 @@ def customer_update_target():
         updated_order = orders.get(order_id, order)
 
         send_telegram_msg(
-            f"ðŸ”„ <b>[KHÃCH Cáº¬P NHáº¬T MÃƒ LIÃŠN QUÃ‚N Má»šI]</b>\n"
-            f"â€¢ ÄÆ¡n hÃ ng: <b>#{order_id}</b>\n"
-            f"â€¢ GÃ³i: {order.get('package_name')}\n"
-            f"â€¢ MÃ£ cÅ©: <code>{old_val}</code>\n"
-            f"â€¢ MÃ£ má»›i: <code>{clean_code}</code>\n"
-            f"â€¢ Tráº¡ng thÃ¡i xá»­ lÃ½: <b>{'ÄÃ£ Ä‘áº©y thÃ nh cÃ´ng' if ok else 'Äáº©y tháº¥t báº¡i'}</b>\n"
-            f"{('â€¢ Chi tiáº¿t lá»—i: ' + str(res)) if not ok else ''}"
+            f"🔄 <b>[KHÁCH CẬP NHẬT MÃ LIÊN QUÂN MỚI]</b>\n"
+            f"• Đơn hàng: <b>#{order_id}</b>\n"
+            f"• Gói: {order.get('package_name')}\n"
+            f"• Mã cũ: <code>{old_val}</code>\n"
+            f"• Mã mới: <code>{clean_code}</code>\n"
+            f"• Trạng thái xử lý: <b>{'Đã đẩy thành công' if ok else 'Đẩy thất bại'}</b>\n"
+            f"{('• Chi tiết lỗi: ' + str(res)) if not ok else ''}"
         )
 
         if not ok:
-            if any(k in str(res).lower() for k in ["invalid", "code", "mÃ£"]):
-                return jsonify({"success": False, "msg": "MÃ£ má»i má»›i váº«n khÃ´ng há»£p lá»‡ hoáº·c mÃ¡y chá»§ khÃ´ng cháº¥p nháº­n. Vui lÃ²ng thá»­ link/mÃ£ khÃ¡c!"}), 400
-            return jsonify({"success": True, "msg": "ÄÃ£ tiáº¿p nháº­n mÃ£ má»›i! Há»‡ thá»‘ng Ä‘ang tá»± Ä‘á»™ng xáº¿p hÃ ng xá»­ lÃ½ cho báº¡n.", "order": sanitize_order_for_client(updated_order)})
+            if any(k in str(res).lower() for k in ["invalid", "code", "mã"]):
+                return jsonify({"success": False, "msg": "Mã mời mới vẫn không hợp lệ hoặc máy chủ không chấp nhận. Vui lòng thử link/mã khác!"}), 400
+            return jsonify({"success": True, "msg": "Đã tiếp nhận mã mới! Hệ thống đang tự động xếp hàng xử lý cho bạn.", "order": sanitize_order_for_client(updated_order)})
 
         return jsonify({
             "success": True,
-            "msg": "Cáº­p nháº­t mÃ£ má»›i thÃ nh cÃ´ng! Há»‡ thá»‘ng Ä‘ang tá»± Ä‘á»™ng buff lÆ°á»£t cho báº¡n ngay.",
+            "msg": "Cập nhật mã mới thành công! Hệ thống đang tự động buff lượt cho bạn ngay.",
             "order": sanitize_order_for_client(updated_order)
         })
 
     elif stype == "mxh" or order_id.startswith("TT"):
         new_link = str(new_target).strip()
         if not (new_link.startswith("http://") or new_link.startswith("https://")):
-            return jsonify({"success": False, "msg": "Link bÃ i viáº¿t máº¡ng xÃ£ há»™i pháº£i báº¯t Ä‘áº§u báº±ng https:// hoáº·c http://"}), 400
+            return jsonify({"success": False, "msg": "Link bài viết mạng xã hội phải bắt đầu bằng https:// hoặc http://"}), 400
 
         old_val = order.get("link")
         order["link"] = new_link
@@ -3813,27 +3813,27 @@ def customer_update_target():
         updated_order = orders.get(order_id, order)
 
         send_telegram_msg(
-            f"ðŸ”„ <b>[KHÃCH Cáº¬P NHáº¬T LINK MXH Má»šI]</b>\n"
-            f"â€¢ ÄÆ¡n hÃ ng: <b>#{order_id}</b>\n"
-            f"â€¢ GÃ³i: {order.get('package_name')}\n"
-            f"â€¢ Link cÅ©: <code>{old_val}</code>\n"
-            f"â€¢ Link má»›i: <code>{new_link}</code>\n"
-            f"â€¢ Tráº¡ng thÃ¡i xá»­ lÃ½: <b>{'ÄÃ£ Ä‘áº©y thÃ nh cÃ´ng' if ok else 'Äáº©y tháº¥t báº¡i'}</b>\n"
-            f"{('â€¢ Chi tiáº¿t lá»—i: ' + str(res)) if not ok else ''}"
+            f"🔄 <b>[KHÁCH CẬP NHẬT LINK MXH MỚI]</b>\n"
+            f"• Đơn hàng: <b>#{order_id}</b>\n"
+            f"• Gói: {order.get('package_name')}\n"
+            f"• Link cũ: <code>{old_val}</code>\n"
+            f"• Link mới: <code>{new_link}</code>\n"
+            f"• Trạng thái xử lý: <b>{'Đã đẩy thành công' if ok else 'Đẩy thất bại'}</b>\n"
+            f"{('• Chi tiết lỗi: ' + str(res)) if not ok else ''}"
         )
 
         if not ok:
             if any(k in str(res).lower() for k in ["link", "url", "private", "not found"]):
-                return jsonify({"success": False, "msg": "Link má»›i báº¡n vá»«a nháº­p váº«n khÃ´ng há»£p lá»‡ hoáº·c Ä‘ang á»Ÿ cháº¿ Ä‘á»™ riÃªng tÆ°. Vui lÃ²ng kiá»ƒm tra láº¡i link cÃ´ng khai!"}), 400
-            return jsonify({"success": True, "msg": "ÄÃ£ tiáº¿p nháº­n link má»›i! Há»‡ thá»‘ng Ä‘ang xáº¿p hÃ ng tÄƒng tÆ°Æ¡ng tÃ¡c cho báº¡n.", "order": sanitize_order_for_client(updated_order)})
+                return jsonify({"success": False, "msg": "Link mới bạn vừa nhập vẫn không hợp lệ hoặc đang ở chế độ riêng tư. Vui lòng kiểm tra lại link công khai!"}), 400
+            return jsonify({"success": True, "msg": "Đã tiếp nhận link mới! Hệ thống đang xếp hàng tăng tương tác cho bạn.", "order": sanitize_order_for_client(updated_order)})
 
         return jsonify({
             "success": True,
-            "msg": "Cáº­p nháº­t link má»›i thÃ nh cÃ´ng! Há»‡ thá»‘ng Ä‘ang tÄƒng tÆ°Æ¡ng tÃ¡c tá»± Ä‘á»™ng cho báº¡n ngay.",
+            "msg": "Cập nhật link mới thành công! Hệ thống đang tăng tương tác tự động cho bạn ngay.",
             "order": sanitize_order_for_client(updated_order)
         })
 
-    return jsonify({"success": False, "msg": "Loáº¡i Ä‘Æ¡n hÃ ng khÃ´ng há»— trá»£ Ä‘á»•i mÃ£ hoáº·c link."}), 400
+    return jsonify({"success": False, "msg": "Loại đơn hàng không hỗ trợ đổi mã hoặc link."}), 400
 
 @app.route("/api/order/lookup", methods=["GET", "POST"])
 def lookup_orders():
@@ -3847,7 +3847,7 @@ def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if not session.get("is_admin"):
-            return jsonify({"success": False, "msg": "YÃªu cáº§u Ä‘Äƒng nháº­p quáº£n trá»‹ viÃªn."}), 401
+            return jsonify({"success": False, "msg": "Yêu cầu đăng nhập quản trị viên."}), 401
         return f(*args, **kwargs)
     return decorated
 
@@ -3868,7 +3868,7 @@ def admin_services_toggle():
             se["premium"] = bool(data["premium"])
         cfg["services_enabled"] = se
         save_config(cfg)
-        return jsonify({"success": True, "services_enabled": se, "msg": "ÄÃ£ lÆ°u cÃ i Ä‘áº·t báº­t/táº¯t dá»‹ch vá»¥!"})
+        return jsonify({"success": True, "services_enabled": se, "msg": "Đã lưu cài đặt bật/tắt dịch vụ!"})
     return jsonify({"success": True, "services_enabled": cfg.get("services_enabled", {"chungsuc": True, "locket": True, "mxh": True, "premium": True})})
 
 @app.route("/api/admin/premium/save-config", methods=["POST"])
@@ -3879,7 +3879,7 @@ def admin_save_premium_config():
     packages = data.get("packages")
 
     if not platform or not isinstance(packages, dict):
-        return jsonify({"success": False, "msg": "Dá»¯ liá»‡u cáº¥u hÃ¬nh khÃ´ng há»£p lá»‡."}), 400
+        return jsonify({"success": False, "msg": "Dữ liệu cấu hình không hợp lệ."}), 400
 
     cfg = load_config()
     if "premium_services" not in cfg:
@@ -3888,9 +3888,9 @@ def admin_save_premium_config():
     if platform in cfg["premium_services"]:
         cfg["premium_services"][platform]["packages"] = packages
         save_config(cfg)
-        return jsonify({"success": True, "msg": f"ÄÃ£ cáº­p nháº­t báº£ng giÃ¡ gÃ³i {cfg['premium_services'][platform].get('name')} thÃ nh cÃ´ng!"})
+        return jsonify({"success": True, "msg": f"Đã cập nhật bảng giá gói {cfg['premium_services'][platform].get('name')} thành công!"})
 
-    return jsonify({"success": False, "msg": "Ná»n táº£ng khÃ´ng tá»“n táº¡i."}), 404
+    return jsonify({"success": False, "msg": "Nền tảng không tồn tại."}), 404
 
 @app.route("/api/admin/premium/toggle", methods=["POST"])
 @admin_required
@@ -3902,8 +3902,8 @@ def admin_toggle_premium_market():
         cfg["services_enabled"] = {}
     cfg["services_enabled"]["premium"] = enabled
     save_config(cfg)
-    status_str = "Báº¬T" if enabled else "Táº®T"
-    return jsonify({"success": True, "enabled": enabled, "msg": f"ÄÃ£ {status_str} Chá»£ Dá»‹ch Vá»¥ Premium thÃ nh cÃ´ng!"})
+    status_str = "BẬT" if enabled else "TẮT"
+    return jsonify({"success": True, "enabled": enabled, "msg": f"Đã {status_str} Chợ Dịch Vụ Premium thành công!"})
 
 @app.route("/api/admin/premium/service/toggle", methods=["POST"])
 @admin_required
@@ -3915,10 +3915,10 @@ def admin_toggle_single_service():
     if "premium_services" in cfg and sid in cfg["premium_services"]:
         cfg["premium_services"][sid]["active"] = active
         save_config(cfg)
-        status_text = "báº­t" if active else "táº¯t"
+        status_text = "bật" if active else "tắt"
         sname = cfg["premium_services"][sid].get("name", sid)
-        return jsonify({"success": True, "active": active, "msg": f"ÄÃ£ {status_text} dá»‹ch vá»¥ {sname}!"})
-    return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y dá»‹ch vá»¥."}), 404
+        return jsonify({"success": True, "active": active, "msg": f"Đã {status_text} dịch vụ {sname}!"})
+    return jsonify({"success": False, "msg": "Không tìm thấy dịch vụ."}), 404
 
 @app.route("/api/admin/premium/package/toggle", methods=["POST"])
 @admin_required
@@ -3933,10 +3933,10 @@ def admin_toggle_single_package():
         if pkg_id in pkgs:
             pkgs[pkg_id]["active"] = active
             save_config(cfg)
-            status_text = "báº­t" if active else "táº¯t"
+            status_text = "bật" if active else "tắt"
             pname = pkgs[pkg_id].get("name", pkg_id)
-            return jsonify({"success": True, "active": active, "msg": f"ÄÃ£ {status_text} gÃ³i {pname}!"})
-    return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y gÃ³i."}), 404
+            return jsonify({"success": True, "active": active, "msg": f"Đã {status_text} gói {pname}!"})
+    return jsonify({"success": False, "msg": "Không tìm thấy gói."}), 404
 
 @app.route("/api/admin/premium/save-all", methods=["POST"])
 @admin_required
@@ -3944,29 +3944,29 @@ def admin_save_all_premium_services():
     data = request.get_json(silent=True) or {}
     services = data.get("services")
     if not isinstance(services, dict):
-        return jsonify({"success": False, "msg": "Dá»¯ liá»‡u dá»‹ch vá»¥ khÃ´ng há»£p lá»‡."}), 400
+        return jsonify({"success": False, "msg": "Dữ liệu dịch vụ không hợp lệ."}), 400
 
     for service_id, service in services.items():
         if not isinstance(service_id, str) or not re.fullmatch(r"[a-z0-9_-]{1,64}", service_id):
-            return jsonify({"success": False, "msg": "MÃ£ dá»‹ch vá»¥ khÃ´ng há»£p lá»‡."}), 400
+            return jsonify({"success": False, "msg": "Mã dịch vụ không hợp lệ."}), 400
         if not isinstance(service, dict):
-            return jsonify({"success": False, "msg": f"Cáº¥u hÃ¬nh dá»‹ch vá»¥ '{service_id}' khÃ´ng há»£p lá»‡."}), 400
+            return jsonify({"success": False, "msg": f"Cấu hình dịch vụ '{service_id}' không hợp lệ."}), 400
 
         packages = service.get("packages", {})
         if not isinstance(packages, dict):
-            return jsonify({"success": False, "msg": f"Danh sÃ¡ch gÃ³i cá»§a '{service_id}' khÃ´ng há»£p lá»‡."}), 400
+            return jsonify({"success": False, "msg": f"Danh sách gói của '{service_id}' không hợp lệ."}), 400
 
         for package_id, package in packages.items():
             if not isinstance(package_id, str) or not re.fullmatch(r"[a-z0-9_-]{1,64}", package_id):
-                return jsonify({"success": False, "msg": f"MÃ£ gÃ³i trong dá»‹ch vá»¥ '{service_id}' khÃ´ng há»£p lá»‡."}), 400
+                return jsonify({"success": False, "msg": f"Mã gói trong dịch vụ '{service_id}' không hợp lệ."}), 400
             if not isinstance(package, dict) or not str(package.get("name", "")).strip():
-                return jsonify({"success": False, "msg": f"TÃªn gÃ³i '{package_id}' khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng."}), 400
+                return jsonify({"success": False, "msg": f"Tên gói '{package_id}' không được để trống."}), 400
             raw_price = package.get("price")
             if isinstance(raw_price, bool) or not re.fullmatch(r"\d+", str(raw_price).strip()):
-                return jsonify({"success": False, "msg": f"GiÃ¡ gÃ³i '{package_id}' pháº£i lÃ  sá»‘ nguyÃªn há»£p lá»‡."}), 400
+                return jsonify({"success": False, "msg": f"Giá gói '{package_id}' phải là số nguyên hợp lệ."}), 400
             price = int(raw_price)
             if price <= 0:
-                return jsonify({"success": False, "msg": f"GiÃ¡ gÃ³i '{package_id}' pháº£i lá»›n hÆ¡n 0."}), 400
+                return jsonify({"success": False, "msg": f"Giá gói '{package_id}' phải lớn hơn 0."}), 400
 
             package["id"] = package_id
             package["name"] = str(package["name"]).strip()
@@ -3981,7 +3981,7 @@ def admin_save_all_premium_services():
             cfg["services_enabled"] = {}
         cfg["services_enabled"]["premium"] = bool(data["market_enabled"])
     save_config(cfg)
-    return jsonify({"success": True, "msg": "ÄÃ£ lÆ°u toÃ n bá»™ cáº¥u hÃ¬nh dá»‹ch vá»¥ & báº£ng giÃ¡ Chá»£ Premium!"})
+    return jsonify({"success": True, "msg": "Đã lưu toàn bộ cấu hình dịch vụ & bảng giá Chợ Premium!"})
 
 @app.route("/api/admin/premium/service/add", methods=["POST"])
 @admin_required
@@ -3991,31 +3991,31 @@ def admin_add_premium_service():
     name = (data.get("name") or "").strip()
     icon = (data.get("icon") or "fa-solid fa-gem").strip()
     color = (data.get("color") or "#2563eb").strip()
-    badge = (data.get("badge") or "ChÃ­nh Chá»§").strip()
+    badge = (data.get("badge") or "Chính Chủ").strip()
     tagline = (data.get("tagline") or "").strip()
-    input_label = (data.get("input_label") or "Email hoáº·c TÃ i khoáº£n nháº­n nÃ¢ng cáº¥p").strip()
-    input_placeholder = (data.get("input_placeholder") or "VÃ­ dá»¥: emailcuaban@gmail.com...").strip()
+    input_label = (data.get("input_label") or "Email hoặc Tài khoản nhận nâng cấp").strip()
+    input_placeholder = (data.get("input_placeholder") or "Ví dụ: emailcuaban@gmail.com...").strip()
     guide_note = (data.get("guide_note") or "").strip()
-    first_pkg_name = (data.get("first_pkg_name") or f"{name} 1 ThÃ¡ng").strip()
-    first_pkg_duration = (data.get("first_pkg_duration") or "1 ThÃ¡ng").strip()
+    first_pkg_name = (data.get("first_pkg_name") or f"{name} 1 Tháng").strip()
+    first_pkg_duration = (data.get("first_pkg_duration") or "1 Tháng").strip()
     try:
         first_pkg_price = int(data.get("first_pkg_price", 49000))
     except (ValueError, TypeError):
         first_pkg_price = 49000
 
     if not sid or not name:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p MÃ£ ID dá»‹ch vá»¥ vÃ  TÃªn dá»‹ch vá»¥."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập Mã ID dịch vụ và Tên dịch vụ."}), 400
 
     sid = re.sub(r'[^a-z0-9_-]', '', sid)
     if not sid:
-        return jsonify({"success": False, "msg": "MÃ£ ID dá»‹ch vá»¥ chá»‰ gá»“m chá»¯ cÃ¡i viáº¿t thÆ°á»ng, sá»‘, dáº¥u '-' hoáº·c '_'."}), 400
+        return jsonify({"success": False, "msg": "Mã ID dịch vụ chỉ gồm chữ cái viết thường, số, dấu '-' hoặc '_'."}), 400
 
     cfg = load_config()
     if "premium_services" not in cfg:
         cfg["premium_services"] = {}
 
     if sid in cfg["premium_services"]:
-        return jsonify({"success": False, "msg": f"MÃ£ dá»‹ch vá»¥ '{sid}' Ä‘Ã£ tá»“n táº¡i!"}), 400
+        return jsonify({"success": False, "msg": f"Mã dịch vụ '{sid}' đã tồn tại!"}), 400
 
     first_pkg_id = f"{sid}_1m"
     new_svc = {
@@ -4024,15 +4024,15 @@ def admin_add_premium_service():
         "icon": icon,
         "color": color,
         "badge": badge,
-        "tagline": tagline or f"Dá»‹ch vá»¥ {name} báº£n quyá»n giÃ¡ sinh viÃªn",
+        "tagline": tagline or f"Dịch vụ {name} bản quyền giá sinh viên",
         "input_label": input_label,
         "input_placeholder": input_placeholder,
-        "guide_note": guide_note or f"Báº£o hÃ nh 1 Ä‘á»•i 1 suá»‘t thá»i gian sá»­ dá»¥ng {name}.",
+        "guide_note": guide_note or f"Bảo hành 1 đổi 1 suốt thời gian sử dụng {name}.",
         "active": True,
         "features": [
-            f"KÃ­ch hoáº¡t {name} báº£n quyá»n chÃ­nh hÃ£ng 100%",
-            "Báº£o hÃ nh trá»n Ä‘á»i gÃ³i mua, há»— trá»£ 24/7",
-            "DÃ¹ng á»•n Ä‘á»‹nh mÆ°á»£t mÃ  trÃªn má»i thiáº¿t bá»‹"
+            f"Kích hoạt {name} bản quyền chính hãng 100%",
+            "Bảo hành trọn đời gói mua, hỗ trợ 24/7",
+            "Dùng ổn định mượt mà trên mọi thiết bị"
         ],
         "packages": {
             first_pkg_id: {
@@ -4041,8 +4041,8 @@ def admin_add_premium_service():
                 "duration": first_pkg_duration,
                 "price": first_pkg_price,
                 "price_formatted": format_currency_vnd(first_pkg_price),
-                "badge": "Tiáº¿t Kiá»‡m ðŸ”¥",
-                "desc": f"Sá»­ dá»¥ng {name} {first_pkg_duration} báº£n quyá»n.",
+                "badge": "Tiết Kiệm 🔥",
+                "desc": f"Sử dụng {name} {first_pkg_duration} bản quyền.",
                 "active": True
             }
         }
@@ -4050,7 +4050,7 @@ def admin_add_premium_service():
 
     cfg["premium_services"][sid] = new_svc
     save_config(cfg)
-    return jsonify({"success": True, "msg": f"ÄÃ£ thÃªm dá»‹ch vá»¥ '{name}' thÃ nh cÃ´ng!", "service": new_svc})
+    return jsonify({"success": True, "msg": f"Đã thêm dịch vụ '{name}' thành công!", "service": new_svc})
 
 @app.route("/api/admin/premium/service/delete", methods=["POST"])
 @admin_required
@@ -4061,8 +4061,8 @@ def admin_delete_premium_service():
     if "premium_services" in cfg and sid in cfg["premium_services"]:
         del cfg["premium_services"][sid]
         save_config(cfg)
-        return jsonify({"success": True, "msg": f"ÄÃ£ xÃ³a dá»‹ch vá»¥ '{sid}' thÃ nh cÃ´ng!"})
-    return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y dá»‹ch vá»¥ cáº§n xÃ³a."}), 404
+        return jsonify({"success": True, "msg": f"Đã xóa dịch vụ '{sid}' thành công!"})
+    return jsonify({"success": False, "msg": "Không tìm thấy dịch vụ cần xóa."}), 404
 
 @app.route("/api/admin/premium/package/add", methods=["POST"])
 @admin_required
@@ -4071,7 +4071,7 @@ def admin_add_premium_package():
     sid = (data.get("service_id") or "").strip().lower()
     pkg_id = (data.get("id") or "").strip()
     name = (data.get("name") or "").strip()
-    duration = (data.get("duration") or "1 ThÃ¡ng").strip()
+    duration = (data.get("duration") or "1 Tháng").strip()
     raw_price = data.get("price", 0)
     if isinstance(raw_price, bool) or not re.fullmatch(r"\d+", str(raw_price).strip()):
         price = 0
@@ -4081,18 +4081,18 @@ def admin_add_premium_package():
     desc = (data.get("desc") or "").strip()
 
     if not sid or not pkg_id or not name or price <= 0:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p Ä‘áº§y Ä‘á»§ MÃ£ gÃ³i, TÃªn gÃ³i vÃ  GiÃ¡ bÃ¡n (>0)."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập đầy đủ Mã gói, Tên gói và Giá bán (>0)."}), 400
     if not re.fullmatch(r"[a-z0-9_-]{1,64}", pkg_id):
-        return jsonify({"success": False, "msg": "MÃ£ gÃ³i chá»‰ gá»“m chá»¯ thÆ°á»ng, sá»‘, dáº¥u '-' hoáº·c '_' (tá»‘i Ä‘a 64 kÃ½ tá»±)."}), 400
+        return jsonify({"success": False, "msg": "Mã gói chỉ gồm chữ thường, số, dấu '-' hoặc '_' (tối đa 64 ký tự)."}), 400
 
     cfg = load_config()
     if "premium_services" not in cfg or sid not in cfg["premium_services"]:
-        return jsonify({"success": False, "msg": f"Dá»‹ch vá»¥ '{sid}' khÃ´ng tá»“n táº¡i."}), 404
+        return jsonify({"success": False, "msg": f"Dịch vụ '{sid}' không tồn tại."}), 404
 
     if "packages" not in cfg["premium_services"][sid]:
         cfg["premium_services"][sid]["packages"] = {}
     if pkg_id in cfg["premium_services"][sid]["packages"]:
-        return jsonify({"success": False, "msg": f"MÃ£ gÃ³i '{pkg_id}' Ä‘Ã£ tá»“n táº¡i trong dá»‹ch vá»¥ nÃ y."}), 400
+        return jsonify({"success": False, "msg": f"Mã gói '{pkg_id}' đã tồn tại trong dịch vụ này."}), 400
 
     cfg["premium_services"][sid]["packages"][pkg_id] = {
         "id": pkg_id,
@@ -4105,7 +4105,7 @@ def admin_add_premium_package():
         "active": True
     }
     save_config(cfg)
-    return jsonify({"success": True, "msg": f"ÄÃ£ thÃªm gÃ³i '{name}' vÃ o dá»‹ch vá»¥ '{sid}'!"})
+    return jsonify({"success": True, "msg": f"Đã thêm gói '{name}' vào dịch vụ '{sid}'!"})
 
 @app.route("/api/admin/premium/package/delete", methods=["POST"])
 @admin_required
@@ -4120,8 +4120,8 @@ def admin_delete_premium_package():
         if pkg_id in pkgs:
             del pkgs[pkg_id]
             save_config(cfg)
-            return jsonify({"success": True, "msg": f"ÄÃ£ xÃ³a gÃ³i '{pkg_id}'."})
-    return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y gÃ³i cáº§n xÃ³a."}), 404
+            return jsonify({"success": True, "msg": f"Đã xóa gói '{pkg_id}'."})
+    return jsonify({"success": False, "msg": "Không tìm thấy gói cần xóa."}), 404
 
 @app.route("/api/admin/order/delivery-info", methods=["POST"])
 @admin_required
@@ -4133,14 +4133,14 @@ def admin_set_delivery_info():
 
     orders = load_orders()
     if oid not in orders:
-        return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n hÃ ng."}), 404
+        return jsonify({"success": False, "msg": "Không tìm thấy đơn hàng."}), 404
 
     order = orders[oid]
     order["delivery_info"] = delivery_info
     order["status"] = status
     save_orders(orders)
 
-    return jsonify({"success": True, "msg": f"ÄÃ£ bÃ n giao tÃ i khoáº£n vÃ  cáº­p nháº­t tráº¡ng thÃ¡i Ä‘Æ¡n #{oid}!"})
+    return jsonify({"success": True, "msg": f"Đã bàn giao tài khoản và cập nhật trạng thái đơn #{oid}!"})
 
 
 @app.route("/api/admin/check-auth")
@@ -4212,7 +4212,7 @@ def admin_get_orders():
 
     db = models.SessionLocal()
     try:
-        # Single Source of Truth: Äá»c trá»±c tiáº¿p tá»« Database
+        # Single Source of Truth: Đọc trực tiếp từ Database
         query = db.query(models.Order)
 
         if service_filter != "all":
@@ -4251,11 +4251,11 @@ def admin_update_order_status():
 
     orders = load_orders()
     if oid not in orders:
-        return jsonify({"success": False, "msg": "ÄÆ¡n khÃ´ng tá»“n táº¡i"}), 404
+        return jsonify({"success": False, "msg": "Đơn không tồn tại"}), 404
 
     orders[oid]["status"] = new_st
     save_orders(orders)
-    return jsonify({"success": True, "msg": f"ÄÃ£ cáº­p nháº­t tráº¡ng thÃ¡i Ä‘Æ¡n {oid} sang {new_st}"})
+    return jsonify({"success": True, "msg": f"Đã cập nhật trạng thái đơn {oid} sang {new_st}"})
 
 @app.route("/api/admin/order/accept", methods=["POST"])
 @admin_required
@@ -4265,11 +4265,11 @@ def admin_accept_order():
 
     orders = load_orders()
     if oid not in orders:
-        return jsonify({"success": False, "msg": "ÄÆ¡n khÃ´ng tá»“n táº¡i"}), 404
+        return jsonify({"success": False, "msg": "Đơn không tồn tại"}), 404
 
     order = orders[oid]
     order["status"] = "PAID"
-    order["paid_at"] = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} (Admin duyá»‡t)"
+    order["paid_at"] = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} (Admin duyệt)"
 
     stype = order.get("service_type") or ("chungsuc" if oid.startswith("CS") else ("locket" if oid.startswith("LK") else "mxh"))
     if stype == "chungsuc":
@@ -4288,7 +4288,7 @@ def admin_accept_order():
         tangtim_process_order(order)
 
     save_orders(orders)
-    return jsonify({"success": True, "msg": f"ÄÃ£ duyá»‡t vÃ  Ä‘áº©y xá»­ lÃ½ Ä‘Æ¡n {oid}."})
+    return jsonify({"success": True, "msg": f"Đã duyệt và đẩy xử lý đơn {oid}."})
 
 @app.route("/api/admin/order/push", methods=["POST"])
 @admin_required
@@ -4298,7 +4298,7 @@ def admin_push_order():
 
     orders = load_orders()
     if oid not in orders:
-        return jsonify({"success": False, "msg": "ÄÆ¡n khÃ´ng tá»“n táº¡i"}), 404
+        return jsonify({"success": False, "msg": "Đơn không tồn tại"}), 404
 
     order = orders[oid]
     stype = order.get("service_type") or ("chungsuc" if oid.startswith("CS") else ("locket" if oid.startswith("LK") else "mxh"))
@@ -4313,7 +4313,7 @@ def admin_push_order():
         order["dns_link"] = f"/download-config?u={clean_u}"
         order["module_link"] = LOCKET_SHADOW_MODULE_URL
         queue_manager.add_to_queue(order.get("username"), order.get("package_type", "with_dns"), order_id=oid)
-        ok, res = True, "ÄÃ£ gá»­i vÃ o hÃ ng chá» kÃ­ch hoáº¡t Locket Gold"
+        ok, res = True, "Đã gửi vào hàng chờ kích hoạt Locket Gold"
     else:
         ok, res = tangtim_process_order(order)
 
@@ -4325,11 +4325,11 @@ def admin_delete_order():
     data = request.get_json(silent=True) or {}
     oid = (data.get("order_id") or "").strip().upper()
     if not oid:
-        return jsonify({"success": False, "msg": "Thiáº¿u mÃ£ Ä‘Æ¡n cáº§n xÃ³a"}), 400
+        return jsonify({"success": False, "msg": "Thiếu mã đơn cần xóa"}), 400
 
     add_deleted_order_id(oid)
 
-    # 1. XÃ³a trong Database (Single Source of Truth)
+    # 1. Xóa trong Database (Single Source of Truth)
     db = models.SessionLocal()
     deleted_username = None
     deleted_uid = None
@@ -4343,7 +4343,7 @@ def admin_delete_order():
             db.delete(db_order)
             db.commit()
 
-        # 2. Dá»n dáº¹p cache Locket náº¿u khÃ´ng cÃ²n Ä‘Æ¡n COMPLETED nÃ o khÃ¡c
+        # 2. Dọn dẹp cache Locket nếu không còn đơn COMPLETED nào khác
         if deleted_service == "locket" or oid.startswith("LK") or oid.startswith("DIRECT"):
             clean_u = clean_locket_username(deleted_username).lower() if deleted_username else ""
             has_other_completed = False
@@ -4371,13 +4371,13 @@ def admin_delete_order():
     finally:
         db.close()
 
-    # 3. XÃ³a trong orders.json
+    # 3. Xóa trong orders.json
     orders = load_orders()
     if oid in orders:
         del orders[oid]
     save_orders(orders, sync_github=True)
     sync_file_to_github_async("deleted_orders.json")
-    return jsonify({"success": True, "msg": f"ÄÃ£ xÃ³a vÄ©nh viá»…n Ä‘Æ¡n #{oid}"})
+    return jsonify({"success": True, "msg": f"Đã xóa vĩnh viễn đơn #{oid}"})
 
 @app.route("/api/admin/orders/bulk-delete", methods=["POST"])
 @admin_required
@@ -4442,7 +4442,7 @@ def admin_update_chungsuc_config():
         for k, v in data["autonhanh"].items():
             an[k] = v
     save_config(cfg)
-    return jsonify({"success": True, "msg": "Cáº­p nháº­t cáº¥u hÃ¬nh Chung Sá»©c thÃ nh cÃ´ng!"})
+    return jsonify({"success": True, "msg": "Cập nhật cấu hình Chung Sức thành công!"})
 
 
 @app.route("/api/admin/locket/login", methods=["POST"])
@@ -4452,7 +4452,7 @@ def admin_locket_login():
     email = (data.get("email") or "").strip()
     pwd = (data.get("password") or "").strip()
     if not email or not pwd:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p Email vÃ  Máº­t kháº©u Locket."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập Email và Mật khẩu Locket."}), 400
 
     try:
         url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyCQngaaXQIfJaH0aS2l7REgIjD7nL431So"
@@ -4468,13 +4468,13 @@ def admin_locket_login():
         )
         res_data = res.json()
         if not res.ok:
-            err_code = res_data.get("error", {}).get("message", "ÄÄƒng nháº­p tháº¥t báº¡i")
+            err_code = res_data.get("error", {}).get("message", "Đăng nhập thất bại")
             trans = {
-                "EMAIL_NOT_FOUND": "Email nÃ y chÆ°a Ä‘Æ°á»£c Ä‘Äƒng kÃ½ tÃ i khoáº£n Locket.",
-                "INVALID_PASSWORD": "Máº­t kháº©u khÃ´ng chÃ­nh xÃ¡c.",
-                "USER_DISABLED": "TÃ i khoáº£n Locket Ä‘Ã£ bá»‹ vÃ´ hiá»‡u hÃ³a.",
+                "EMAIL_NOT_FOUND": "Email này chưa được đăng ký tài khoản Locket.",
+                "INVALID_PASSWORD": "Mật khẩu không chính xác.",
+                "USER_DISABLED": "Tài khoản Locket đã bị vô hiệu hóa.",
             }
-            msg = trans.get(err_code, f"Lá»—i tá»« Locket: {err_code}")
+            msg = trans.get(err_code, f"Lỗi từ Locket: {err_code}")
             return jsonify({"success": False, "msg": msg}), 400
 
         id_token = res_data.get("idToken")
@@ -4491,11 +4491,11 @@ def admin_locket_login():
 
         return jsonify({
             "success": True,
-            "msg": "ÄÄƒng nháº­p thÃ nh cÃ´ng! ÄÃ£ tá»± Ä‘á»™ng cáº­p nháº­t Locket Bearer Token.",
+            "msg": "Đăng nhập thành công! Đã tự động cập nhật Locket Bearer Token.",
             "token": id_token,
         })
     except Exception as e:
-        return jsonify({"success": False, "msg": f"Lá»—i káº¿t ná»‘i: {str(e)}"}), 500
+        return jsonify({"success": False, "msg": f"Lỗi kết nối: {str(e)}"}), 500
 
 
 @app.route("/api/admin/tokens/import-locket-raw", methods=["POST"])
@@ -4504,7 +4504,7 @@ def import_locket_raw_token():
     data = request.get_json(silent=True) or {}
     raw_text = data.get("text", "")
     if not raw_text:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng dÃ¡n ná»™i dung gÃ³i tin HTTP Catcher."}), 400
+        return jsonify({"success": False, "msg": "Vui lòng dán nội dung gói tin HTTP Catcher."}), 400
 
     auth_match = re.search(r"authorization:\s*(Bearer\s+[A-Za-z0-9_\-\.]+)", raw_text, re.IGNORECASE)
     appcheck_match = re.search(r"x-firebase-appcheck:\s*([A-Za-z0-9_\-\.]+)", raw_text, re.IGNORECASE)
@@ -4520,7 +4520,7 @@ def import_locket_raw_token():
     extracted_iid = iid_match.group(1).strip() if iid_match else ""
 
     if not extracted_bearer and not extracted_appcheck:
-        return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y header Authorization hoáº·c X-Firebase-AppCheck trong gÃ³i tin."}), 400
+        return jsonify({"success": False, "msg": "Không tìm thấy header Authorization hoặc X-Firebase-AppCheck trong gói tin."}), 400
 
     cfg = load_config()
     locket_cfg = cfg.setdefault("locket", {})
@@ -4537,7 +4537,7 @@ def import_locket_raw_token():
 
     return jsonify({
         "success": True,
-        "msg": "ÄÃ£ bÃ³c tÃ¡ch vÃ  lÆ°u Authorization & AppCheck tá»« gÃ³i tin thÃ nh cÃ´ng!",
+        "msg": "Đã bóc tách và lưu Authorization & AppCheck từ gói tin thành công!",
         "locket_bearer": extracted_bearer,
         "firebase_appcheck": extracted_appcheck,
     })
@@ -4589,7 +4589,7 @@ def admin_test_locket_token():
     token_sets = config_manager.get_token_sets()
     target = next((t for t in token_sets if t.get("id") == tid), None)
     if not target:
-        return jsonify({"success": False, "msg": "Token khÃ´ng tá»“n táº¡i"}), 404
+        return jsonify({"success": False, "msg": "Token không tồn tại"}), 404
 
     api = LocketAPI()
     try:
@@ -4608,7 +4608,7 @@ def admin_update_locket_advanced():
         config_manager.set_firebase_appcheck(data["firebase_appcheck"])
     if "locket_bearer" in data:
         config_manager.set_locket_bearer(data["locket_bearer"])
-    return jsonify({"success": True, "msg": "Cáº­p nháº­t Advanced Tokens thÃ nh cÃ´ng!"})
+    return jsonify({"success": True, "msg": "Cập nhật Advanced Tokens thành công!"})
 
 @app.route("/api/admin/locket/reup-gold", methods=["POST"])
 @admin_required
@@ -4617,7 +4617,7 @@ def admin_reup_gold():
     username = clean_locket_username(data.get("username"))
     oid = (data.get("order_id") or "").strip().upper()
     if not username:
-        return jsonify({"success": False, "msg": "ChÆ°a nháº­p username Locket."}), 400
+        return jsonify({"success": False, "msg": "Chưa nhập username Locket."}), 400
 
     token_sets = config_manager.get_active_token_sets()
     if not token_sets:
@@ -4650,19 +4650,19 @@ def admin_reup_gold():
         orders[target_oid]["telegram_gold_notified"] = True
         save_orders(orders)
 
-    # Gá»­i 1 thÃ´ng bÃ¡o gá»n gÃ ng duy nháº¥t vá» Telegram
+    # Gửi 1 thông báo gọn gàng duy nhất về Telegram
     u_key = username.lower()
     _recent_locket_telegram[u_key] = time.time()
     send_telegram_msg(
-        f"ðŸ‘‘ <b>[LÃŠN Láº I GOLD THÃ€NH CÃ”NG]</b>\n"
-        f"â€¢ TÃ i khoáº£n: <b>@{username}</b> (ÄÆ¡n: #{target_oid or 'KhÃ¡ch cÅ©'})\n"
-        f"â€¢ UID: <code>{uid or 'N/A'}</code>\n"
-        f"â€¢ Cáº¥u hÃ¬nh VIP: âœ… Active (ÄÃ£ kÃ­ch hoáº¡t láº¡i StoreKit 2)"
+        f"👑 <b>[LÊN LẠI GOLD THÀNH CÔNG]</b>\n"
+        f"• Tài khoản: <b>@{username}</b> (Đơn: #{target_oid or 'Khách cũ'})\n"
+        f"• UID: <code>{uid or 'N/A'}</code>\n"
+        f"• Cấu hình VIP: ✅ Active (Đã kích hoạt lại StoreKit 2)"
     )
 
     return jsonify({
         "success": True,
-        "msg": f"ÄÃ£ lÃªn láº¡i Gold thÃ nh cÃ´ng cho khÃ¡ch cÅ© @{username}!",
+        "msg": f"Đã lên lại Gold thành công cho khách cũ @{username}!",
         "username": username,
         "uid": uid,
         "dns_link": f"/download-config?u={clean_u}",
@@ -4676,14 +4676,14 @@ def admin_manual_grant_gold():
     username = clean_locket_username(data.get("username"))
     oid = (data.get("order_id") or "").strip().upper()
     if not username:
-        return jsonify({"success": False, "msg": "ChÆ°a nháº­p username"}), 400
+        return jsonify({"success": False, "msg": "Chưa nhập username"}), 400
 
     now_t = time.time()
     u_key = username.lower()
     clean_u = re.sub(r"[^A-Za-z0-9_.-]", "", username) or "VIP"
 
     if (now_t - _recent_locket_telegram.get(u_key, 0)) < 30:
-        return jsonify({"success": True, "msg": f"Lá»‡nh kÃ­ch hoáº¡t cho @{username} vá»«a Ä‘Æ°á»£c thá»±c hiá»‡n cÃ¡ch Ä‘Ã¢y Ã­t giÃ¢y."})
+        return jsonify({"success": True, "msg": f"Lệnh kích hoạt cho @{username} vừa được thực hiện cách đây ít giây."})
 
     _recent_locket_telegram[u_key] = now_t
 
@@ -4697,7 +4697,7 @@ def admin_manual_grant_gold():
         save_orders(orders)
 
     client_id = queue_manager.add_to_queue(username, "with_dns", order_id=oid)
-    return jsonify({"success": True, "msg": f"ÄÃ£ gá»­i lá»‡nh kÃ­ch hoáº¡t Gold cho @{username}."})
+    return jsonify({"success": True, "msg": f"Đã gửi lệnh kích hoạt Gold cho @{username}."})
 
 @app.route("/api/admin/mxh/config", methods=["POST"])
 @admin_required
@@ -4711,18 +4711,18 @@ def admin_update_mxh_config():
     if "sale_campaign" in data:
         cfg["sale_campaign"] = data["sale_campaign"]
     save_config(cfg)
-    return jsonify({"success": True, "msg": "Cáº­p nháº­t cáº¥u hÃ¬nh MXH thÃ nh cÃ´ng!"})
+    return jsonify({"success": True, "msg": "Cập nhật cấu hình MXH thành công!"})
 
 @app.route("/api/admin/margin", methods=["POST"])
 @app.route("/api/admin/tangtim/margin", methods=["POST"])
 @admin_required
 def admin_update_margin():
-    """CÃ i Ä‘áº·t % chÃªnh lá»‡ch giÃ¡ so vá»›i mÃ¡y chá»§ TangTim (VÃ­ dá»¥: +50% = x1.5, +100% = x2.0)."""
+    """Cài đặt % chênh lệch giá so với máy chủ TangTim (Ví dụ: +50% = x1.5, +100% = x2.0)."""
     data = request.get_json(silent=True) or {}
     try:
         margin_percent = float(data.get("margin_percent", 50))
     except Exception:
-        return jsonify({"success": False, "msg": "Tá»· lá»‡ % khÃ´ng há»£p lá»‡!"}), 400
+        return jsonify({"success": False, "msg": "Tỷ lệ % không hợp lệ!"}), 400
 
     cfg = load_config()
     cfg.setdefault("tangtim", {})["margin_percent"] = margin_percent
@@ -4730,22 +4730,22 @@ def admin_update_margin():
     save_config(cfg)
     return jsonify({
         "success": True,
-        "msg": f"ÄÃ£ cáº­p nháº­t tá»· lá»‡ chÃªnh lá»‡ch giÃ¡ thÃ nh +{margin_percent:g}% cho toÃ n bá»™ {len(cfg.get('services', []))} dá»‹ch vá»¥!",
+        "msg": f"Đã cập nhật tỷ lệ chênh lệch giá thành +{margin_percent:g}% cho toàn bộ {len(cfg.get('services', []))} dịch vụ!",
         "margin_percent": margin_percent
     })
 
 @app.route("/api/admin/chungsuc/adjust-percent", methods=["POST"])
 @admin_required
 def admin_adjust_chungsuc_percent():
-    """TÄƒng / giáº£m giÃ¡ toÃ n bá»™ gÃ³i Chung Sá»©c theo % (VÃ­ dá»¥: +10%, +20%, -10%)."""
+    """Tăng / giảm giá toàn bộ gói Chung Sức theo % (Ví dụ: +10%, +20%, -10%)."""
     data = request.get_json(silent=True) or {}
     try:
         pct = float(data.get("percent", 0))
     except Exception:
-        return jsonify({"success": False, "msg": "Tá»· lá»‡ % khÃ´ng há»£p lá»‡!"}), 400
+        return jsonify({"success": False, "msg": "Tỷ lệ % không hợp lệ!"}), 400
 
     if pct == 0:
-        return jsonify({"success": False, "msg": "Vui lÃ²ng nháº­p tá»· lá»‡ % khÃ¡c 0!"}), 400
+        return jsonify({"success": False, "msg": "Vui lòng nhập tỷ lệ % khác 0!"}), 400
 
     cfg = load_config()
     pkgs = cfg.get("chungsuc_packages", {})
@@ -4754,12 +4754,12 @@ def admin_adjust_chungsuc_percent():
         old_p = int(p.get("price", 0))
         new_p = max(1000, int(round((old_p * mult) / 1000.0) * 1000))
         p["price"] = new_p
-        p["price_formatted"] = f"{new_p:,}Ä‘".replace(",", ".")
+        p["price_formatted"] = f"{new_p:,}đ".replace(",", ".")
     save_config(cfg)
     sign = "+" if pct > 0 else ""
     return jsonify({
         "success": True,
-        "msg": f"ÄÃ£ Ä‘iá»u chá»‰nh giÃ¡ toÃ n bá»™ gÃ³i Chung Sá»©c theo {sign}{pct:g}%!",
+        "msg": f"Đã điều chỉnh giá toàn bộ gói Chung Sức theo {sign}{pct:g}%!",
         "packages": pkgs
     })
 
@@ -4768,7 +4768,7 @@ def admin_adjust_chungsuc_percent():
 def admin_sync_mxh_services():
     raw_services = tangtim_fetch_all_services()
     if not raw_services or not isinstance(raw_services, list):
-        return jsonify({"success": False, "msg": "KhÃ´ng thá»ƒ káº¿t ná»‘i mÃ¡y chá»§ TangTim."}), 500
+        return jsonify({"success": False, "msg": "Không thể kết nối máy chủ TangTim."}), 500
 
     cfg = load_config()
     tt_cfg = cfg.get("tangtim", {})
@@ -4776,7 +4776,7 @@ def admin_sync_mxh_services():
     multiplier = 1.0 + (margin_percent / 100.0)
     usd_rate = float(tt_cfg.get("usd_rate", 25500))
 
-    # LÆ°u láº¡i tráº¡ng thÃ¡i báº­t/táº¯t (active) hiá»‡n táº¡i cá»§a admin
+    # Lưu lại trạng thái bật/tắt (active) hiện tại của admin
     existing_services = cfg.get("services", [])
     active_map = {str(s.get("id") or s.get("service_id")): s.get("active", True) for s in existing_services}
     existing_map = {str(s.get("id") or s.get("service_id")): s for s in existing_services}
@@ -4789,7 +4789,7 @@ def admin_sync_mxh_services():
         name = str(s.get("name", "")).strip()
         cat = str(s.get("category", "")).strip()
 
-        # Bá» qua tuyá»‡t Ä‘á»‘i toÃ n bá»™ gÃ³i Vip Like / GÃ³i thÃ¡ng
+        # Bỏ qua tuyệt đối toàn bộ gói Vip Like / Gói tháng
         if is_vip_like_or_monthly(name, cat):
             continue
         plat, action = classify_service(cat, name)
@@ -4812,7 +4812,7 @@ def admin_sync_mxh_services():
 
         raw_min = int(s.get("min") or 10)
         raw_max = int(s.get("max") or 1000000)
-        if s.get("action") == "comment" or "bÃ¬nh luáº­n" in str(s.get("category", "")).lower() or "comment" in str(name).lower():
+        if s.get("action") == "comment" or "bình luận" in str(s.get("category", "")).lower() or "comment" in str(name).lower():
             eff_min = raw_min
         else:
             eff_min = 1000 if (raw_max >= 1000 and raw_min <= 1000) else raw_min
@@ -4829,7 +4829,7 @@ def admin_sync_mxh_services():
             "rate_usd_per_1k": rate_usd,
             "base_price": base_price,
             "price_per_unit": sell_price,
-            "price_formatted": f"{sell_price:g}Ä‘",
+            "price_formatted": f"{sell_price:g}đ",
             "min": eff_min,
             "max": raw_max,
             "raw_min": raw_min,
@@ -4838,7 +4838,7 @@ def admin_sync_mxh_services():
             "is_maintenance": False
         })
 
-    # Giá»¯ láº¡i cÃ¡c gÃ³i dá»‹ch vá»¥ tÃ¹y chá»n/dá»± phÃ²ng (nhÆ° cÃ¡c gÃ³i Likes TÃ¢y / Tim Viá»‡t bá»• sung)
+    # Giữ lại các gói dịch vụ tùy chọn/dự phòng (như các gói Likes Tây / Tim Việt bổ sung)
     for sid_str, old_s in existing_map.items():
         if sid_str not in seen_ids and not is_vip_like_or_monthly(old_s.get("name"), old_s.get("category")):
             new_services.append(old_s)
@@ -4846,7 +4846,7 @@ def admin_sync_mxh_services():
     cfg["services"] = new_services
     cfg = recalculate_service_prices(cfg)
     save_config(cfg)
-    return jsonify({"success": True, "msg": f"ÄÃ£ Ä‘á»“ng bá»™ vÃ  tÃ­nh giÃ¡ (+{margin_percent:g}%) cho {len(cfg.get('services', []))} dá»‹ch vá»¥!"})
+    return jsonify({"success": True, "msg": f"Đã đồng bộ và tính giá (+{margin_percent:g}%) cho {len(cfg.get('services', []))} dịch vụ!"})
 
 @app.route("/api/admin/announcement", methods=["GET", "POST"])
 @admin_required
@@ -4867,7 +4867,7 @@ def admin_popup_announcement():
     )
     return jsonify({
         "success": True,
-        "msg": "Cáº­p nháº­t popup thÃ´ng bÃ¡o thÃ nh cÃ´ng!",
+        "msg": "Cập nhật popup thông báo thành công!",
         "data": updated,
         "announcement": updated
     })
@@ -4887,7 +4887,7 @@ def admin_update_payment_config():
         for k, v in data["thueapibank"].items():
             tapi[k] = v
     save_config(cfg)
-    return jsonify({"success": True, "msg": "Cáº­p nháº­t thÃ´ng tin ngÃ¢n hÃ ng thÃ nh cÃ´ng!"})
+    return jsonify({"success": True, "msg": "Cập nhật thông tin ngân hàng thành công!"})
 
 @app.route("/api/admin/config/telegram", methods=["POST"])
 @admin_required
@@ -4902,15 +4902,15 @@ def admin_update_telegram_config():
     if "enabled" in data:
         tg["enabled"] = bool(data["enabled"])
     save_config(cfg)
-    return jsonify({"success": True, "msg": "Cáº­p nháº­t Telegram Bot thÃ nh cÃ´ng!"})
+    return jsonify({"success": True, "msg": "Cập nhật Telegram Bot thành công!"})
 
 @app.route("/api/admin/config/telegram/test", methods=["POST"])
 @admin_required
 def admin_test_telegram():
-    ok = send_telegram_msg("ðŸ¤– <b>[TEST TELEGRAM BOT]</b>\nKáº¿t ná»‘i tá»« DTH Portal hoáº¡t Ä‘á»™ng bÃ¬nh thÆ°á»ng 100%!")
+    ok = send_telegram_msg("🤖 <b>[TEST TELEGRAM BOT]</b>\nKết nối từ DTH Portal hoạt động bình thường 100%!")
     if ok:
-        return jsonify({"success": True, "msg": "ÄÃ£ gá»­i tin nháº¯n test Ä‘áº¿n Telegram!"})
-    return jsonify({"success": False, "msg": "ChÆ°a báº­t Telegram hoáº·c thiáº¿u Bot Token / Chat ID."}), 400
+        return jsonify({"success": True, "msg": "Đã gửi tin nhắn test đến Telegram!"})
+    return jsonify({"success": False, "msg": "Chưa bật Telegram hoặc thiếu Bot Token / Chat ID."}), 400
 
 @app.route("/api/admin/config/password", methods=["POST"])
 @admin_required
@@ -4918,13 +4918,13 @@ def admin_update_password():
     data = request.get_json(silent=True) or {}
     new_pwd = (data.get("password") or "").strip()
     if not new_pwd:
-        return jsonify({"success": False, "msg": "Máº­t kháº©u khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng"}), 400
+        return jsonify({"success": False, "msg": "Mật khẩu không được để trống"}), 400
     if os.environ.get("ADMIN_PASSWORD"):
-        return jsonify({"success": False, "msg": "Máº­t kháº©u Ä‘Æ°á»£c quáº£n lÃ½ bá»Ÿi biáº¿n mÃ´i trÆ°á»ng ADMIN_PASSWORD."}), 400
+        return jsonify({"success": False, "msg": "Mật khẩu được quản lý bởi biến môi trường ADMIN_PASSWORD."}), 400
     cfg = load_config()
     cfg["admin_password"] = new_pwd
     save_config(cfg)
-    return jsonify({"success": True, "msg": "ÄÃ£ Ä‘á»•i máº­t kháº©u Admin thÃ nh cÃ´ng!"})
+    return jsonify({"success": True, "msg": "Đã đổi mật khẩu Admin thành công!"})
 
 @app.route("/api/admin/config/shop", methods=["POST"])
 @admin_required
@@ -4936,7 +4936,7 @@ def admin_update_shop_config():
         if k in data:
             shop[k] = data[k]
     save_config(cfg)
-    return jsonify({"success": True, "msg": "Cáº­p nháº­t thÃ´ng tin shop thÃ nh cÃ´ng!"})
+    return jsonify({"success": True, "msg": "Cập nhật thông tin shop thành công!"})
 
 @app.route("/api/admin/config/github", methods=["POST"])
 @app.route("/api/admin/github-sync", methods=["POST"])
@@ -5008,7 +5008,7 @@ def unified_create_order():
         return create_mxh_order()
     elif "username" in data or "target_user" in data:
         return create_locket_order()
-    return jsonify({"success": False, "msg": "KhÃ´ng xÃ¡c Ä‘á»‹nh Ä‘Æ°á»£c loáº¡i dá»‹ch vá»¥."}), 400
+    return jsonify({"success": False, "msg": "Không xác định được loại dịch vụ."}), 400
 
 @app.route("/api/order/status/<order_id>")
 def order_status_compat(order_id):
@@ -5027,7 +5027,7 @@ def payment_info_compat():
     return jsonify({
         "success": True,
         "bank_id": pay.get("bank_id", "970454"),
-        "bank_name": pay.get("bank_name", "NgÃ¢n HÃ ng Báº£n Viá»‡t"),
+        "bank_name": pay.get("bank_name", "Ngân Hàng Bản Việt"),
         "account_number": pay.get("account_number", "99ZP24261M43061759"),
         "account_name": pay.get("account_name", "ZALOPAY_DINH TUAN HUNG"),
         "phone": pay.get("phone", "0353680869")
@@ -5056,7 +5056,7 @@ def check_user_paid():
 @admin_required
 def admin_tangtim_balance():
     if not load_config().get("tangtim", {}).get("api_key"):
-        return jsonify({"success": False, "msg": "ChÆ°a cáº¥u hÃ¬nh API Key TangTim."}), 400
+        return jsonify({"success": False, "msg": "Chưa cấu hình API Key TangTim."}), 400
     bal_vnd, formatted, raw_usd = tangtim_fetch_balance()
     if bal_vnd is not None:
         cfg = load_config()
@@ -5077,7 +5077,7 @@ def admin_tangtim_balance():
 def admin_autonhanh_balance():
     an_cfg = load_config().get("autonhanh", {})
     if not (an_cfg.get("token") or (an_cfg.get("username") and an_cfg.get("password"))):
-        return jsonify({"success": False, "msg": "ChÆ°a cáº¥u hÃ¬nh tÃ i khoáº£n AutoNhanh."}), 400
+        return jsonify({"success": False, "msg": "Chưa cấu hình tài khoản AutoNhanh."}), 400
     balance, error = autonhanh_fetch_balance()
     if balance is None:
         return jsonify({"success": False, "msg": error or "Lỗi kết nối máy chủ AutoNhanh."}), 502
@@ -5094,16 +5094,16 @@ def admin_autonhanh_status():
         an_cfg["last_check_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cfg["autonhanh"] = an_cfg
         save_config(cfg, sync_github=False)
-        return jsonify({"success": True, "balance_xu": balance, "msg": f"Sá»‘ dÆ° AutoNhanh: {balance:,} Xu"})
-    return jsonify({"success": False, "msg": err or "KhÃ´ng thá»ƒ kiá»ƒm tra sá»‘ dÆ° AutoNhanh"}), 400
+        return jsonify({"success": True, "balance_xu": balance, "msg": f"Số dư AutoNhanh: {balance:,} Xu"})
+    return jsonify({"success": False, "msg": err or "Không thể kiểm tra số dư AutoNhanh"}), 400
 
 @app.route("/api/admin/autonhanh/sync", methods=["POST"])
 @admin_required
 def admin_autonhanh_sync():
     balance, err = autonhanh_fetch_balance()
     if balance is not None:
-        return jsonify({"success": True, "msg": f"Äá»“ng bá»™ AutoNhanh thÃ nh cÃ´ng! Sá»‘ dÆ°: {balance:,} Xu", "balance_xu": balance})
-    return jsonify({"success": False, "msg": f"Äá»“ng bá»™ AutoNhanh tháº¥t báº¡i: {err}"}), 400
+        return jsonify({"success": True, "msg": f"Đồng bộ AutoNhanh thành công! Số dư: {balance:,} Xu", "balance_xu": balance})
+    return jsonify({"success": False, "msg": f"Đồng bộ AutoNhanh thất bại: {err}"}), 400
 
 @app.route("/api/admin/autonhanh/push-order/<order_id>", methods=["POST"])
 @admin_required
@@ -5111,11 +5111,11 @@ def admin_autonhanh_push_order(order_id):
     orders = load_orders()
     order = orders.get(order_id)
     if not order:
-        return jsonify({"success": False, "msg": f"KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n #{order_id}"}), 404
+        return jsonify({"success": False, "msg": f"Không tìm thấy đơn #{order_id}"}), 404
     success, res = autonhanh_process_order(order, force=True)
     if success:
-        return jsonify({"success": True, "msg": f"ÄÃ£ Ä‘áº©y Ä‘Æ¡n #{order_id} sang AutoNhanh thÃ nh cÃ´ng!"})
-    return jsonify({"success": False, "msg": f"Tháº¥t báº¡i: {res}"}), 400
+        return jsonify({"success": True, "msg": f"Đã đẩy đơn #{order_id} sang AutoNhanh thành công!"})
+    return jsonify({"success": False, "msg": f"Thất bại: {res}"}), 400
 
 @app.route("/api/admin/services/sync", methods=["POST"])
 @app.route("/api/admin/tangtim/sync", methods=["POST"])
@@ -5129,7 +5129,7 @@ def admin_sync_services_alias():
 def admin_sync_maintenance():
     raw_services = tangtim_fetch_all_services()
     if not raw_services or not isinstance(raw_services, list):
-        return jsonify({"success": False, "msg": "KhÃ´ng thá»ƒ káº¿t ná»‘i mÃ¡y chá»§ TangTim."}), 500
+        return jsonify({"success": False, "msg": "Không thể kết nối máy chủ TangTim."}), 500
     cfg = load_config()
     existing = {str(s.get("service_id") or s.get("service")): s for s in cfg.get("services", [])}
     for rs in raw_services:
@@ -5137,7 +5137,7 @@ def admin_sync_maintenance():
         if sid in existing:
             existing[sid]["is_maintenance"] = bool(rs.get("is_maintenance", False))
     save_config(cfg)
-    return jsonify({"success": True, "msg": "ÄÃ£ Ä‘á»“ng bá»™ tráº¡ng thÃ¡i báº£o trÃ¬ mÃ¡y chá»§!"})
+    return jsonify({"success": True, "msg": "Đã đồng bộ trạng thái bảo trì máy chủ!"})
 
 
 @app.route("/api/admin/mxh/services", methods=["GET"])
@@ -5167,8 +5167,8 @@ def admin_toggle_mxh_service_active(service_id):
             break
     if found:
         save_config(cfg)
-        return jsonify({"success": True, "msg": f"ÄÃ£ cáº­p nháº­t tráº¡ng thÃ¡i gÃ³i #{service_id}!"})
-    return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y dá»‹ch vá»¥."}), 404
+        return jsonify({"success": True, "msg": f"Đã cập nhật trạng thái gói #{service_id}!"})
+    return jsonify({"success": False, "msg": "Không tìm thấy dịch vụ."}), 404
 
 
 @app.route("/api/admin/mxh/services/batch-toggle", methods=["POST"])
@@ -5178,7 +5178,7 @@ def admin_batch_toggle_mxh_services():
     service_ids = set(str(i) for i in data.get("service_ids", []))
     make_active = bool(data.get("active", True))
     if not service_ids:
-        return jsonify({"success": False, "msg": "KhÃ´ng cÃ³ dá»‹ch vá»¥ nÃ o Ä‘Æ°á»£c chá»n."}), 400
+        return jsonify({"success": False, "msg": "Không có dịch vụ nào được chọn."}), 400
 
     cfg = load_config()
     services = cfg.get("services", [])
@@ -5190,7 +5190,7 @@ def admin_batch_toggle_mxh_services():
             updated += 1
     if updated > 0:
         save_config(cfg)
-    return jsonify({"success": True, "msg": f"ÄÃ£ {'báº­t' if make_active else 'táº¯t'} thÃ nh cÃ´ng {updated} dá»‹ch vá»¥!", "updated": updated})
+    return jsonify({"success": True, "msg": f"Đã {'bật' if make_active else 'tắt'} thành công {updated} dịch vụ!", "updated": updated})
 
 @app.route("/api/admin/service/<service_id>/toggle-maintenance", methods=["POST"])
 @admin_required
@@ -5207,9 +5207,9 @@ def admin_toggle_service_maintenance(service_id):
             break
     if updated:
         save_config(cfg)
-        state_str = "Báº£o TrÃ¬" if new_state else "Hoáº¡t Äá»™ng"
-        return jsonify({"success": True, "msg": f"ÄÃ£ chuyá»ƒn dá»‹ch vá»¥ #{service_id} sang {state_str}!", "is_maintenance": new_state})
-    return jsonify({"success": False, "msg": "KhÃ´ng tÃ¬m tháº¥y dá»‹ch vá»¥."}), 404
+        state_str = "Bảo Trì" if new_state else "Hoạt Động"
+        return jsonify({"success": True, "msg": f"Đã chuyển dịch vụ #{service_id} sang {state_str}!", "is_maintenance": new_state})
+    return jsonify({"success": False, "msg": "Không tìm thấy dịch vụ."}), 404
 
 @app.route("/api/admin/sale/save", methods=["POST"])
 @admin_required
@@ -5225,20 +5225,20 @@ def admin_save_sale_compat():
     sale["start_time"] = now
     sale["end_time"] = now + duration_days * 86400
     save_config(cfg)
-    return jsonify({"success": True, "msg": f"ÄÃ£ lÆ°u chiáº¿n dá»‹ch Sale (-{sale['discount_percent']}%) trong {duration_days} ngÃ y!"})
+    return jsonify({"success": True, "msg": f"Đã lưu chiến dịch Sale (-{sale['discount_percent']}%) trong {duration_days} ngày!"})
 
 @app.route("/api/admin/tangtim/test-low-balance", methods=["POST"])
 @admin_required
 def admin_test_low_balance():
     bal_vnd, formatted, raw_usd = tangtim_fetch_balance()
     ok = send_telegram_msg(
-        f"âš ï¸ <b>[Cáº¢NH BÃO Sá» DÆ¯ TANGTIM MXH]</b>\n"
-        f"Sá»‘ dÆ° mÃ¡y chá»§ TangTim hiá»‡n táº¡i: <b>{raw_usd}$</b> (~<b>{formatted}</b>).\n"
-        f"Vui lÃ²ng náº¡p thÃªm Ä‘á»ƒ Ä‘áº£m báº£o dá»‹ch vá»¥ khÃ´ng bá»‹ giÃ¡n Ä‘oáº¡n!"
+        f"⚠️ <b>[CẢNH BÁO SỐ DƯ TANGTIM MXH]</b>\n"
+        f"Số dư máy chủ TangTim hiện tại: <b>{raw_usd}$</b> (~<b>{formatted}</b>).\n"
+        f"Vui lòng nạp thêm để đảm bảo dịch vụ không bị gián đoạn!"
     )
     if ok:
-        return jsonify({"success": True, "msg": f"ÄÃ£ gá»­i cáº£nh bÃ¡o sá»‘ dÆ° ({formatted}) Ä‘áº¿n Telegram!"})
-    return jsonify({"success": False, "msg": "ChÆ°a cáº¥u hÃ¬nh Telegram Bot!"}), 400
+        return jsonify({"success": True, "msg": f"Đã gửi cảnh báo số dư ({formatted}) đến Telegram!"})
+    return jsonify({"success": False, "msg": "Chưa cấu hình Telegram Bot!"}), 400
 
 @app.route("/api/admin/price", methods=["POST"])
 @app.route("/api/admin/locket/price", methods=["POST"])
@@ -5252,23 +5252,23 @@ def admin_update_locket_price():
     desc = (data.get("desc") or "").strip()
 
     if not pkg_id:
-        return jsonify({"success": False, "msg": "Thiáº¿u mÃ£ gÃ³i package_id"}), 400
+        return jsonify({"success": False, "msg": "Thiếu mã gói package_id"}), 400
 
     cfg = load_config()
     l_pkgs = cfg.setdefault("locket_packages", {
         "no_dns": {
-            "name": "KhÃ´ng Giá»¯ Gold",
+            "name": "Không Giữ Gold",
             "price": 10000,
-            "price_formatted": "10.000Ä‘",
-            "badge": "Tiáº¿t Kiá»‡m",
-            "desc": "KÃ­ch hoáº¡t nhanh 1 láº§n. KhÃ´ng kÃ¨m cáº¥u hÃ¬nh DNS chá»‘ng quÃ©t, cÃ³ thá»ƒ bá»‹ máº¥t khi Locket quÃ©t."
+            "price_formatted": "10.000đ",
+            "badge": "Tiết Kiệm",
+            "desc": "Kích hoạt nhanh 1 lần. Không kèm cấu hình DNS chống quét, có thể bị mất khi Locket quét."
         },
         "with_dns": {
-            "name": "Giá»¯ Gold (VÄ©nh Viá»…n)",
+            "name": "Giữ Gold (Vĩnh Viễn)",
             "price": 30000,
-            "price_formatted": "30.000Ä‘",
-            "badge": "KhuyÃªn DÃ¹ng ðŸ”¥",
-            "desc": "KÃ¨m cáº¥u hÃ¬nh DNS VIP chá»‘ng quÃ©t trá»n Ä‘á»i. NÃ¢ng 1 láº§n dÃ¹ng mÃ£i mÃ£i trÃªn iOS."
+            "price_formatted": "30.000đ",
+            "badge": "Khuyên Dùng 🔥",
+            "desc": "Kèm cấu hình DNS VIP chống quét trọn đời. Nâng 1 lần dùng mãi mãi trên iOS."
         }
     })
 
@@ -5277,7 +5277,7 @@ def admin_update_locket_price():
 
     if price > 0:
         l_pkgs[pkg_id]["price"] = price
-        l_pkgs[pkg_id]["price_formatted"] = f"{price:,}Ä‘".replace(",", ".")
+        l_pkgs[pkg_id]["price_formatted"] = f"{price:,}đ".replace(",", ".")
     if name:
         l_pkgs[pkg_id]["name"] = name
     if badge:
@@ -5286,7 +5286,7 @@ def admin_update_locket_price():
         l_pkgs[pkg_id]["desc"] = desc
 
     save_config(cfg)
-    return jsonify({"success": True, "msg": f"ÄÃ£ cáº­p nháº­t giÃ¡ gÃ³i {pkg_id} thÃ nh cÃ´ng!", "locket_packages": l_pkgs})
+    return jsonify({"success": True, "msg": f"Đã cập nhật giá gói {pkg_id} thành công!", "locket_packages": l_pkgs})
 
 @app.route("/api/admin/order/<order_id>/accept", methods=["POST"])
 @admin_required
@@ -5294,7 +5294,7 @@ def admin_accept_order_url(order_id):
     orders = load_orders()
     order = orders.get(order_id)
     if not order:
-        return jsonify({"success": False, "msg": f"KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n #{order_id}"}), 404
+        return jsonify({"success": False, "msg": f"Không tìm thấy đơn #{order_id}"}), 404
     order["status"] = "PROCESSING"
     stype = order.get("service_type")
     if stype == "chungsuc" or order_id.startswith("CS"):
@@ -5311,7 +5311,7 @@ def admin_accept_order_url(order_id):
         tangtim_process_order(order)
     orders[order_id] = order
     save_orders(orders)
-    return jsonify({"success": True, "msg": f"ÄÃ£ duyá»‡t thá»§ cÃ´ng Ä‘Æ¡n #{order_id}!"})
+    return jsonify({"success": True, "msg": f"Đã duyệt thủ công đơn #{order_id}!"})
 
 @app.route("/api/admin/order/<order_id>/push", methods=["POST"])
 @app.route("/api/admin/order/<order_id>/push-tangtim", methods=["POST"])
@@ -5320,12 +5320,12 @@ def admin_push_order_url(order_id):
     orders = load_orders()
     order = orders.get(order_id)
     if not order:
-        return jsonify({"success": False, "msg": f"KhÃ´ng tÃ¬m tháº¥y Ä‘Æ¡n #{order_id}"}), 404
+        return jsonify({"success": False, "msg": f"Không tìm thấy đơn #{order_id}"}), 404
     stype = order.get("service_type")
     if stype == "chungsuc" or order_id.startswith("CS"):
         ok, res = autonhanh_process_order(order, force=True)
         if ok:
-            return jsonify({"success": True, "msg": f"ÄÃ£ Ä‘áº©y Ä‘Æ¡n #{order_id} sang AutoNhanh thÃ nh cÃ´ng!"})
+            return jsonify({"success": True, "msg": f"Đã đẩy đơn #{order_id} sang AutoNhanh thành công!"})
         return jsonify({"success": False, "msg": f"AutoNhanh: {res}"}), 400
     elif stype == "locket" or order_id.startswith("LK"):
         clean_u = re.sub(r"[^A-Za-z0-9_.-]", "", str(order.get("username", "")).lstrip("@")) or "VIP"
@@ -5336,13 +5336,13 @@ def admin_push_order_url(order_id):
         order["module_link"] = LOCKET_SHADOW_MODULE_URL
         queue_manager.add_to_queue(order.get("username"), order.get("package_type", "with_dns"), order_id=order_id)
         save_orders(orders)
-        return jsonify({"success": True, "msg": f"ÄÃ£ hoÃ n thÃ nh Ä‘Æ¡n Locket #{order_id}!"})
+        return jsonify({"success": True, "msg": f"Đã hoàn thành đơn Locket #{order_id}!"})
     elif stype == "mxh" or order_id.startswith("TT"):
         ok, res = tangtim_process_order(order)
         if ok:
-            return jsonify({"success": True, "msg": f"ÄÃ£ Ä‘áº©y Ä‘Æ¡n #{order_id} sang TangTim thÃ nh cÃ´ng!"})
+            return jsonify({"success": True, "msg": f"Đã đẩy đơn #{order_id} sang TangTim thành công!"})
         return jsonify({"success": False, "msg": f"TangTim: {res}"}), 400
-    return jsonify({"success": False, "msg": "Loáº¡i Ä‘Æ¡n khÃ´ng há»£p lá»‡"}), 400
+    return jsonify({"success": False, "msg": "Loại đơn không hợp lệ"}), 400
 
 @app.route("/api/admin/order/<order_id>/delete", methods=["POST", "DELETE"])
 @admin_required
@@ -5373,11 +5373,11 @@ def admin_delete_order_url(order_id):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     print("=" * 65)
-    print(" ðŸš€ DTH PORTAL - Há»† THá»NG Dá»ŠCH Vá»¤ Tá»”NG Há»¢P 3-IN-1")
-    print(f" ðŸŒ Khá»Ÿi Ä‘á»™ng trÃªn cá»•ng: http://localhost:{port}")
-    print("    â€¢ ðŸŽ® Chung Sá»©c LiÃªn QuÃ¢n Mobile")
-    print("    â€¢ ðŸ’› NÃ¢ng Cáº¥p Locket Gold iOS")
-    print("    â€¢ ðŸš€ Dá»‹ch Vá»¥ Máº¡ng XÃ£ Há»™i Äa Ná»n Táº£ng")
-    print(f" âš™ï¸ Quáº£n trá»‹ viÃªn: http://localhost:{port}/admin")
+    print(" 🚀 DTH PORTAL - HỆ THỐNG DỊCH VỤ TỔNG HỢP 3-IN-1")
+    print(f" 🌐 Khởi động trên cổng: http://localhost:{port}")
+    print("    • 🎮 Chung Sức Liên Quân Mobile")
+    print("    • 💛 Nâng Cấp Locket Gold iOS")
+    print("    • 🚀 Dịch Vụ Mạng Xã Hội Đa Nền Tảng")
+    print(f" ⚙️ Quản trị viên: http://localhost:{port}/admin")
     print("=" * 65)
     app.run(host="0.0.0.0", port=port, debug=False)

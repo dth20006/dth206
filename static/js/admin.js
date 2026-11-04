@@ -2,7 +2,7 @@
 
  * DTH Portal - Unified Admin JavaScript
 
- * Powers Dashboard stats, Orders management, and settings for Chung Sá»©c, Locket Gold, MXH, Banking & Telegram.
+ * Powers Dashboard stats, Orders management, and settings for Chung Sức, Locket Gold, MXH, Banking & Telegram.
 
  */
 
@@ -169,31 +169,31 @@ function switchToTab(target) {
 
   const titles = {
 
-    dashboard: "Báº£ng Äiá»u Khiá»ƒn Tá»•ng Quan",
+    dashboard: "Bảng Điều Khiển Tổng Quan",
 
-    "orders-chungsuc": "Quáº£n LÃ½ ÄÆ¡n Chung Sá»©c LiÃªn QuÃ¢n (AutoNhanh)",
+    "orders-chungsuc": "Quản Lý Đơn Chung Sức Liên Quân (AutoNhanh)",
 
-    "orders-locket": "Quáº£n LÃ½ ÄÆ¡n NÃ¢ng Cáº¥p Locket Gold iOS",
+    "orders-locket": "Quản Lý Đơn Nâng Cấp Locket Gold iOS",
 
-    "orders-mxh": "Quáº£n LÃ½ ÄÆ¡n Máº¡ng XÃ£ Há»™i (TangTim API)",
+    "orders-mxh": "Quản Lý Đơn Mạng Xã Hội (TangTim API)",
 
-    "orders-premium": "Quáº£n LÃ½ ÄÆ¡n Chá»£ Premium (YouTube, Spotify, Netflix)",
+    "orders-premium": "Quản Lý Đơn Chợ Premium (YouTube, Spotify, Netflix)",
 
-    premium: "CÃ i Äáº·t Báº£ng GiÃ¡ Chá»£ Premium",
+    premium: "Cài Đặt Bảng Giá Chợ Premium",
 
-    chungsuc: "CÃ i Äáº·t Sá»± Kiá»‡n Chung Sá»©c LiÃªn QuÃ¢n",
+    chungsuc: "Cài Đặt Sự Kiện Chung Sức Liên Quân",
 
-    locket: "CÃ i Äáº·t & Quáº£n LÃ½ Locket Gold",
+    locket: "Cài Đặt & Quản Lý Locket Gold",
 
-    mxh: "CÃ i Äáº·t Dá»‹ch Vá»¥ Máº¡ng XÃ£ Há»™i (TangTim)",
+    mxh: "Cài Đặt Dịch Vụ Mạng Xã Hội (TangTim)",
 
-    payment: "CÃ i Äáº·t NgÃ¢n HÃ ng & Auto QuÃ©t ThueAPIBank",
+    payment: "Cài Đặt Ngân Hàng & Auto Quét ThueAPIBank",
 
     announcement: "Quản Lý Popup Thông Báo Khách Hàng",
     popup: "Quản Lý Popup Thông Báo Khách Hàng",
     "popup-announcement": "Quản Lý Popup Thông Báo Khách Hàng",
     "popup-thong-bao": "Quản Lý Popup Thông Báo Khách Hàng",
-    settings: "CÃ i Äáº·t Há»‡ Thá»‘ng, Telegram & GitHub"
+    settings: "Cài Đặt Hệ Thống, Telegram & GitHub"
 
   };
 
@@ -233,7 +233,7 @@ function switchToTab(target) {
 
   if (titleElem) {
 
-    titleElem.textContent = titles[target] || "Quáº£n Trá»‹ Há»‡ Thá»‘ng";
+    titleElem.textContent = titles[target] || "Quản Trị Hệ Thống";
 
   }
 
@@ -333,9 +333,9 @@ async function loadStats() {
 
 
 
-    document.getElementById("statTotalRev").textContent = data.total_revenue_formatted || "0Ä‘";
+    document.getElementById("statTotalRev").textContent = data.total_revenue_formatted || "0đ";
 
-    document.getElementById("statTodayRev").textContent = data.today_revenue_formatted || "0Ä‘";
+    document.getElementById("statTodayRev").textContent = data.today_revenue_formatted || "0đ";
 
     document.getElementById("statTotalOrders").textContent = data.counts.all || 0;
 
@@ -345,21 +345,21 @@ async function loadStats() {
 
     // Service Breakdown
 
-    document.getElementById("bdCsOrders").textContent = `${data.counts.chungsuc || 0} Ä‘Æ¡n`;
+    document.getElementById("bdCsOrders").textContent = `${data.counts.chungsuc || 0} đơn`;
 
-    document.getElementById("bdCsRev").textContent = (data.rev_by_type.chungsuc || 0).toLocaleString("vi-VN") + "Ä‘";
-
-
-
-    document.getElementById("bdLkOrders").textContent = `${data.counts.locket || 0} Ä‘Æ¡n`;
-
-    document.getElementById("bdLkRev").textContent = (data.rev_by_type.locket || 0).toLocaleString("vi-VN") + "Ä‘";
+    document.getElementById("bdCsRev").textContent = (data.rev_by_type.chungsuc || 0).toLocaleString("vi-VN") + "đ";
 
 
 
-    document.getElementById("bdMxhOrders").textContent = `${data.counts.mxh || 0} Ä‘Æ¡n`;
+    document.getElementById("bdLkOrders").textContent = `${data.counts.locket || 0} đơn`;
 
-    document.getElementById("bdMxhRev").textContent = (data.rev_by_type.mxh || 0).toLocaleString("vi-VN") + "Ä‘";
+    document.getElementById("bdLkRev").textContent = (data.rev_by_type.locket || 0).toLocaleString("vi-VN") + "đ";
+
+
+
+    document.getElementById("bdMxhOrders").textContent = `${data.counts.mxh || 0} đơn`;
+
+    document.getElementById("bdMxhRev").textContent = (data.rev_by_type.mxh || 0).toLocaleString("vi-VN") + "đ";
 
 
 
@@ -367,9 +367,9 @@ async function loadStats() {
 
     const bdPrRev = document.getElementById("bdPrRev");
 
-    if (bdPrOrders) bdPrOrders.textContent = `${data.counts.premium || 0} Ä‘Æ¡n`;
+    if (bdPrOrders) bdPrOrders.textContent = `${data.counts.premium || 0} đơn`;
 
-    if (bdPrRev) bdPrRev.textContent = (data.rev_by_type.premium || 0).toLocaleString("vi-VN") + "Ä‘";
+    if (bdPrRev) bdPrRev.textContent = (data.rev_by_type.premium || 0).toLocaleString("vi-VN") + "đ";
 
 
 
@@ -389,7 +389,7 @@ async function triggerBankScan() {
 
   btn.disabled = true;
 
-  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Äang quÃ©t...`;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang quét...`;
 
 
 
@@ -401,7 +401,7 @@ async function triggerBankScan() {
 
     if (data.matched && data.matched.length > 0) {
 
-      showToast(`ðŸŽ‰ Khá»›p thÃ nh cÃ´ng ${data.matched.length} Ä‘Æ¡n hÃ ng: ${data.matched.join(", ")}`, "success");
+      showToast(`🎉 Khớp thành công ${data.matched.length} đơn hàng: ${data.matched.join(", ")}`, "success");
 
       loadOrders();
 
@@ -409,19 +409,19 @@ async function triggerBankScan() {
 
     } else {
 
-      showToast(data.msg || "ÄÃ£ quÃ©t ngÃ¢n hÃ ng. KhÃ´ng cÃ³ giao dá»‹ch má»›i khá»›p.", "info");
+      showToast(data.msg || "Đã quét ngân hàng. Không có giao dịch mới khớp.", "info");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i quÃ©t ngÃ¢n hÃ ng: " + e.message, "error");
+    showToast("Lỗi quét ngân hàng: " + e.message, "error");
 
   } finally {
 
     btn.disabled = false;
 
-    btn.innerHTML = `<i class="fa-solid fa-rotate"></i> <span>QuÃ©t NgÃ¢n HÃ ng Ngay</span>`;
+    btn.innerHTML = `<i class="fa-solid fa-rotate"></i> <span>Quét Ngân Hàng Ngay</span>`;
 
   }
 
@@ -528,11 +528,11 @@ function copyToClipboard(text, msg) {
 
   navigator.clipboard.writeText(text).then(() => {
 
-    showToast(msg || "ÄÃ£ sao chÃ©p vÃ o bá»™ nhá»› táº¡m!", "success");
+    showToast(msg || "Đã sao chép vào bộ nhớ tạm!", "success");
 
   }).catch(() => {
 
-    showToast("KhÃ´ng thá»ƒ sao chÃ©p!", "error");
+    showToast("Không thể sao chép!", "error");
 
   });
 
@@ -615,7 +615,7 @@ async function loadOrders(targetScope = null, forceSync = false) {
 
 
 
-    // PhÃ¢n loáº¡i riÃªng tá»«ng dá»‹ch vá»¥
+    // Phân loại riêng từng dịch vụ
 
     const csAll = [];
 
@@ -645,7 +645,7 @@ async function loadOrders(targetScope = null, forceSync = false) {
 
 
 
-    // Cáº­p nháº­t sá»‘ lÆ°á»£ng huy hiá»‡u trÃªn Sidebar & Nav Tabs
+    // Cập nhật số lượng huy hiệu trên Sidebar & Nav Tabs
 
     const setBadge = (id, count) => {
 
@@ -703,7 +703,7 @@ async function loadOrders(targetScope = null, forceSync = false) {
 
 
 
-    // 1. Render Báº£ng Chung Sá»©c LiÃªn QuÃ¢n
+    // 1. Render Bảng Chung Sức Liên Quân
 
     if (!targetScope || targetScope === "chungsuc") {
 
@@ -735,7 +735,7 @@ async function loadOrders(targetScope = null, forceSync = false) {
 
 
 
-    // 2. Render Báº£ng Locket Gold
+    // 2. Render Bảng Locket Gold
 
     if (!targetScope || targetScope === "locket") {
 
@@ -767,7 +767,7 @@ async function loadOrders(targetScope = null, forceSync = false) {
 
 
 
-    // 3. Render Báº£ng Máº¡ng XÃ£ Há»™i
+    // 3. Render Bảng Mạng Xã Hội
 
     if (!targetScope || targetScope === "mxh") {
 
@@ -809,7 +809,7 @@ async function loadOrders(targetScope = null, forceSync = false) {
 
 
 
-    // 4. Render Báº£ng Chá»£ Premium
+    // 4. Render Bảng Chợ Premium
 
     if (!targetScope || targetScope === "premium") {
 
@@ -856,7 +856,7 @@ async function loadOrders(targetScope = null, forceSync = false) {
 
 
 
-// Báº£ng 1: Chung Sá»©c LiÃªn QuÃ¢n
+// Bảng 1: Chung Sức Liên Quân
 
 function renderCsOrdersTable(orders) {
 
@@ -906,9 +906,9 @@ function renderCsOrdersTable(orders) {
 
     const codeDisplay = code
 
-      ? `<code style="color: #facc15;">${code}</code> <button class="code-copy-btn" onclick="copyToClipboard('${code}', 'ÄÃ£ copy mÃ£ LQ!')"><i class="fa-solid fa-copy"></i></button>`
+      ? `<code style="color: #facc15;">${code}</code> <button class="code-copy-btn" onclick="copyToClipboard('${code}', 'Đã copy mã LQ!')"><i class="fa-solid fa-copy"></i></button>`
 
-      : '<span class="text-dim">KhÃ´ng cÃ³</span>';
+      : '<span class="text-dim">Không có</span>';
 
 
 
@@ -916,35 +916,35 @@ function renderCsOrdersTable(orders) {
 
     tr.innerHTML = `
 
-      <td data-label="MÃ£ ÄÆ¡n"><strong>#${o.order_id}</strong></td>
+      <td data-label="Mã Đơn"><strong>#${o.order_id}</strong></td>
 
-      <td data-label="MÃ£ Má»i">${codeDisplay}</td>
+      <td data-label="Mã Mời">${codeDisplay}</td>
 
-      <td data-label="GÃ³i ÄÆ¡n"><strong>${o.package_name || "Buff LÆ°á»£t LQ"}</strong></td>
+      <td data-label="Gói Đơn"><strong>${o.package_name || "Buff Lượt LQ"}</strong></td>
 
-      <td data-label="Sá»‘ Zalo"><code>${o.zalo || "N/A"}</code></td>
+      <td data-label="Số Zalo"><code>${o.zalo || "N/A"}</code></td>
 
-      <td data-label="Sá»‘ Tiá»n"><strong class="text-gold">${o.amount_formatted || (Number(o.amount || 0).toLocaleString() + "Ä‘")}</strong></td>
+      <td data-label="Số Tiền"><strong class="text-gold">${o.amount_formatted || (Number(o.amount || 0).toLocaleString() + "đ")}</strong></td>
 
-      <td data-label="Tráº¡ng ThÃ¡i"><span class="admin-status-pill ${statusClass}">${st}</span></td>
+      <td data-label="Trạng Thái"><span class="admin-status-pill ${statusClass}">${st}</span></td>
 
-      <td data-label="Thá»i Gian"><small>${o.created_time || o.created_at || "-"}</small></td>
+      <td data-label="Thời Gian"><small>${o.created_time || o.created_at || "-"}</small></td>
 
-      <td data-label="Tiáº¿n Äá»™"><small>${partnerLog}</small></td>
+      <td data-label="Tiến Độ"><small>${partnerLog}</small></td>
 
-      <td data-label="Thao TÃ¡c">
+      <td data-label="Thao Tác">
 
         <div class="action-buttons-cell">
 
-          ${st === "PENDING" ? `<button class="btn-sm btn-accept" onclick="acceptOrder('${o.order_id}')" title="Duyá»‡t & Äáº©y"><i class="fa-solid fa-check"></i> Duyá»‡t</button>` : ""}
+          ${st === "PENDING" ? `<button class="btn-sm btn-accept" onclick="acceptOrder('${o.order_id}')" title="Duyệt & Đẩy"><i class="fa-solid fa-check"></i> Duyệt</button>` : ""}
 
-          <button class="btn-sm btn-edit" onclick="adminEditTarget('${o.order_id}', '${code}', 'code')" title="Sá»­a mÃ£ má»i"><i class="fa-solid fa-pen"></i> Sá»­a</button>
+          <button class="btn-sm btn-edit" onclick="adminEditTarget('${o.order_id}', '${code}', 'code')" title="Sửa mã mời"><i class="fa-solid fa-pen"></i> Sửa</button>
 
-          <button class="btn-sm btn-push" onclick="pushOrder('${o.order_id}')" title="Äáº©y láº¡i"><i class="fa-solid fa-paper-plane"></i> Äáº©y</button>
+          <button class="btn-sm btn-push" onclick="pushOrder('${o.order_id}')" title="Đẩy lại"><i class="fa-solid fa-paper-plane"></i> Đẩy</button>
 
-          <button class="btn-sm btn-complete" onclick="markComplete('${o.order_id}')" title="HoÃ n thÃ nh"><i class="fa-solid fa-circle-check"></i> Xong</button>
+          <button class="btn-sm btn-complete" onclick="markComplete('${o.order_id}')" title="Hoàn thành"><i class="fa-solid fa-circle-check"></i> Xong</button>
 
-          <button class="btn-sm btn-delete" onclick="deleteOrder('${o.order_id}')" title="XÃ³a Ä‘Æ¡n"><i class="fa-solid fa-trash"></i> XÃ³a</button>
+          <button class="btn-sm btn-delete" onclick="deleteOrder('${o.order_id}')" title="Xóa đơn"><i class="fa-solid fa-trash"></i> Xóa</button>
 
         </div>
 
@@ -960,7 +960,7 @@ function renderCsOrdersTable(orders) {
 
 
 
-// Báº£ng 2: Locket Gold
+// Bảng 2: Locket Gold
 
 function renderLkOrdersTable(orders) {
 
@@ -1008,9 +1008,9 @@ function renderLkOrdersTable(orders) {
 
     tr.innerHTML = `
 
-      <td data-label="MÃ£ ÄÆ¡n"><strong>#${o.order_id}</strong></td>
+      <td data-label="Mã Đơn"><strong>#${o.order_id}</strong></td>
 
-      <td data-label="KhÃ¡ch HÃ ng">
+      <td data-label="Khách Hàng">
 
         <div style="display: flex; align-items: center; gap: 8px;">
 
@@ -1028,29 +1028,29 @@ function renderLkOrdersTable(orders) {
 
       </td>
 
-      <td data-label="GÃ³i ÄÆ¡n"><strong>${o.package_name || "Locket Gold"}</strong></td>
+      <td data-label="Gói Đơn"><strong>${o.package_name || "Locket Gold"}</strong></td>
 
       <td data-label="UID"><code style="font-size: 0.78rem;">${o.uid || "-"}</code></td>
 
-      <td data-label="Sá»‘ Zalo"><code>${o.zalo || "N/A"}</code></td>
+      <td data-label="Số Zalo"><code>${o.zalo || "N/A"}</code></td>
 
-      <td data-label="Sá»‘ Tiá»n"><strong class="text-gold">${o.amount_formatted || (Number(o.amount || 0).toLocaleString() + "Ä‘")}</strong></td>
+      <td data-label="Số Tiền"><strong class="text-gold">${o.amount_formatted || (Number(o.amount || 0).toLocaleString() + "đ")}</strong></td>
 
-      <td data-label="Tráº¡ng ThÃ¡i"><span class="admin-status-pill ${statusClass}">${st}</span></td>
+      <td data-label="Trạng Thái"><span class="admin-status-pill ${statusClass}">${st}</span></td>
 
-      <td data-label="Thá»i Gian"><small>${o.created_time || o.created_at || "-"}</small></td>
+      <td data-label="Thời Gian"><small>${o.created_time || o.created_at || "-"}</small></td>
 
-      <td data-label="Thao TÃ¡c">
+      <td data-label="Thao Tác">
 
         <div class="action-buttons-cell">
 
-          ${user ? `<button class="btn-sm btn-reup-gold" onclick="reupGoldCustomer('${user}', '${o.order_id}')" title="LÃªn láº¡i Gold cho khÃ¡ch cÅ©"><i class="fa-solid fa-rotate-right"></i> LÃªn Láº¡i Gold</button>` : ""}
+          ${user ? `<button class="btn-sm btn-reup-gold" onclick="reupGoldCustomer('${user}', '${o.order_id}')" title="Lên lại Gold cho khách cũ"><i class="fa-solid fa-rotate-right"></i> Lên Lại Gold</button>` : ""}
 
-          ${user ? `<button class="btn-sm btn-accept" onclick="quickGrantGold('${user}', '${o.order_id}')" title="KÃ­ch hoáº¡t Gold VIP"><i class="fa-solid fa-crown"></i> KÃ­ch Hoáº¡t</button>` : ""}
+          ${user ? `<button class="btn-sm btn-accept" onclick="quickGrantGold('${user}', '${o.order_id}')" title="Kích hoạt Gold VIP"><i class="fa-solid fa-crown"></i> Kích Hoạt</button>` : ""}
 
-          <button class="btn-sm btn-complete" onclick="markComplete('${o.order_id}')" title="HoÃ n thÃ nh"><i class="fa-solid fa-circle-check"></i> Xong</button>
+          <button class="btn-sm btn-complete" onclick="markComplete('${o.order_id}')" title="Hoàn thành"><i class="fa-solid fa-circle-check"></i> Xong</button>
 
-          <button class="btn-sm btn-delete" onclick="deleteOrder('${o.order_id}')" title="XÃ³a Ä‘Æ¡n"><i class="fa-solid fa-trash"></i> XÃ³a</button>
+          <button class="btn-sm btn-delete" onclick="deleteOrder('${o.order_id}')" title="Xóa đơn"><i class="fa-solid fa-trash"></i> Xóa</button>
 
         </div>
 
@@ -1068,9 +1068,9 @@ function renderLkOrdersTable(orders) {
 
 async function reupGoldCustomer(username, oid) {
 
-  if (!confirm(`XÃ¡c nháº­n LÃŠN Láº I GOLD VIP cho khÃ¡ch cÅ© @${username} (MÃ£ Ä‘Æ¡n #${oid})?`)) return;
+  if (!confirm(`Xác nhận LÊN LẠI GOLD VIP cho khách cũ @${username} (Mã đơn #${oid})?`)) return;
 
-  showToast(`Äang lÃªn láº¡i Gold cho @${username}...`, "info");
+  showToast(`Đang lên lại Gold cho @${username}...`, "info");
 
   try {
 
@@ -1088,19 +1088,19 @@ async function reupGoldCustomer(username, oid) {
 
     if (data.success) {
 
-      showToast(data.msg || `ÄÃ£ lÃªn láº¡i Gold thÃ nh cÃ´ng cho @${username}!`, "success");
+      showToast(data.msg || `Đã lên lại Gold thành công cho @${username}!`, "success");
 
       loadAdminOrders("locket");
 
     } else {
 
-      showToast(data.msg || "Lá»—i khi lÃªn láº¡i Gold.", "error");
+      showToast(data.msg || "Lỗi khi lên lại Gold.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   }
 
@@ -1110,7 +1110,7 @@ async function reupGoldCustomer(username, oid) {
 
 async function quickGrantGold(username, oid) {
 
-  if (!confirm(`XÃ¡c nháº­n kÃ­ch hoáº¡t Gold ngay cho tÃ i khoáº£n @${username}?`)) return;
+  if (!confirm(`Xác nhận kích hoạt Gold ngay cho tài khoản @${username}?`)) return;
 
   try {
 
@@ -1128,19 +1128,19 @@ async function quickGrantGold(username, oid) {
 
     if (data.success) {
 
-      showToast(data.msg || `ÄÃ£ gá»­i lá»‡nh kÃ­ch hoáº¡t Gold cho @${username}!`, "success");
+      showToast(data.msg || `Đã gửi lệnh kích hoạt Gold cho @${username}!`, "success");
 
       loadOrders();
 
     } else {
 
-      showToast(data.msg || "KÃ­ch hoáº¡t tháº¥t báº¡i", "error");
+      showToast(data.msg || "Kích hoạt thất bại", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -1148,7 +1148,7 @@ async function quickGrantGold(username, oid) {
 
 
 
-// Báº£ng 3: Máº¡ng XÃ£ Há»™i
+// Bảng 3: Mạng Xã Hội
 
 function renderMxhOrdersTable(orders) {
 
@@ -1210,7 +1210,7 @@ function renderMxhOrdersTable(orders) {
 
       ? `<a href="${link}" target="_blank" class="admin-link-truncate" title="${link}"><i class="fa-solid fa-arrow-up-right-from-square"></i> ${link}</a>`
 
-      : '<span class="text-dim">KhÃ´ng cÃ³ link</span>';
+      : '<span class="text-dim">Không có link</span>';
 
 
 
@@ -1222,41 +1222,41 @@ function renderMxhOrdersTable(orders) {
 
     tr.innerHTML = `
 
-      <td data-label="MÃ£ ÄÆ¡n"><strong>#${o.order_id}</strong></td>
+      <td data-label="Mã Đơn"><strong>#${o.order_id}</strong></td>
 
-      <td data-label="Dá»‹ch Vá»¥">
+      <td data-label="Dịch Vụ">
 
         <span class="admin-badge badge-blue" style="margin-bottom: 4px; display: inline-flex; align-items: center; gap: 4px;">${platIcon} ${platName}</span><br>
 
-        <strong>${o.package_name || o.service_name || "Dá»‹ch vá»¥ MXH"}</strong>
+        <strong>${o.package_name || o.service_name || "Dịch vụ MXH"}</strong>
 
       </td>
 
       <td data-label="Link / Zalo">${linkEl}<br><small class="text-dim">Zalo: ${o.zalo || "N/A"}</small></td>
 
-      <td data-label="Sá»‘ LÆ°á»£ng"><strong class="text-cyan">${qty}</strong></td>
+      <td data-label="Số Lượng"><strong class="text-cyan">${qty}</strong></td>
 
-      <td data-label="Sá»‘ Tiá»n"><strong class="text-gold">${o.amount_formatted || (Number(o.amount || 0).toLocaleString() + "Ä‘")}</strong></td>
+      <td data-label="Số Tiền"><strong class="text-gold">${o.amount_formatted || (Number(o.amount || 0).toLocaleString() + "đ")}</strong></td>
 
-      <td data-label="Tráº¡ng ThÃ¡i"><span class="admin-status-pill ${statusClass}">${st}</span></td>
+      <td data-label="Trạng Thái"><span class="admin-status-pill ${statusClass}">${st}</span></td>
 
-      <td data-label="Thá»i Gian"><small>${o.created_time || o.created_at || "-"}</small></td>
+      <td data-label="Thời Gian"><small>${o.created_time || o.created_at || "-"}</small></td>
 
-      <td data-label="MÃ£ MÃ¡y Chá»§"><small>${o.tangtim_order_id ? `<span class="text-cyan">ID #${o.tangtim_order_id}</span>` : "-"}</small></td>
+      <td data-label="Mã Máy Chủ"><small>${o.tangtim_order_id ? `<span class="text-cyan">ID #${o.tangtim_order_id}</span>` : "-"}</small></td>
 
-      <td data-label="Thao TÃ¡c">
+      <td data-label="Thao Tác">
 
         <div class="action-buttons-cell">
 
-          ${st === "PENDING" ? `<button class="btn-sm btn-accept" onclick="acceptOrder('${o.order_id}')" title="Duyá»‡t & Äáº©y"><i class="fa-solid fa-check"></i> Duyá»‡t</button>` : ""}
+          ${st === "PENDING" ? `<button class="btn-sm btn-accept" onclick="acceptOrder('${o.order_id}')" title="Duyệt & Đẩy"><i class="fa-solid fa-check"></i> Duyệt</button>` : ""}
 
-          <button class="btn-sm btn-edit" onclick="adminEditTarget('${o.order_id}', '${link}', 'link')" title="Sá»­a link MXH"><i class="fa-solid fa-pen"></i> Sá»­a</button>
+          <button class="btn-sm btn-edit" onclick="adminEditTarget('${o.order_id}', '${link}', 'link')" title="Sửa link MXH"><i class="fa-solid fa-pen"></i> Sửa</button>
 
-          <button class="btn-sm btn-push" onclick="pushOrder('${o.order_id}')" title="Äáº©y láº¡i"><i class="fa-solid fa-paper-plane"></i> Äáº©y</button>
+          <button class="btn-sm btn-push" onclick="pushOrder('${o.order_id}')" title="Đẩy lại"><i class="fa-solid fa-paper-plane"></i> Đẩy</button>
 
-          <button class="btn-sm btn-complete" onclick="markComplete('${o.order_id}')" title="HoÃ n thÃ nh"><i class="fa-solid fa-circle-check"></i> Xong</button>
+          <button class="btn-sm btn-complete" onclick="markComplete('${o.order_id}')" title="Hoàn thành"><i class="fa-solid fa-circle-check"></i> Xong</button>
 
-          <button class="btn-sm btn-delete" onclick="deleteOrder('${o.order_id}')" title="XÃ³a Ä‘Æ¡n"><i class="fa-solid fa-trash"></i> XÃ³a</button>
+          <button class="btn-sm btn-delete" onclick="deleteOrder('${o.order_id}')" title="Xóa đơn"><i class="fa-solid fa-trash"></i> Xóa</button>
 
         </div>
 
@@ -1274,7 +1274,7 @@ function renderMxhOrdersTable(orders) {
 
 async function acceptOrder(oid) {
 
-  if (!confirm(`XÃ¡c nháº­n DUYá»†T Ä‘Æ¡n hÃ ng ${oid} vÃ  tá»± Ä‘á»™ng Ä‘áº©y qua Ä‘á»‘i tÃ¡c xá»­ lÃ½?`)) return;
+  if (!confirm(`Xác nhận DUYỆT đơn hàng ${oid} và tự động đẩy qua đối tác xử lý?`)) return;
 
   try {
 
@@ -1300,13 +1300,13 @@ async function acceptOrder(oid) {
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ duyá»‡t Ä‘Æ¡n.", "error");
+      showToast(data.msg || "Không thể duyệt đơn.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -1332,7 +1332,7 @@ async function pushOrder(oid) {
 
     if (data.success) {
 
-      showToast(`ÄÃ£ Ä‘áº©y Ä‘Æ¡n ${oid} thÃ nh cÃ´ng!`, "success");
+      showToast(`Đã đẩy đơn ${oid} thành công!`, "success");
 
       loadOrders();
 
@@ -1344,7 +1344,7 @@ async function pushOrder(oid) {
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -1370,7 +1370,7 @@ async function markComplete(oid) {
 
     if (data.success) {
 
-      showToast(`ÄÃ£ Ä‘Ã¡nh dáº¥u hoÃ n thÃ nh Ä‘Æ¡n ${oid}`, "success");
+      showToast(`Đã đánh dấu hoàn thành đơn ${oid}`, "success");
 
       loadOrders();
 
@@ -1378,7 +1378,7 @@ async function markComplete(oid) {
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -1388,7 +1388,7 @@ async function markComplete(oid) {
 
 async function deleteOrder(oid) {
 
-  if (!confirm(`Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n XÃ“A VÄ¨NH VIá»„N Ä‘Æ¡n hÃ ng #${oid}?\nÄÆ¡n nÃ y sáº½ bá»‹ xÃ³a khá»i toÃ n bá»™ há»‡ thá»‘ng vÃ  KHÃ”NG BAO GIá»œ há»“i láº¡i khi táº£i láº¡i trang.`)) return;
+  if (!confirm(`Bạn có chắc chắn muốn XÓA VĨNH VIỄN đơn hàng #${oid}?\nĐơn này sẽ bị xóa khỏi toàn bộ hệ thống và KHÔNG BAO GIỜ hồi lại khi tải lại trang.`)) return;
 
   try {
 
@@ -1424,17 +1424,17 @@ async function deleteOrder(oid) {
 
     if (data.success) {
 
-      showToast(`ÄÃ£ xÃ³a vÄ©nh viá»…n Ä‘Æ¡n #${oid}!`, "success");
+      showToast(`Đã xóa vĩnh viễn đơn #${oid}!`, "success");
 
     } else {
 
-      showToast("Lá»—i xÃ³a: " + (data.msg || "KhÃ´ng thá»ƒ xÃ³a Ä‘Æ¡n"), "error");
+      showToast("Lỗi xóa: " + (data.msg || "Không thể xóa đơn"), "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   }
 
@@ -1446,9 +1446,9 @@ async function adminEditTarget(oid, currentVal, type) {
 
   const isCode = type === "code";
 
-  const label = isCode ? "mÃ£ má»i LiÃªn QuÃ¢n" : "link bÃ i viáº¿t MXH";
+  const label = isCode ? "mã mời Liên Quân" : "link bài viết MXH";
 
-  const newVal = prompt(`Sá»­a ${label} cho Ä‘Æ¡n #${oid}:`, currentVal || "");
+  const newVal = prompt(`Sửa ${label} cho đơn #${oid}:`, currentVal || "");
 
   if (newVal === null) return;
 
@@ -1456,13 +1456,13 @@ async function adminEditTarget(oid, currentVal, type) {
 
   if (!trimmed) {
 
-    showToast(`Vui lÃ²ng nháº­p ${label} má»›i!`, "warning");
+    showToast(`Vui lòng nhập ${label} mới!`, "warning");
 
     return;
 
   }
 
-  showToast("Äang cáº­p nháº­t vÃ  kÃ­ch hoáº¡t láº¡i...", "info");
+  showToast("Đang cập nhật và kích hoạt lại...", "info");
 
   try {
 
@@ -1480,19 +1480,19 @@ async function adminEditTarget(oid, currentVal, type) {
 
     if (data.success) {
 
-      showToast(data.msg || "Cáº­p nháº­t thÃ nh cÃ´ng!", "success");
+      showToast(data.msg || "Cập nhật thành công!", "success");
 
       loadOrders();
 
     } else {
 
-      showToast(data.msg || "Cáº­p nháº­t tháº¥t báº¡i!", "error");
+      showToast(data.msg || "Cập nhật thất bại!", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -1502,7 +1502,7 @@ async function adminEditTarget(oid, currentVal, type) {
 
 // ==========================================
 
-// 3. CHUNG Sá»¨C CONFIG
+// 3. CHUNG SỨC CONFIG
 
 // ==========================================
 
@@ -1522,9 +1522,9 @@ function initChungSucAdmin() {
 
       const pct = parseFloat(btn.dataset.pct);
 
-      const actionText = pct > 0 ? `tÄƒng +${pct}%` : `giáº£m ${pct}%`;
+      const actionText = pct > 0 ? `tăng +${pct}%` : `giảm ${pct}%`;
 
-      if (!confirm(`Báº¡n cÃ³ cháº¯c muá»‘n ${actionText} giÃ¡ cá»§a táº¥t cáº£ gÃ³i Chung Sá»©c?`)) return;
+      if (!confirm(`Bạn có chắc muốn ${actionText} giá của tất cả gói Chung Sức?`)) return;
 
       try {
 
@@ -1548,13 +1548,13 @@ function initChungSucAdmin() {
 
         } else {
 
-          showToast(data.msg || "Lá»—i cáº­p nháº­t giÃ¡!", "error");
+          showToast(data.msg || "Lỗi cập nhật giá!", "error");
 
         }
 
       } catch (e) {
 
-        showToast("Lá»—i máº¡ng: " + e.message, "error");
+        showToast("Lỗi mạng: " + e.message, "error");
 
       }
 
@@ -1592,11 +1592,11 @@ function renderCsPackagesEditor(pkgs) {
 
       <div class="pkg-edit-inputs">
 
-        <label>GiÃ¡ (VNÄ):</label>
+        <label>Giá (VNĐ):</label>
 
         <input type="number" class="admin-input cs-price-input" data-id="${key}" value="${pkg.price || 0}">
 
-        <label>LÆ°á»£t buff:</label>
+        <label>Lượt buff:</label>
 
         <input type="number" class="admin-input cs-turns-input" data-id="${key}" value="${pkg.turns || 0}">
 
@@ -1618,7 +1618,7 @@ async function testAutoNhanh() {
 
   btn.disabled = true;
 
-  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Äang káº¿t ná»‘i...`;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang kết nối...`;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -1635,24 +1635,24 @@ async function testAutoNhanh() {
 
     if (bal !== null && bal !== undefined) {
 
-      showToast(`Káº¿t ná»‘i AutoNhanh thÃ nh cÃ´ng! Sá»‘ dÆ° hiá»‡n táº¡i: ${bal.toLocaleString("vi-VN")} Xu`, "success");
+      showToast(`Kết nối AutoNhanh thành công! Số dư hiện tại: ${bal.toLocaleString("vi-VN")} Xu`, "success");
 
     } else {
 
-      showToast("KhÃ´ng thá»ƒ Ä‘Äƒng nháº­p AutoNhanh. Vui lÃ²ng kiá»ƒm tra láº¡i tÃ i khoáº£n vÃ  máº­t kháº©u.", "error");
+      showToast("Không thể đăng nhập AutoNhanh. Vui lòng kiểm tra lại tài khoản và mật khẩu.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   } finally {
 
     clearTimeout(timeoutId);
     btn.disabled = false;
 
-    btn.innerHTML = `<i class="fa-solid fa-key"></i> ÄÄƒng Nháº­p & Kiá»ƒm Tra Sá»‘ DÆ° Xu`;
+    btn.innerHTML = `<i class="fa-solid fa-key"></i> Đăng Nhập & Kiểm Tra Số Dư Xu`;
 
   }
 
@@ -1680,7 +1680,7 @@ async function saveChungSucConfig() {
 
       pkgs[id].price = parseInt(inp.value) || 0;
 
-      pkgs[id].price_formatted = pkgs[id].price.toLocaleString("vi-VN") + "Ä‘";
+      pkgs[id].price_formatted = pkgs[id].price.toLocaleString("vi-VN") + "đ";
 
     }
 
@@ -1730,17 +1730,17 @@ async function saveChungSucConfig() {
 
     if (data.success) {
 
-      showToast("LÆ°u cáº¥u hÃ¬nh Chung Sá»©c thÃ nh cÃ´ng!", "success");
+      showToast("Lưu cấu hình Chung Sức thành công!", "success");
 
     } else {
 
-      showToast(data.msg || "Lá»—i lÆ°u cáº¥u hÃ¬nh", "error");
+      showToast(data.msg || "Lỗi lưu cấu hình", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -1808,7 +1808,7 @@ function initLocketAdmin() {
 
       btnSaveLkPrice.disabled = true;
 
-      btnSaveLkPrice.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Äang lÆ°u...';
+      btnSaveLkPrice.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
 
       try {
 
@@ -1834,17 +1834,17 @@ function initLocketAdmin() {
 
         const data2 = await res2.json();
 
-        showToast(data2.msg || "ÄÃ£ lÆ°u báº£ng giÃ¡ Locket Gold thÃ nh cÃ´ng!", "success");
+        showToast(data2.msg || "Đã lưu bảng giá Locket Gold thành công!", "success");
 
       } catch (e) {
 
-        showToast("Lá»—i khi lÆ°u giÃ¡ Locket: " + e.message, "error");
+        showToast("Lỗi khi lưu giá Locket: " + e.message, "error");
 
       } finally {
 
         btnSaveLkPrice.disabled = false;
 
-        btnSaveLkPrice.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> LÆ°u Báº£ng GiÃ¡ Locket Gold';
+        btnSaveLkPrice.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Lưu Bảng Giá Locket Gold';
 
       }
 
@@ -1888,7 +1888,7 @@ function initLocketAdmin() {
 
           autoParseSmartRawToken(text);
 
-          showToast("ÄÃ£ dÃ¡n vÃ  tá»± Ä‘á»™ng bÃ³c tÃ¡ch token!", "success");
+          showToast("Đã dán và tự động bóc tách token!", "success");
 
         }
 
@@ -2050,7 +2050,7 @@ function autoParseSmartRawToken(raw) {
 
     const b = document.getElementById("badgeFetchStatus");
 
-    if (b) b.innerHTML = `<span style="color:#34d399; font-weight:700;"><i class="fa-solid fa-check"></i> ÄÃ£ bÃ³c tÃ¡ch (${fetchToken.length} kÃ½ tá»±)</span>`;
+    if (b) b.innerHTML = `<span style="color:#34d399; font-weight:700;"><i class="fa-solid fa-check"></i> Đã bóc tách (${fetchToken.length} ký tự)</span>`;
 
   }
 
@@ -2060,7 +2060,7 @@ function autoParseSmartRawToken(raw) {
 
     const b = document.getElementById("badgeAppTransStatus");
 
-    if (b) b.innerHTML = `<span style="color:#34d399; font-weight:700;"><i class="fa-solid fa-check"></i> ÄÃ£ bÃ³c tÃ¡ch (${appTrans.length} kÃ½ tá»±)</span>`;
+    if (b) b.innerHTML = `<span style="color:#34d399; font-weight:700;"><i class="fa-solid fa-check"></i> Đã bóc tách (${appTrans.length} ký tự)</span>`;
 
   }
 
@@ -2096,7 +2096,7 @@ function autoParseSmartRawToken(raw) {
 
   if (nameInput && (!nameInput.value || nameInput.value.startsWith("Token StoreKit"))) {
 
-    nameInput.value = `Token StoreKit 2 (${prodId || "1 ThÃ¡ng"} - #${transId || "VIP"})`;
+    nameInput.value = `Token StoreKit 2 (${prodId || "1 Tháng"} - #${transId || "VIP"})`;
 
   }
 
@@ -2116,7 +2116,7 @@ function autoParseSmartRawToken(raw) {
 
       statusBox.style.border = "1px solid rgba(16, 185, 129, 0.35)";
 
-      statusBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>ÄÃ£ tá»± Ä‘á»™ng bÃ³c tÃ¡ch thÃ nh cÃ´ng 100%!</strong> ÄÃ£ nháº­n diá»‡n Ä‘áº§y Ä‘á»§ Fetch Token (${fetchToken.length} kÃ½ tá»±) & App Transaction (${appTrans.length} kÃ½ tá»±).`;
+      statusBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Đã tự động bóc tách thành công 100%!</strong> Đã nhận diện đầy đủ Fetch Token (${fetchToken.length} ký tự) & App Transaction (${appTrans.length} ký tự).`;
 
     } else if (fetchToken || appTrans) {
 
@@ -2128,7 +2128,7 @@ function autoParseSmartRawToken(raw) {
 
       statusBox.style.border = "1px solid rgba(234, 179, 8, 0.35)";
 
-      statusBox.innerHTML = `<i class="fa-solid fa-circle-info"></i> ÄÃ£ nháº­n diá»‡n Ä‘Æ°á»£c 1 Token. Vui lÃ²ng kiá»ƒm tra trÆ°á»ng cÃ²n láº¡i bÃªn dÆ°á»›i.`;
+      statusBox.innerHTML = `<i class="fa-solid fa-circle-info"></i> Đã nhận diện được 1 Token. Vui lòng kiểm tra trường còn lại bên dưới.`;
 
     } else {
 
@@ -2140,7 +2140,7 @@ function autoParseSmartRawToken(raw) {
 
       statusBox.style.border = "1px solid rgba(239, 68, 68, 0.35)";
 
-      statusBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> KhÃ´ng thá»ƒ nháº­n diá»‡n Token. HÃ£y cháº¯c cháº¯n báº¡n Ä‘Ã£ dÃ¡n Ä‘áº§y Ä‘á»§ Request cÃ³ chá»©a fetch_token vÃ  app_transaction.`;
+      statusBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Không thể nhận diện Token. Hãy chắc chắn bạn đã dán đầy đủ Request có chứa fetch_token và app_transaction.`;
 
     }
 
@@ -2154,7 +2154,7 @@ async function loadLocketTokens() {
 
   const tbody = document.getElementById("locketTokensTableBody");
 
-  tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Äang táº£i danh sÃ¡ch token...</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách token...</td></tr>`;
 
 
 
@@ -2172,7 +2172,7 @@ async function loadLocketTokens() {
 
   } catch (e) {
 
-    tbody.innerHTML = `<tr><td colspan="5" style="color: red;">Lá»—i táº£i token: ${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="color: red;">Lỗi tải token: ${e.message}</td></tr>`;
 
   }
 
@@ -2190,7 +2190,7 @@ function renderLocketTokensTable(tokens) {
 
   if (tokens.length === 0) {
 
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--admin-muted);">ChÆ°a cÃ³ bá»™ token StoreKit 2 nÃ o trong há»‡ thá»‘ng.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--admin-muted);">Chưa có bộ token StoreKit 2 nào trong hệ thống.</td></tr>`;
 
     return;
 
@@ -2210,7 +2210,7 @@ function renderLocketTokensTable(tokens) {
 
       <td>${t.days_text || t.status_text}</td>
 
-      <td>${t.active ? `<span class="admin-badge badge-green">Hoáº¡t Äá»™ng</span>` : `<span class="admin-badge badge-red">Táº¯t</span>`}</td>
+      <td>${t.active ? `<span class="admin-badge badge-green">Hoạt Động</span>` : `<span class="admin-badge badge-red">Tắt</span>`}</td>
 
       <td>
 
@@ -2218,9 +2218,9 @@ function renderLocketTokensTable(tokens) {
 
           <button class="btn-sm btn-push" onclick="testLocketToken('${t.id}')" title="Test Token"><i class="fa-solid fa-vial"></i> Test</button>
 
-          <button class="btn-sm btn-accept" onclick="toggleLocketToken('${t.id}')" title="Báº­t/Táº¯t"><i class="fa-solid fa-power-off"></i></button>
+          <button class="btn-sm btn-accept" onclick="toggleLocketToken('${t.id}')" title="Bật/Tắt"><i class="fa-solid fa-power-off"></i></button>
 
-          <button class="btn-sm btn-delete" onclick="deleteLocketToken('${t.id}')" title="XÃ³a"><i class="fa-solid fa-trash"></i></button>
+          <button class="btn-sm btn-delete" onclick="deleteLocketToken('${t.id}')" title="Xóa"><i class="fa-solid fa-trash"></i></button>
 
         </div>
 
@@ -2254,17 +2254,17 @@ async function testLocketToken(tid) {
 
     if (data.success) {
 
-      showToast("Token há»£p lá»‡ vÃ  hoáº¡t Ä‘á»™ng tá»‘t!", "success");
+      showToast("Token hợp lệ và hoạt động tốt!", "success");
 
     } else {
 
-      showToast("Token lá»—i: " + (data.msg || JSON.stringify(data.result)), "error");
+      showToast("Token lỗi: " + (data.msg || JSON.stringify(data.result)), "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i test token: " + e.message, "error");
+    showToast("Lỗi test token: " + e.message, "error");
 
   }
 
@@ -2290,7 +2290,7 @@ async function toggleLocketToken(tid) {
 
     if (data.success) {
 
-      showToast("ÄÃ£ thay Ä‘á»•i tráº¡ng thÃ¡i token!", "success");
+      showToast("Đã thay đổi trạng thái token!", "success");
 
       loadLocketTokens();
 
@@ -2298,7 +2298,7 @@ async function toggleLocketToken(tid) {
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -2308,7 +2308,7 @@ async function toggleLocketToken(tid) {
 
 async function deleteLocketToken(tid) {
 
-  if (!confirm("Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n XÃ“A bá»™ token nÃ y?")) return;
+  if (!confirm("Bạn có chắc chắn muốn XÓA bộ token này?")) return;
 
   try {
 
@@ -2326,7 +2326,7 @@ async function deleteLocketToken(tid) {
 
     if (data.success) {
 
-      showToast("ÄÃ£ xÃ³a token!", "success");
+      showToast("Đã xóa token!", "success");
 
       loadLocketTokens();
 
@@ -2334,7 +2334,7 @@ async function deleteLocketToken(tid) {
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -2370,7 +2370,7 @@ async function handleAddToken() {
 
   if (!fetchToken && !rawText) {
 
-    showToast("Vui lÃ²ng dÃ¡n ná»™i dung Token hoáº·c Request vÃ o Ã´ bÃ³c tÃ¡ch!", "error");
+    showToast("Vui lòng dán nội dung Token hoặc Request vào ô bóc tách!", "error");
 
     return;
 
@@ -2388,7 +2388,7 @@ async function handleAddToken() {
 
       body: JSON.stringify({
 
-        name: name || "Token má»›i (StoreKit 2)",
+        name: name || "Token mới (StoreKit 2)",
 
         fetch_token: fetchToken,
 
@@ -2408,7 +2408,7 @@ async function handleAddToken() {
 
     if (data.success) {
 
-      showToast("ThÃªm vÃ  kÃ­ch hoáº¡t token thÃ nh cÃ´ng!", "success");
+      showToast("Thêm và kích hoạt token thành công!", "success");
 
       closeAddTokenModal();
 
@@ -2430,13 +2430,13 @@ async function handleAddToken() {
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ thÃªm token", "error");
+      showToast(data.msg || "Không thể thêm token", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -2516,7 +2516,7 @@ async function handleManualGrantGold() {
 
   if (!val) {
 
-    showToast("Vui lÃ²ng nháº­p Username Locket!", "error");
+    showToast("Vui lòng nhập Username Locket!", "error");
 
     inp.focus();
 
@@ -2548,13 +2548,13 @@ async function handleManualGrantGold() {
 
     } else {
 
-      showToast(data.msg || "Lá»—i kÃ­ch hoáº¡t Gold", "error");
+      showToast(data.msg || "Lỗi kích hoạt Gold", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -2596,13 +2596,13 @@ async function handleSaveAdvancedLocket() {
 
     if (data.success) {
 
-      showToast("LÆ°u Advanced Tokens thÃ nh cÃ´ng!", "success");
+      showToast("Lưu Advanced Tokens thành công!", "success");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -2634,7 +2634,7 @@ function initMxhAdmin() {
 
       btnCheckBal.disabled = true;
 
-      btnCheckBal.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Äang kiá»ƒm tra...';
+      btnCheckBal.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang kiểm tra...';
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -2647,7 +2647,7 @@ function initMxhAdmin() {
 
         if (data.success) {
 
-          showToast(`Sá»‘ dÆ° TangTim: ${data.balance_usd}$ (~${data.balance_formatted})`, "success");
+          showToast(`Số dư TangTim: ${data.balance_usd}$ (~${data.balance_formatted})`, "success");
 
           const el = document.getElementById("balTangTim");
 
@@ -2655,20 +2655,20 @@ function initMxhAdmin() {
 
         } else {
 
-          showToast(data.msg || "KhÃ´ng thá»ƒ láº¥y sá»‘ dÆ° TangTim", "error");
+          showToast(data.msg || "Không thể lấy số dư TangTim", "error");
 
         }
 
       } catch (e) {
 
-        showToast("Lá»—i máº¡ng: " + e.message, "error");
+        showToast("Lỗi mạng: " + e.message, "error");
 
       } finally {
 
         clearTimeout(timeoutId);
         btnCheckBal.disabled = false;
 
-        btnCheckBal.innerHTML = '<i class="fa-solid fa-wallet text-gold"></i> Kiá»ƒm Tra Sá»‘ DÆ° TangTim';
+        btnCheckBal.innerHTML = '<i class="fa-solid fa-wallet text-gold"></i> Kiểm Tra Số Dư TangTim';
 
       }
 
@@ -2688,7 +2688,7 @@ function initMxhAdmin() {
 
       btnSyncMaint.disabled = true;
 
-      btnSyncMaint.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Äang quÃ©t...';
+      btnSyncMaint.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang quét...';
 
       try {
 
@@ -2696,17 +2696,17 @@ function initMxhAdmin() {
 
         const data = await res.json();
 
-        showToast(data.msg || "ÄÃ£ quÃ©t tráº¡ng thÃ¡i báº£o trÃ¬!", data.success ? "success" : "error");
+        showToast(data.msg || "Đã quét trạng thái bảo trì!", data.success ? "success" : "error");
 
       } catch (e) {
 
-        showToast("Lá»—i máº¡ng: " + e.message, "error");
+        showToast("Lỗi mạng: " + e.message, "error");
 
       } finally {
 
         btnSyncMaint.disabled = false;
 
-        btnSyncMaint.innerHTML = '<i class="fa-solid fa-shield-halved text-cyan"></i> QuÃ©t Báº£o TrÃ¬ MÃ¡y Chá»§';
+        btnSyncMaint.innerHTML = '<i class="fa-solid fa-shield-halved text-cyan"></i> Quét Bảo Trì Máy Chủ';
 
       }
 
@@ -2784,7 +2784,7 @@ function initMxhAdmin() {
 
       if (isNaN(marginVal) || marginVal < 0) {
 
-        showToast("Vui lÃ²ng nháº­p tá»· lá»‡ % há»£p lá»‡ (>= 0)!", "error");
+        showToast("Vui lòng nhập tỷ lệ % hợp lệ (>= 0)!", "error");
 
         return;
 
@@ -2792,7 +2792,7 @@ function initMxhAdmin() {
 
       btnSaveMargin.disabled = true;
 
-      btnSaveMargin.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Äang tÃ­nh láº¡i giÃ¡ toÃ n bá»™ dá»‹ch vá»¥...`;
+      btnSaveMargin.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang tính lại giá toàn bộ dịch vụ...`;
 
       try {
 
@@ -2810,31 +2810,31 @@ function initMxhAdmin() {
 
         if (data.success) {
 
-          showToast(data.msg || `ÄÃ£ cáº­p nháº­t tá»· lá»‡ chÃªnh lá»‡ch giÃ¡ thÃ nh +${marginVal}%!`, "success");
+          showToast(data.msg || `Đã cập nhật tỷ lệ chênh lệch giá thành +${marginVal}%!`, "success");
 
           const badgeMargin = document.getElementById("badgeCurrentMargin");
 
-          if (badgeMargin) badgeMargin.textContent = `Hiá»‡n táº¡i: +${marginVal}%`;
+          if (badgeMargin) badgeMargin.textContent = `Hiện tại: +${marginVal}%`;
 
           const topMarginBtn = document.getElementById("btnTopMargin");
 
-          if (topMarginBtn) topMarginBtn.innerHTML = `<i class="fa-solid fa-percent"></i> <span>Chá»‰nh % GiÃ¡ (+${marginVal}%)</span>`;
+          if (topMarginBtn) topMarginBtn.innerHTML = `<i class="fa-solid fa-percent"></i> <span>Chỉnh % Giá (+${marginVal}%)</span>`;
 
         } else {
 
-          showToast(data.msg || "Lá»—i khi lÆ°u tá»· lá»‡ %!", "error");
+          showToast(data.msg || "Lỗi khi lưu tỷ lệ %!", "error");
 
         }
 
       } catch (e) {
 
-        showToast("Lá»—i máº¡ng: " + e.message, "error");
+        showToast("Lỗi mạng: " + e.message, "error");
 
       } finally {
 
         btnSaveMargin.disabled = false;
 
-        btnSaveMargin.innerHTML = `<i class="fa-solid fa-calculator"></i> Ãp Dá»¥ng & TÃ­nh Láº¡i GiÃ¡ BÃ¡n ToÃ n Bá»™ Dá»‹ch Vá»¥`;
+        btnSaveMargin.innerHTML = `<i class="fa-solid fa-calculator"></i> Áp Dụng & Tính Lại Giá Bán Toàn Bộ Dịch Vụ`;
 
       }
 
@@ -2852,7 +2852,7 @@ async function syncMxhServices() {
 
   btn.disabled = true;
 
-  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Äang Ä‘á»“ng bá»™...`;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đồng bộ...`;
 
 
 
@@ -2868,19 +2868,19 @@ async function syncMxhServices() {
 
     } else {
 
-      showToast(data.msg || "Lá»—i Ä‘á»“ng bá»™ dá»‹ch vá»¥.", "error");
+      showToast(data.msg || "Lỗi đồng bộ dịch vụ.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   } finally {
 
     btn.disabled = false;
 
-    btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Äá»“ng Bá»™ Danh Má»¥c Tá»« TangTim`;
+    btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> Đồng Bộ Danh Mục Từ TangTim`;
 
   }
 
@@ -2952,13 +2952,13 @@ async function saveMxhConfig() {
 
     if (data.success) {
 
-      showToast("LÆ°u cáº¥u hÃ¬nh MXH & Flash Sale thÃ nh cÃ´ng!", "success");
+      showToast("Lưu cấu hình MXH & Flash Sale thành công!", "success");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -3000,7 +3000,7 @@ async function loadUnmatchedTransactions() {
 
       tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--admin-muted); padding: 20px;">
 
-        <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Tuyá»‡t vá»i! Hiá»‡n khÃ´ng cÃ³ dÃ²ng tiá»n nÃ o bá»‹ sai cÃº phÃ¡p hoáº·c chÆ°a khá»›p lá»‡nh.
+        <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Tuyệt vời! Hiện không có dòng tiền nào bị sai cú pháp hoặc chưa khớp lệnh.
 
       </td></tr>`;
 
@@ -3020,7 +3020,7 @@ async function loadUnmatchedTransactions() {
 
           <td><code class="font-mono" style="color: #60a5fa; font-weight: 700;">${item.trans_id}</code></td>
 
-          <td><strong style="color: #34d399;">${item.amount_formatted || item.amount.toLocaleString('vi-VN') + 'Ä‘'}</strong></td>
+          <td><strong style="color: #34d399;">${item.amount_formatted || item.amount.toLocaleString('vi-VN') + 'đ'}</strong></td>
 
           <td style="max-width: 260px; font-size: 0.8rem; word-break: break-all;">${item.description || 'N/A'}</td>
 
@@ -3028,9 +3028,9 @@ async function loadUnmatchedTransactions() {
 
           <td>
 
-            ${isMatched ? `<span class="badge badge-success" style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 8px; border-radius: 4px;">ÄÃ£ gÃ¡n #${item.matched_order_id}</span>` : `
+            ${isMatched ? `<span class="badge badge-success" style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 8px; border-radius: 4px;">Đã gán #${item.matched_order_id}</span>` : `
 
-              <input type="text" id="assign_order_${item.trans_id}" placeholder="#CS... hoáº·c #LK..." class="admin-input" style="padding: 6px 10px; font-size: 0.82rem; width: 100%;">
+              <input type="text" id="assign_order_${item.trans_id}" placeholder="#CS... hoặc #LK..." class="admin-input" style="padding: 6px 10px; font-size: 0.82rem; width: 100%;">
 
             `}
 
@@ -3042,7 +3042,7 @@ async function loadUnmatchedTransactions() {
 
               <button type="button" class="btn-admin-primary" onclick="assignUnmatchedTrans('${item.trans_id}')" style="padding: 6px 12px; font-size: 0.8rem; white-space: nowrap;">
 
-                <i class="fa-solid fa-link"></i> GÃ¡n ÄÆ¡n
+                <i class="fa-solid fa-link"></i> Gán Đơn
 
               </button>
 
@@ -3058,7 +3058,7 @@ async function loadUnmatchedTransactions() {
 
   } catch (e) {
 
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 20px;">Lá»—i táº£i dá»¯ liá»‡u: ${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 20px;">Lỗi tải dữ liệu: ${e.message}</td></tr>`;
 
   }
 
@@ -3076,7 +3076,7 @@ async function assignUnmatchedTrans(transId) {
 
   if (!orderId) {
 
-    showToast("Vui lÃ²ng nháº­p MÃ£ Ä‘Æ¡n hÃ ng cáº§n gÃ¡n (#CS..., #LK..., #TT...)", "error");
+    showToast("Vui lòng nhập Mã đơn hàng cần gán (#CS..., #LK..., #TT...)", "error");
 
     return;
 
@@ -3084,7 +3084,7 @@ async function assignUnmatchedTrans(transId) {
 
 
 
-  if (!confirm(`XÃ¡c nháº­n gÃ¡n giao dá»‹ch ${transId} vÃ o Ä‘Æ¡n hÃ ng #${orderId} vÃ  kÃ­ch hoáº¡t tráº£ hÃ ng tá»± Ä‘á»™ng?`)) {
+  if (!confirm(`Xác nhận gán giao dịch ${transId} vào đơn hàng #${orderId} và kích hoạt trả hàng tự động?`)) {
 
     return;
 
@@ -3114,13 +3114,13 @@ async function assignUnmatchedTrans(transId) {
 
     } else {
 
-      showToast(data.msg || "GÃ¡n Ä‘Æ¡n tháº¥t báº¡i", "error");
+      showToast(data.msg || "Gán đơn thất bại", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   }
 
@@ -3184,13 +3184,13 @@ async function savePaymentConfig() {
 
     if (data.success) {
 
-      showToast("LÆ°u thÃ´ng tin ngÃ¢n hÃ ng thÃ nh cÃ´ng!", "success");
+      showToast("Lưu thông tin ngân hàng thành công!", "success");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -3226,7 +3226,7 @@ function initSettingsAdmin() {
 
 
 
-  // Tá»± Ä‘á»™ng lÆ°u khi gáº¡t báº¥t ká»³ cÃ´ng táº¯c nÃ o
+  // Tự động lưu khi gạt bất kỳ công tắc nào
 
   ["toggleServiceChungSuc", "toggleServiceLocket", "toggleServiceMxh", "toggleServicePremium"].forEach(id => {
 
@@ -3310,7 +3310,7 @@ async function saveServicesToggle(isInstant = false) {
 
     btn.disabled = true;
 
-    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Äang lÆ°u...`;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...`;
 
   }
 
@@ -3334,17 +3334,17 @@ async function saveServicesToggle(isInstant = false) {
 
     if (data.success) {
 
-      showToast("âœ… ÄÃ£ lÆ°u tráº¡ng thÃ¡i hiá»ƒn thá»‹ dá»‹ch vá»¥ thÃ nh cÃ´ng!", "success");
+      showToast("✅ Đã lưu trạng thái hiển thị dịch vụ thành công!", "success");
 
     } else {
 
-      showToast(data.msg || "Lá»—i lÆ°u cáº¥u hÃ¬nh dá»‹ch vá»¥", "error");
+      showToast(data.msg || "Lỗi lưu cấu hình dịch vụ", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   } finally {
 
@@ -3352,7 +3352,7 @@ async function saveServicesToggle(isInstant = false) {
 
       btn.disabled = false;
 
-      btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> LÆ°u Tráº¡ng ThÃ¡i Dá»‹ch Vá»¥`;
+      btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Lưu Trạng Thái Dịch Vụ`;
 
     }
 
@@ -3384,11 +3384,11 @@ async function saveTelegramConfig() {
 
     const data = await res.json();
 
-    if (data.success) showToast("LÆ°u Telegram Bot thÃ nh cÃ´ng!", "success");
+    if (data.success) showToast("Lưu Telegram Bot thành công!", "success");
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -3406,17 +3406,17 @@ async function testTelegram() {
 
     if (data.success) {
 
-      showToast("ÄÃ£ gá»­i tin nháº¯n test Ä‘áº¿n Telegram!", "success");
+      showToast("Đã gửi tin nhắn test đến Telegram!", "success");
 
     } else {
 
-      showToast(data.msg || "Lá»—i gá»­i test", "error");
+      showToast(data.msg || "Lỗi gửi test", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -3430,7 +3430,7 @@ async function changeAdminPassword() {
 
   if (!pwd) {
 
-    showToast("Vui lÃ²ng nháº­p máº­t kháº©u má»›i!", "error");
+    showToast("Vui lòng nhập mật khẩu mới!", "error");
 
     return;
 
@@ -3454,7 +3454,7 @@ async function changeAdminPassword() {
 
     if (data.success) {
 
-      showToast("ÄÃ£ cáº­p nháº­t máº­t kháº©u Admin!", "success");
+      showToast("Đã cập nhật mật khẩu Admin!", "success");
 
       document.getElementById("newAdminPassword").value = "";
 
@@ -3462,7 +3462,7 @@ async function changeAdminPassword() {
 
   } catch (e) {
 
-    showToast("Lá»—i: " + e.message, "error");
+    showToast("Lỗi: " + e.message, "error");
 
   }
 
@@ -3530,7 +3530,7 @@ async function loadFullConfig() {
 
 
 
-    // Chung Sá»©c
+    // Chung Sức
 
     const an = cfg.autonhanh || {};
 
@@ -3578,11 +3578,11 @@ async function loadFullConfig() {
 
     const badgeMargin = document.getElementById("badgeCurrentMargin");
 
-    if (badgeMargin) badgeMargin.textContent = `Hiá»‡n táº¡i: +${margin}%`;
+    if (badgeMargin) badgeMargin.textContent = `Hiện tại: +${margin}%`;
 
     const topMarginBtn = document.getElementById("btnTopMargin");
 
-    if (topMarginBtn) topMarginBtn.innerHTML = `<i class="fa-solid fa-percent"></i> <span>Chá»‰nh % GiÃ¡ (+${margin}%)</span>`;
+    if (topMarginBtn) topMarginBtn.innerHTML = `<i class="fa-solid fa-percent"></i> <span>Chỉnh % Giá (+${margin}%)</span>`;
 
 
 
@@ -3602,7 +3602,7 @@ async function loadFullConfig() {
 
     document.getElementById("bankId").value = pay.bank_id || "970454";
 
-    document.getElementById("bankName").value = pay.bank_name || "NgÃ¢n HÃ ng Báº£n Viá»‡t (BVBank - ZaloPay)";
+    document.getElementById("bankName").value = pay.bank_name || "Ngân Hàng Bản Việt (BVBank - ZaloPay)";
 
     document.getElementById("accountNumber").value = pay.account_number || "99ZP24261M43061759";
 
@@ -3724,7 +3724,7 @@ async function handleLocketLogin(e) {
 
   if (!email || !password) {
 
-    showToast("Vui lÃ²ng nháº­p Email vÃ  Máº­t kháº©u Locket!", "error");
+    showToast("Vui lòng nhập Email và Mật khẩu Locket!", "error");
 
     return;
 
@@ -3734,7 +3734,7 @@ async function handleLocketLogin(e) {
 
   btn.disabled = true;
 
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Äang Ä‘Äƒng nháº­p Locket...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang đăng nhập Locket...';
 
 
 
@@ -3764,23 +3764,23 @@ async function handleLocketLogin(e) {
 
       }
 
-      showToast(data.msg || "ÄÄƒng nháº­p Locket thÃ nh cÃ´ng! ÄÃ£ tá»± Ä‘á»™ng cáº­p nháº­t Bearer Token.", "success");
+      showToast(data.msg || "Đăng nhập Locket thành công! Đã tự động cập nhật Bearer Token.", "success");
 
     } else {
 
-      showToast(data.msg || "ÄÄƒng nháº­p tháº¥t báº¡i!", "error");
+      showToast(data.msg || "Đăng nhập thất bại!", "error");
 
     }
 
   } catch (err) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + err.message, "error");
+    showToast("Lỗi kết nối: " + err.message, "error");
 
   } finally {
 
     btn.disabled = false;
 
-    btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> ÄÄƒng Nháº­p Locket & Láº¥y Token';
+    btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Đăng Nhập Locket & Lấy Token';
 
   }
 
@@ -3794,7 +3794,7 @@ async function handleImportLocketRaw() {
 
   if (!raw) {
 
-    showToast("Vui lÃ²ng dÃ¡n gÃ³i tin HTTP Catcher hoáº·c Shadowrocket vÃ o Ã´!", "error");
+    showToast("Vui lòng dán gói tin HTTP Catcher hoặc Shadowrocket vào ô!", "error");
 
     return;
 
@@ -3804,7 +3804,7 @@ async function handleImportLocketRaw() {
 
   btn.disabled = true;
 
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Äang bÃ³c tÃ¡ch...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang bóc tách...';
 
 
 
@@ -3840,25 +3840,25 @@ async function handleImportLocketRaw() {
 
       }
 
-      showToast(data.msg || "ÄÃ£ bÃ³c tÃ¡ch vÃ  lÆ°u Authorization & AppCheck thÃ nh cÃ´ng!", "success");
+      showToast(data.msg || "Đã bóc tách và lưu Authorization & AppCheck thành công!", "success");
 
       document.getElementById("locket_raw_input").value = "";
 
     } else {
 
-      showToast(data.msg || "BÃ³c tÃ¡ch tháº¥t báº¡i!", "error");
+      showToast(data.msg || "Bóc tách thất bại!", "error");
 
     }
 
   } catch (err) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + err.message, "error");
+    showToast("Lỗi kết nối: " + err.message, "error");
 
   } finally {
 
     btn.disabled = false;
 
-    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> BÃ³c TÃ¡ch & LÆ°u Token Locket';
+    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Bóc Tách & Lưu Token Locket';
 
   }
 
@@ -3932,7 +3932,7 @@ async function loadAdminMxhServices() {
 
   if (!tbody) return;
 
-  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--admin-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Äang táº£i danh sÃ¡ch dá»‹ch vá»¥...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--admin-muted);"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải danh sách dịch vụ...</td></tr>';
 
 
 
@@ -3954,13 +3954,13 @@ async function loadAdminMxhServices() {
 
     } else {
 
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:#ef4444;">KhÃ´ng thá»ƒ táº£i danh sÃ¡ch dá»‹ch vá»¥.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:#ef4444;">Không thể tải danh sách dịch vụ.</td></tr>';
 
     }
 
   } catch (err) {
 
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:#ef4444;">Lá»—i káº¿t ná»‘i: ${err.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:#ef4444;">Lỗi kết nối: ${err.message}</td></tr>`;
 
   }
 
@@ -3992,7 +3992,7 @@ function getFilteredAdminMxhServices() {
 
     }
 
-    // 2. Origin (Viá»‡t vs TÃ¢y)
+    // 2. Origin (Việt vs Tây)
 
     if (orig !== "all") {
 
@@ -4044,7 +4044,7 @@ function renderAdminMxhServicesTable() {
 
   if (filtered.length === 0) {
 
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--admin-muted);">KhÃ´ng tÃ¬m tháº¥y dá»‹ch vá»¥ nÃ o khá»›p vá»›i bá»™ lá»c!</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--admin-muted);">Không tìm thấy dịch vụ nào khớp với bộ lọc!</td></tr>';
 
     return;
 
@@ -4062,9 +4062,9 @@ function renderAdminMxhServicesTable() {
 
     const origBadge = isViet 
 
-      ? '<span class="admin-badge badge-red" style="font-weight:700;"><i class="fa-solid fa-flag"></i> ðŸ‡»ðŸ‡³ Viá»‡t</span>'
+      ? '<span class="admin-badge badge-red" style="font-weight:700;"><i class="fa-solid fa-flag"></i> 🇻🇳 Việt</span>'
 
-      : '<span class="admin-badge badge-cyan" style="font-weight:700;"><i class="fa-solid fa-earth-americas"></i> ðŸŒ TÃ¢y</span>';
+      : '<span class="admin-badge badge-cyan" style="font-weight:700;"><i class="fa-solid fa-earth-americas"></i> 🌍 Tây</span>';
 
 
 
@@ -4104,7 +4104,7 @@ function renderAdminMxhServicesTable() {
 
         <td>${origBadge}</td>
 
-        <td><b style="color: #facc15;">${s.price_formatted || (s.price_per_unit + "Ä‘")}</b></td>
+        <td><b style="color: #facc15;">${s.price_formatted || (s.price_per_unit + "đ")}</b></td>
 
         <td style="font-size: 0.8rem; color: var(--admin-muted);">${minQ} - ${maxQ}</td>
 
@@ -4152,11 +4152,11 @@ async function handleToggleMxhService(serviceId, makeActive) {
 
       if (item) item.active = makeActive;
 
-      showToast(makeActive ? `ÄÃ£ Báº¬T hiá»ƒn thá»‹ gÃ³i #${serviceId}` : `ÄÃ£ Táº®T gÃ³i #${serviceId}`, "success");
+      showToast(makeActive ? `Đã BẬT hiển thị gói #${serviceId}` : `Đã TẮT gói #${serviceId}`, "success");
 
     } else {
 
-      showToast(data.msg || "Lá»—i cáº­p nháº­t", "error");
+      showToast(data.msg || "Lỗi cập nhật", "error");
 
       renderAdminMxhServicesTable();
 
@@ -4164,7 +4164,7 @@ async function handleToggleMxhService(serviceId, makeActive) {
 
   } catch (err) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + err.message, "error");
+    showToast("Lỗi kết nối: " + err.message, "error");
 
     renderAdminMxhServicesTable();
 
@@ -4180,7 +4180,7 @@ async function handleBatchToggleMxhServices(makeActive) {
 
   if (filtered.length === 0) {
 
-    showToast("KhÃ´ng cÃ³ dá»‹ch vá»¥ nÃ o Ä‘ang Ä‘Æ°á»£c lá»c!", "warning");
+    showToast("Không có dịch vụ nào đang được lọc!", "warning");
 
     return;
 
@@ -4188,7 +4188,7 @@ async function handleBatchToggleMxhServices(makeActive) {
 
   const sids = filtered.map(s => String(s.service_id || s.id));
 
-  const confirmMsg = `Báº¡n cÃ³ cháº¯c muá»‘n ${makeActive ? "Báº¬T" : "Táº®T"} ${sids.length} gÃ³i dá»‹ch vá»¥ Ä‘ang lá»c?`;
+  const confirmMsg = `Bạn có chắc muốn ${makeActive ? "BẬT" : "TẮT"} ${sids.length} gói dịch vụ đang lọc?`;
 
   if (!confirm(confirmMsg)) return;
 
@@ -4212,19 +4212,19 @@ async function handleBatchToggleMxhServices(makeActive) {
 
       filtered.forEach(s => s.active = makeActive);
 
-      showToast(data.msg || "ÄÃ£ cáº­p nháº­t hÃ ng loáº¡t!", "success");
+      showToast(data.msg || "Đã cập nhật hàng loạt!", "success");
 
       renderAdminMxhServicesTable();
 
     } else {
 
-      showToast(data.msg || "Lá»—i cáº­p nháº­t", "error");
+      showToast(data.msg || "Lỗi cập nhật", "error");
 
     }
 
   } catch (err) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + err.message, "error");
+    showToast("Lỗi kết nối: " + err.message, "error");
 
   }
 
@@ -4324,7 +4324,7 @@ function initMobileNav() {
 
 // ==========================================
 
-// CHá»¢ PREMIUM ADMIN LOGIC
+// CHỢ PREMIUM ADMIN LOGIC
 
 // ==========================================
 
@@ -4408,23 +4408,23 @@ function renderPremiumOrdersTable(orders) {
 
       <code>${o.target}</code>
 
-      <button class="code-copy-btn" onclick="copyToClipboard('${o.target}', 'ÄÃ£ copy tÃ i khoáº£n!')" title="Copy"><i class="fa-solid fa-copy"></i></button>
+      <button class="code-copy-btn" onclick="copyToClipboard('${o.target}', 'Đã copy tài khoản!')" title="Copy"><i class="fa-solid fa-copy"></i></button>
 
       ${o.note ? `<br><small class="text-dim">Note: ${o.note}</small>` : ''}
 
-    ` : '<span class="text-dim">KhÃ´ng cÃ³</span>';
+    ` : '<span class="text-dim">Không có</span>';
 
 
 
     const deliveryStatus = o.delivery_info ? `
 
-      <span class="text-green" style="font-weight:700; cursor:pointer;" onclick="openDeliveryModal('${o.order_id}', '${o.platform_name || ''}', '${o.package_name || ''}', '${o.target || ''}', '${o.delivery_info.replace(/'/g, "\\'")}')" title="Báº¥m Ä‘á»ƒ xem/sá»­a thÃ´ng tin bÃ n giao">
+      <span class="text-green" style="font-weight:700; cursor:pointer;" onclick="openDeliveryModal('${o.order_id}', '${o.platform_name || ''}', '${o.package_name || ''}', '${o.target || ''}', '${o.delivery_info.replace(/'/g, "\\'")}')" title="Bấm để xem/sửa thông tin bàn giao">
 
-        <i class="fa-solid fa-circle-check"></i> ÄÃ£ cáº¥p
+        <i class="fa-solid fa-circle-check"></i> Đã cấp
 
       </span>
 
-    ` : `<span class="text-dim">ChÆ°a cáº¥p</span>`;
+    ` : `<span class="text-dim">Chưa cấp</span>`;
 
 
 
@@ -4432,35 +4432,35 @@ function renderPremiumOrdersTable(orders) {
 
     tr.innerHTML = `
 
-      <td data-label="MÃ£ ÄÆ¡n"><strong>#${o.order_id}</strong></td>
+      <td data-label="Mã Đơn"><strong>#${o.order_id}</strong></td>
 
-      <td data-label="Ná»n Táº£ng">${platBadge}</td>
+      <td data-label="Nền Tảng">${platBadge}</td>
 
-      <td data-label="GÃ³i Mua"><strong>${o.package_name || "-"}</strong><br><small class="text-cyan">${o.duration || ""}</small></td>
+      <td data-label="Gói Mua"><strong>${o.package_name || "-"}</strong><br><small class="text-cyan">${o.duration || ""}</small></td>
 
-      <td data-label="TÃ i Khoáº£n">${targetDisplay}</td>
+      <td data-label="Tài Khoản">${targetDisplay}</td>
 
-      <td data-label="Sá»‘ Zalo"><code>${o.zalo || "N/A"}</code></td>
+      <td data-label="Số Zalo"><code>${o.zalo || "N/A"}</code></td>
 
-      <td data-label="Sá»‘ Tiá»n"><strong class="text-gold">${o.amount_formatted || (Number(o.amount || 0).toLocaleString() + "Ä‘")}</strong></td>
+      <td data-label="Số Tiền"><strong class="text-gold">${o.amount_formatted || (Number(o.amount || 0).toLocaleString() + "đ")}</strong></td>
 
-      <td data-label="Tráº¡ng ThÃ¡i"><span class="admin-status-pill ${statusClass}">${st}</span></td>
+      <td data-label="Trạng Thái"><span class="admin-status-pill ${statusClass}">${st}</span></td>
 
-      <td data-label="Thá»i Gian"><small>${o.created_time || o.created_at || "-"}</small></td>
+      <td data-label="Thời Gian"><small>${o.created_time || o.created_at || "-"}</small></td>
 
-      <td data-label="BÃ n Giao">${deliveryStatus}</td>
+      <td data-label="Bàn Giao">${deliveryStatus}</td>
 
-      <td data-label="Thao TÃ¡c">
+      <td data-label="Thao Tác">
 
         <div class="action-buttons-cell">
 
-          ${st === "PENDING" ? `<button class="btn-sm btn-accept" onclick="acceptOrder('${o.order_id}')" title="Duyá»‡t Ä‘Æ¡n"><i class="fa-solid fa-check"></i> Duyá»‡t</button>` : ""}
+          ${st === "PENDING" ? `<button class="btn-sm btn-accept" onclick="acceptOrder('${o.order_id}')" title="Duyệt đơn"><i class="fa-solid fa-check"></i> Duyệt</button>` : ""}
 
-          <button class="btn-sm btn-push" onclick="openDeliveryModal('${o.order_id}', '${o.platform_name || ''}', '${o.package_name || ''}', '${o.target || ''}', '${(o.delivery_info || '').replace(/'/g, "\\'")}')" title="BÃ n giao tÃ i khoáº£n"><i class="fa-solid fa-key"></i> BÃ n Giao</button>
+          <button class="btn-sm btn-push" onclick="openDeliveryModal('${o.order_id}', '${o.platform_name || ''}', '${o.package_name || ''}', '${o.target || ''}', '${(o.delivery_info || '').replace(/'/g, "\\'")}')" title="Bàn giao tài khoản"><i class="fa-solid fa-key"></i> Bàn Giao</button>
 
-          <button class="btn-sm btn-complete" onclick="markComplete('${o.order_id}')" title="HoÃ n thÃ nh"><i class="fa-solid fa-circle-check"></i> Xong</button>
+          <button class="btn-sm btn-complete" onclick="markComplete('${o.order_id}')" title="Hoàn thành"><i class="fa-solid fa-circle-check"></i> Xong</button>
 
-          <button class="btn-sm btn-delete" onclick="deleteOrder('${o.order_id}')" title="XÃ³a Ä‘Æ¡n"><i class="fa-solid fa-trash"></i> XÃ³a</button>
+          <button class="btn-sm btn-delete" onclick="deleteOrder('${o.order_id}')" title="Xóa đơn"><i class="fa-solid fa-trash"></i> Xóa</button>
 
         </div>
 
@@ -4470,7 +4470,7 @@ function renderPremiumOrdersTable(orders) {
 
     if (o.package_desc) {
 
-      const packageCell = tr.querySelector('[data-label="GÃ³i Mua"]');
+      const packageCell = tr.querySelector('[data-label="Gói Mua"]');
 
       const description = document.createElement("small");
 
@@ -4508,7 +4508,7 @@ function openDeliveryModal(oid, platName, pkgName, target, existingContent = "")
 
   document.getElementById("delivModalPlat").textContent = platName || "Premium";
 
-  document.getElementById("delivModalPkg").textContent = pkgName || "GÃ³i";
+  document.getElementById("delivModalPkg").textContent = pkgName || "Gói";
 
   document.getElementById("delivModalTarget").textContent = target || "N/A";
 
@@ -4548,15 +4548,15 @@ function setDeliveryTemplate(type) {
 
   if (type === "yt") {
 
-    textarea.value = `ÄÃ£ gá»­i lá»i má»i YouTube Premium vÃ o Gmail: ${target}\nBáº¡n má»Ÿ á»©ng dá»¥ng Gmail trÃªn Ä‘iá»‡n thoáº¡i, báº¥m vÃ o thÆ° má»i tá»« Google Family vÃ  nháº¥n \"Cháº¥p nháº­n lá»i má»i\" lÃ  YouTube Premium Ä‘Æ°á»£c kÃ­ch hoáº¡t thÃ nh cÃ´ng trá»n gÃ³i!`;
+    textarea.value = `Đã gửi lời mời YouTube Premium vào Gmail: ${target}\nBạn mở ứng dụng Gmail trên điện thoại, bấm vào thư mời từ Google Family và nhấn \"Chấp nhận lời mời\" là YouTube Premium được kích hoạt thành công trọn gói!`;
 
   } else if (type === "sp") {
 
-    textarea.value = `ÄÃ£ gia háº¡n tÃ i khoáº£n Spotify Premium thÃ nh cÃ´ng cho: ${target}\nBáº¡n má»Ÿ app Spotify trÃªn thiáº¿t bá»‹ cá»§a mÃ¬nh vÃ  thÆ°á»Ÿng thá»©c Ã¢m thanh 320kbps khÃ´ng quáº£ng cÃ¡o nhÃ©!`;
+    textarea.value = `Đã gia hạn tài khoản Spotify Premium thành công cho: ${target}\nBạn mở app Spotify trên thiết bị của mình và thưởng thức âm thanh 320kbps không quảng cáo nhé!`;
 
   } else if (type === "nf") {
 
-    textarea.value = `TÃ i khoáº£n Netflix: ${target}\nMáº­t kháº©u: NetflixVip@2026\nProfile riÃªng: KhÃ¡ch HÃ ng\nMÃ£ PIN riÃªng: 2601\nCháº¥t lÆ°á»£ng Ultra HD 4K, báº£o hÃ nh 1 Ä‘á»•i 1 suá»‘t thá»i gian sá»­ dá»¥ng!`;
+    textarea.value = `Tài khoản Netflix: ${target}\nMật khẩu: NetflixVip@2026\nProfile riêng: Khách Hàng\nMã PIN riêng: 2601\nChất lượng Ultra HD 4K, bảo hành 1 đổi 1 suốt thời gian sử dụng!`;
 
   }
 
@@ -4576,7 +4576,7 @@ async function submitDeliveryInfo() {
 
   if (!content) {
 
-    if (!confirm("Báº¡n chÆ°a nháº­p ná»™i dung bÃ n giao tÃ i khoáº£n. Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n hoÃ n táº¥t Ä‘Æ¡n khÃ´ng?")) return;
+    if (!confirm("Bạn chưa nhập nội dung bàn giao tài khoản. Bạn có chắc chắn muốn hoàn tất đơn không?")) return;
 
   }
 
@@ -4610,7 +4610,7 @@ async function submitDeliveryInfo() {
 
     if (data.success) {
 
-      showToast(data.msg || `ÄÃ£ bÃ n giao Ä‘Æ¡n #${gCurrentDelivOid}!`, "success");
+      showToast(data.msg || `Đã bàn giao đơn #${gCurrentDelivOid}!`, "success");
 
       closeDeliveryModal();
 
@@ -4620,13 +4620,13 @@ async function submitDeliveryInfo() {
 
     } else {
 
-      showToast(data.msg || "Lá»—i lÆ°u thÃ´ng tin", "error");
+      showToast(data.msg || "Lỗi lưu thông tin", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   } finally {
 
@@ -4668,7 +4668,7 @@ async function loadPremiumAdmin() {
 
         if (isEnabled) {
 
-          statusBadge.textContent = "ÄANG Báº¬T";
+          statusBadge.textContent = "ĐANG BẬT";
 
           statusBadge.style.background = "rgba(16, 185, 129, 0.2)";
 
@@ -4678,7 +4678,7 @@ async function loadPremiumAdmin() {
 
         } else {
 
-          statusBadge.textContent = "ÄANG Táº®T";
+          statusBadge.textContent = "ĐANG TẮT";
 
           statusBadge.style.background = "rgba(239, 68, 68, 0.2)";
 
@@ -4724,7 +4724,7 @@ async function toggleServiceActive(sid, active) {
 
     if (data.success) {
 
-      showToast(data.msg || (active ? "ÄÃ£ Báº¬T dá»‹ch vá»¥!" : "ÄÃ£ Táº®T (áº¨n) dá»‹ch vá»¥ khá»i trang web!"), "success");
+      showToast(data.msg || (active ? "Đã BẬT dịch vụ!" : "Đã TẮT (Ẩn) dịch vụ khỏi trang web!"), "success");
 
       if (gAdminPremiumConfig && gAdminPremiumConfig[sid]) {
 
@@ -4734,13 +4734,13 @@ async function toggleServiceActive(sid, active) {
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ cáº­p nháº­t tráº¡ng thÃ¡i dá»‹ch vá»¥.", "error");
+      showToast(data.msg || "Không thể cập nhật trạng thái dịch vụ.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   }
 
@@ -4766,17 +4766,17 @@ async function togglePackageActive(sid, pid, active) {
 
     if (data.success) {
 
-      showToast(data.msg || (active ? "ÄÃ£ báº­t gÃ³i!" : "ÄÃ£ táº¯t gÃ³i!"), "success");
+      showToast(data.msg || (active ? "Đã bật gói!" : "Đã tắt gói!"), "success");
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ cáº­p nháº­t tráº¡ng thÃ¡i gÃ³i.", "error");
+      showToast(data.msg || "Không thể cập nhật trạng thái gói.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   }
 
@@ -4810,13 +4810,13 @@ async function toggleMarketStatus(enabled) {
 
     if (data.success) {
 
-      showToast(data.msg || (enabled ? "ÄÃ£ Báº¬T Chá»£ Premium thÃ nh cÃ´ng!" : "ÄÃ£ Táº®T (áº¨n) Chá»£ Premium thÃ nh cÃ´ng!"), "success");
+      showToast(data.msg || (enabled ? "Đã BẬT Chợ Premium thành công!" : "Đã TẮT (Ẩn) Chợ Premium thành công!"), "success");
 
       if (statusBadge) {
 
         if (enabled) {
 
-          statusBadge.textContent = "ÄANG Báº¬T";
+          statusBadge.textContent = "ĐANG BẬT";
 
           statusBadge.style.background = "rgba(16, 185, 129, 0.2)";
 
@@ -4826,7 +4826,7 @@ async function toggleMarketStatus(enabled) {
 
         } else {
 
-          statusBadge.textContent = "ÄANG Táº®T (áº¨N)";
+          statusBadge.textContent = "ĐANG TẮT (ẨN)";
 
           statusBadge.style.background = "rgba(239, 68, 68, 0.2)";
 
@@ -4840,7 +4840,7 @@ async function toggleMarketStatus(enabled) {
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ cáº­p nháº­t tráº¡ng thÃ¡i chá»£.", "error");
+      showToast(data.msg || "Không thể cập nhật trạng thái chợ.", "error");
 
       if (toggleInput) toggleInput.checked = !enabled;
 
@@ -4848,7 +4848,7 @@ async function toggleMarketStatus(enabled) {
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
     if (toggleInput) toggleInput.checked = !enabled;
 
@@ -4882,7 +4882,7 @@ function renderAdminPremiumServices(services) {
 
         <i class="fa-solid fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
 
-        <p>ChÆ°a cÃ³ dá»‹ch vá»¥ nÃ o trong chá»£. HÃ£y báº¥m <strong>"+ ThÃªm Dá»‹ch Vá»¥ Má»›i"</strong> Ä‘á»ƒ báº¯t Ä‘áº§u!</p>
+        <p>Chưa có dịch vụ nào trong chợ. Hãy bấm <strong>"+ Thêm Dịch Vụ Mới"</strong> để bắt đầu!</p>
 
       </div>
 
@@ -4946,7 +4946,7 @@ function renderAdminPremiumServices(services) {
 
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
 
-              <input type="text" class="admin-input svc-input-name" value="${svc.name || sid}" style="font-size: 1.1rem; font-weight: 800; color: #f8fafc; padding: 4px 8px; width: 220px;" placeholder="TÃªn dá»‹ch vá»¥...">
+              <input type="text" class="admin-input svc-input-name" value="${svc.name || sid}" style="font-size: 1.1rem; font-weight: 800; color: #f8fafc; padding: 4px 8px; width: 220px;" placeholder="Tên dịch vụ...">
 
               <code style="background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 6px; color: ${color}; font-size: 0.82rem;">${sid}</code>
 
@@ -4954,7 +4954,7 @@ function renderAdminPremiumServices(services) {
 
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
 
-              <input type="text" class="admin-input svc-input-badge" value="${svc.badge || ''}" placeholder="Huy hiá»‡u (vd: ChÃ­nh Chá»§ Gmail)..." style="font-size: 0.8rem; width: 170px; padding: 2px 6px;">
+              <input type="text" class="admin-input svc-input-badge" value="${svc.badge || ''}" placeholder="Huy hiệu (vd: Chính Chủ Gmail)..." style="font-size: 0.8rem; width: 170px; padding: 2px 6px;">
 
               <input type="text" class="admin-input svc-input-icon" value="${icon}" placeholder="Icon class (vd: fa-brands fa-youtube)..." style="font-size: 0.8rem; width: 160px; padding: 2px 6px;">
 
@@ -4978,13 +4978,13 @@ function renderAdminPremiumServices(services) {
 
           </label>
 
-          <span style="font-size: 0.82rem; color: #cbd5e1; font-weight: 700;">KÃ­ch hoáº¡t</span>
+          <span style="font-size: 0.82rem; color: #cbd5e1; font-weight: 700;">Kích hoạt</span>
 
 
 
           <button type="button" class="btn-sm btn-edit" onclick="openAddPackageModal('${sid}', '${svc.name}')" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-weight: 700; padding: 6px 12px; border-radius: 8px;">
 
-            <i class="fa-solid fa-plus"></i> ThÃªm GÃ³i
+            <i class="fa-solid fa-plus"></i> Thêm Gói
 
           </button>
 
@@ -4992,7 +4992,7 @@ function renderAdminPremiumServices(services) {
 
           <button type="button" class="btn-sm btn-delete" onclick="deletePremiumService('${sid}')" style="padding: 6px 12px; border-radius: 8px;">
 
-            <i class="fa-solid fa-trash"></i> XÃ³a Dá»‹ch Vá»¥
+            <i class="fa-solid fa-trash"></i> Xóa Dịch Vụ
 
           </button>
 
@@ -5006,17 +5006,17 @@ function renderAdminPremiumServices(services) {
 
         <div>
 
-          <label style="font-size: 0.78rem; color: #94a3b8; display: block; margin-bottom: 2px;">Kháº©u hiá»‡u (Tagline):</label>
+          <label style="font-size: 0.78rem; color: #94a3b8; display: block; margin-bottom: 2px;">Khẩu hiệu (Tagline):</label>
 
-          <input type="text" class="admin-input svc-input-tagline" value="${svc.tagline || ''}" placeholder="Kháº©u hiá»‡u hiá»ƒn thá»‹ trÃªn web..." style="width: 100%; font-size: 0.84rem;">
+          <input type="text" class="admin-input svc-input-tagline" value="${svc.tagline || ''}" placeholder="Khẩu hiệu hiển thị trên web..." style="width: 100%; font-size: 0.84rem;">
 
         </div>
 
         <div>
 
-          <label style="font-size: 0.78rem; color: #94a3b8; display: block; margin-bottom: 2px;">NhÃ£n Ã´ nháº­p cá»§a khÃ¡ch:</label>
+          <label style="font-size: 0.78rem; color: #94a3b8; display: block; margin-bottom: 2px;">Nhãn ô nhập của khách:</label>
 
-          <input type="text" class="admin-input svc-input-label" value="${svc.input_label || 'TÃ i khoáº£n / Email'}" placeholder="NhÃ£n input..." style="width: 100%; font-size: 0.84rem;">
+          <input type="text" class="admin-input svc-input-label" value="${svc.input_label || 'Tài khoản / Email'}" placeholder="Nhãn input..." style="width: 100%; font-size: 0.84rem;">
 
         </div>
 
@@ -5032,21 +5032,21 @@ function renderAdminPremiumServices(services) {
 
             <tr>
 
-              <th>MÃ£ GÃ³i</th>
+              <th>Mã Gói</th>
 
-              <th>TÃªn GÃ³i</th>
+              <th>Tên Gói</th>
 
-              <th>Thá»i Háº¡n</th>
+              <th>Thời Hạn</th>
 
-              <th>Ghi ChÃº RiÃªng</th>
+              <th>Ghi Chú Riêng</th>
 
-              <th>Huy Hiá»‡u</th>
+              <th>Huy Hiệu</th>
 
-              <th>GiÃ¡ BÃ¡n (VNÄ)</th>
+              <th>Giá Bán (VNĐ)</th>
 
-              <th style="text-align: center;">KÃ­ch Hoáº¡t</th>
+              <th style="text-align: center;">Kích Hoạt</th>
 
-              <th style="text-align: center;">Thao TÃ¡c</th>
+              <th style="text-align: center;">Thao Tác</th>
 
             </tr>
 
@@ -5100,7 +5100,7 @@ function renderPackagesRowsHtml(sid, pkgs) {
 
   if (pkgKeys.length === 0) {
 
-    return `<tr><td colspan="8" style="text-align: center; color: var(--admin-muted); padding: 16px;">ChÆ°a cÃ³ gÃ³i nÃ o cho dá»‹ch vá»¥ nÃ y. HÃ£y báº¥m "+ ThÃªm GÃ³i" á»Ÿ trÃªn!</td></tr>`;
+    return `<tr><td colspan="8" style="text-align: center; color: var(--admin-muted); padding: 16px;">Chưa có gói nào cho dịch vụ này. Hãy bấm "+ Thêm Gói" ở trên!</td></tr>`;
 
   }
 
@@ -5120,7 +5120,7 @@ function renderPackagesRowsHtml(sid, pkgs) {
 
         <td><input type="text" class="admin-input pkg-input-duration" value="${pkg.duration || ''}" style="width: 100px;"></td>
 
-        <td><textarea class="admin-input pkg-input-desc" maxlength="500" rows="2" placeholder="Ghi chÃº hiá»ƒn thá»‹ cho khÃ¡ch..." style="width: 180px; resize: vertical;">${escapePackageText(pkg.desc)}</textarea></td>
+        <td><textarea class="admin-input pkg-input-desc" maxlength="500" rows="2" placeholder="Ghi chú hiển thị cho khách..." style="width: 180px; resize: vertical;">${escapePackageText(pkg.desc)}</textarea></td>
 
         <td><input type="text" class="admin-input pkg-input-badge" value="${pkg.badge || ''}" style="width: 110px;"></td>
 
@@ -5140,7 +5140,7 @@ function renderPackagesRowsHtml(sid, pkgs) {
 
         <td style="text-align: center;">
 
-          <button type="button" class="btn-sm btn-delete" onclick="deletePremiumPackage('${sid}', '${k}')" title="XÃ³a gÃ³i nÃ y">
+          <button type="button" class="btn-sm btn-delete" onclick="deletePremiumPackage('${sid}', '${k}')" title="Xóa gói này">
 
             <i class="fa-solid fa-trash"></i>
 
@@ -5204,7 +5204,7 @@ async function saveAllPremiumServices() {
 
       const tagline = block.querySelector(".svc-input-tagline")?.value.trim() || "";
 
-      const inputLabel = block.querySelector(".svc-input-label")?.value.trim() || "Email / TÃ i khoáº£n nháº­n";
+      const inputLabel = block.querySelector(".svc-input-label")?.value.trim() || "Email / Tài khoản nhận";
 
 
 
@@ -5220,7 +5220,7 @@ async function saveAllPremiumServices() {
 
         const pName = tr.querySelector(".pkg-input-name")?.value.trim() || "";
 
-        const pDuration = tr.querySelector(".pkg-input-duration")?.value.trim() || "1 ThÃ¡ng";
+        const pDuration = tr.querySelector(".pkg-input-duration")?.value.trim() || "1 Tháng";
 
         const pDesc = tr.querySelector(".pkg-input-desc")?.value.trim() || "";
 
@@ -5244,7 +5244,7 @@ async function saveAllPremiumServices() {
 
           price: pPrice,
 
-          price_formatted: pPrice.toLocaleString("vi-VN") + "Ä‘",
+          price_formatted: pPrice.toLocaleString("vi-VN") + "đ",
 
           active: pActive,
 
@@ -5304,19 +5304,19 @@ async function saveAllPremiumServices() {
 
     if (data.success) {
 
-      showToast("ðŸŽ‰ ÄÃ£ lÆ°u toÃ n bá»™ cáº¥u hÃ¬nh Chá»£ Premium thÃ nh cÃ´ng!", "success");
+      showToast("🎉 Đã lưu toàn bộ cấu hình Chợ Premium thành công!", "success");
 
       loadPremiumAdmin();
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ lÆ°u cáº¥u hÃ¬nh.", "error");
+      showToast(data.msg || "Không thể lưu cấu hình.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i mÃ¡y chá»§: " + e.message, "error");
+    showToast("Lỗi kết nối máy chủ: " + e.message, "error");
 
   } finally {
 
@@ -5328,7 +5328,7 @@ async function saveAllPremiumServices() {
 
 
 
-// Modal ThÃªm Dá»‹ch Vá»¥ Má»›i
+// Modal Thêm Dịch Vụ Mới
 
 function openAddServiceModal() {
 
@@ -5386,7 +5386,7 @@ async function submitAddService() {
 
   if (!sid || !name) {
 
-    showToast("Vui lÃ²ng nháº­p MÃ£ ID vÃ  TÃªn dá»‹ch vá»¥!", "error");
+    showToast("Vui lòng nhập Mã ID và Tên dịch vụ!", "error");
 
     return;
 
@@ -5442,7 +5442,7 @@ async function submitAddService() {
 
     if (data.success) {
 
-      showToast(`ðŸŽ‰ ÄÃ£ thÃªm dá»‹ch vá»¥ "${name}" thÃ nh cÃ´ng!`, "success");
+      showToast(`🎉 Đã thêm dịch vụ "${name}" thành công!`, "success");
 
       closeAddServiceModal();
 
@@ -5450,13 +5450,13 @@ async function submitAddService() {
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ thÃªm dá»‹ch vá»¥.", "error");
+      showToast(data.msg || "Không thể thêm dịch vụ.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   } finally {
 
@@ -5470,7 +5470,7 @@ async function submitAddService() {
 
 async function deletePremiumService(sid) {
 
-  if (!confirm(`Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a toÃ n bá»™ dá»‹ch vá»¥ "${sid}" vÃ  cÃ¡c gÃ³i Ä‘i kÃ¨m khÃ´ng?`)) {
+  if (!confirm(`Bạn có chắc chắn muốn xóa toàn bộ dịch vụ "${sid}" và các gói đi kèm không?`)) {
 
     return;
 
@@ -5494,19 +5494,19 @@ async function deletePremiumService(sid) {
 
     if (data.success) {
 
-      showToast(`ÄÃ£ xÃ³a dá»‹ch vá»¥ "${sid}".`, "success");
+      showToast(`Đã xóa dịch vụ "${sid}".`, "success");
 
       loadPremiumAdmin();
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ xÃ³a dá»‹ch vá»¥.", "error");
+      showToast(data.msg || "Không thể xóa dịch vụ.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   }
 
@@ -5514,7 +5514,7 @@ async function deletePremiumService(sid) {
 
 
 
-// Modal ThÃªm GÃ³i Má»›i
+// Modal Thêm Gói Mới
 
 function openAddPackageModal(sid, svcName) {
 
@@ -5544,7 +5544,7 @@ function openAddPackageModal(sid, svcName) {
 
   const durEl = document.getElementById("addPkgDuration");
 
-  if (durEl) durEl.value = "1 ThÃ¡ng";
+  if (durEl) durEl.value = "1 Tháng";
 
   const priceEl = document.getElementById("addPkgPrice");
 
@@ -5600,7 +5600,7 @@ async function submitAddPackage() {
 
   if (!sid || !pkgId || !name || !Number.isInteger(price) || price <= 0) {
 
-    showToast("Vui lÃ²ng Ä‘iá»n Ä‘á»§ MÃ£ gÃ³i, TÃªn gÃ³i vÃ  GiÃ¡ há»£p lá»‡ (>0)!", "error");
+    showToast("Vui lòng điền đủ Mã gói, Tên gói và Giá hợp lệ (>0)!", "error");
 
     return;
 
@@ -5608,7 +5608,7 @@ async function submitAddPackage() {
 
   if (!/^[a-z0-9_-]{1,64}$/.test(pkgId)) {
 
-    showToast("MÃ£ gÃ³i chá»‰ gá»“m chá»¯ thÆ°á»ng, sá»‘, dáº¥u '-' hoáº·c '_' (tá»‘i Ä‘a 64 kÃ½ tá»±).", "error");
+    showToast("Mã gói chỉ gồm chữ thường, số, dấu '-' hoặc '_' (tối đa 64 ký tự).", "error");
 
     return;
 
@@ -5656,7 +5656,7 @@ async function submitAddPackage() {
 
     if (data.success) {
 
-      showToast(`ÄÃ£ thÃªm gÃ³i "${name}"!`, "success");
+      showToast(`Đã thêm gói "${name}"!`, "success");
 
       closeAddPackageModal();
 
@@ -5664,13 +5664,13 @@ async function submitAddPackage() {
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ thÃªm gÃ³i.", "error");
+      showToast(data.msg || "Không thể thêm gói.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   } finally {
 
@@ -5684,7 +5684,7 @@ async function submitAddPackage() {
 
 async function deletePremiumPackage(sid, pkgId) {
 
-  if (!confirm(`Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a gÃ³i "${pkgId}" khá»i dá»‹ch vá»¥ "${sid}"?`)) {
+  if (!confirm(`Bạn có chắc chắn muốn xóa gói "${pkgId}" khỏi dịch vụ "${sid}"?`)) {
 
     return;
 
@@ -5708,19 +5708,19 @@ async function deletePremiumPackage(sid, pkgId) {
 
     if (data.success) {
 
-      showToast(`ÄÃ£ xÃ³a gÃ³i "${pkgId}".`, "success");
+      showToast(`Đã xóa gói "${pkgId}".`, "success");
 
       loadPremiumAdmin();
 
     } else {
 
-      showToast(data.msg || "KhÃ´ng thá»ƒ xÃ³a gÃ³i.", "error");
+      showToast(data.msg || "Không thể xóa gói.", "error");
 
     }
 
   } catch (e) {
 
-    showToast("Lá»—i káº¿t ná»‘i: " + e.message, "error");
+    showToast("Lỗi kết nối: " + e.message, "error");
 
   }
 
