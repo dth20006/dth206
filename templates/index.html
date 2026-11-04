@@ -72,13 +72,13 @@
       </div>
 
       <div class="header-actions">
-        <a href="{{ cfg.shop_info.support_zalo or 'https://zalo.me/0899195660' }}" target="_blank" rel="noopener noreferrer" class="action-btn zalo-btn">
+        <a href="{{ cfg.shop_info.support_zalo or 'https://zalo.me/0899195660' }}" target="_blank" rel="noopener noreferrer" class="action-btn zalo-btn" aria-label="Liên hệ hỗ trợ qua Zalo">
           <i class="fa-solid fa-comment-dots"></i> <span>Zalo Hỗ Trợ</span>
         </a>
-        <a href="{{ cfg.shop_info.support_telegram or 'https://t.me/dth260106' }}" target="_blank" rel="noopener noreferrer" class="action-btn tele-btn">
+        <a href="{{ cfg.shop_info.support_telegram or 'https://t.me/dth260106' }}" target="_blank" rel="noopener noreferrer" class="action-btn tele-btn" aria-label="Liên hệ hỗ trợ qua Telegram">
           <i class="fa-brands fa-telegram"></i> <span>Telegram</span>
         </a>
-        <a href="https://locket.cam/dth206" target="_blank" rel="noopener noreferrer" class="action-btn locket-header-btn" title="Kết bạn Locket với chủ shop nha <3">
+        <a href="https://locket.cam/dth206" target="_blank" rel="noopener noreferrer" class="action-btn locket-header-btn" title="Kết bạn Locket với chủ shop nha <3" aria-label="Kết bạn Locket với chủ shop">
           <i class="fa-solid fa-heart" style="color: #ff3366; animation: heartbeat 1.5s infinite; display: inline-block;"></i> <span>Locket Chủ Shop</span>
         </a>
         <button type="button" class="action-btn theme-toggle-btn" id="btnThemeToggle" title="Chuyển đổi Sáng/Tối">
@@ -1315,27 +1315,27 @@
     {% if services_enabled.get('locket', True) %}
     <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) %}active{% endif %}" id="mobile-tab-locket" data-tab="locket" onclick="switchTab('locket')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) %}true{% else %}false{% endif %}" aria-controls="panel-locket" aria-label="Dịch vụ Nâng Cấp Locket Gold">
       <i class="fa-solid fa-heart"></i>
-      <span>Locket Gold</span>
+      <span>Locket</span>
     </button>
     {% endif %}
 
     {% if services_enabled.get('mxh', True) %}
     <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}active{% endif %}" id="mobile-tab-mxh" data-tab="mxh" onclick="switchTab('mxh')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) %}true{% else %}false{% endif %}" aria-controls="panel-mxh" aria-label="Dịch vụ Mạng Xã Hội">
       <i class="fa-solid fa-chart-line"></i>
-      <span>Dịch Vụ MXH</span>
+      <span>MXH</span>
     </button>
     {% endif %}
 
     {% if services_enabled.get('premium', True) %}
     <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}active{% endif %}" id="mobile-tab-premium" data-tab="premium" onclick="switchTab('premium')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-premium" aria-label="Chợ Dịch Vụ Premium">
       <i class="fa-solid fa-crown"></i>
-      <span>Chợ Premium</span> <span class="badge-maintenance">Bảo trì</span>
+      <span>Premium</span> <span class="badge-maintenance">Bảo trì</span>
     </button>
     {% endif %}
 
     <button type="button" class="mobile-bottom-nav-btn" id="mobile-tab-tools" data-tab="tools" onclick="switchTab('tools')" role="tab" aria-selected="false" aria-controls="panel-tools" aria-label="Bộ Công Cụ Sáng Tạo Nội Dung Miễn Phí">
       <i class="fa-solid fa-wand-magic-sparkles text-pink"></i>
-      <span>Free Tools</span>
+      <span>Tools</span>
     </button>
     <button type="button" class="mobile-bottom-nav-btn {% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) and not services_enabled.get('premium', True) %}active{% endif %}" id="mobile-tab-lookup" data-tab="lookup" onclick="switchTab('lookup')" role="tab" aria-selected="{% if not services_enabled.get('chungsuc', True) and not services_enabled.get('locket', True) and not services_enabled.get('mxh', True) %}true{% else %}false{% endif %}" aria-controls="panel-lookup" aria-label="Tra Cứu Đơn Hàng">
       <i class="fa-solid fa-magnifying-glass"></i>
