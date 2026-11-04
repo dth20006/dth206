@@ -394,8 +394,7 @@ function bootstrapApp() {
   try { initTabs(); } catch (e) { console.error("initTabs error:", e); }
   try { initUrlRouting(); } catch (e) { console.error("initUrlRouting error:", e); }
 
-  // 2. Khởi tạo Theme & Banner
-  try { initTheme(); } catch (e) { console.error("initTheme error:", e); }
+  // 2. Khởi tạo Banner
   try { checkInAppBrowser(); } catch (e) { console.error("checkInAppBrowser error:", e); }
 
   // 3. Khởi tạo các module dịch vụ độc lập (Lỗi module này không làm ảnh hưởng module khác)
@@ -2923,39 +2922,6 @@ async function submitPremiumOrder() {
 // =======================================================
 // ADVANCED ENHANCEMENTS: THEME, AUDIO, RECEIPT, PWA, ROUTING
 // =======================================================
-
-// 1. Light / Dark Mode Toggle
-function initTheme() {
-  try {
-    let saved = "light";
-    try {
-      saved = localStorage.getItem("dth_theme") || "light";
-    } catch (e) {}
-    document.documentElement.setAttribute("data-theme", saved);
-    updateThemeIcon(saved);
-
-    const btn = document.getElementById("btnThemeToggle");
-    if (btn) {
-      btn.addEventListener("click", () => {
-        const current = document.documentElement.getAttribute("data-theme") || "light";
-        const next = current === "dark" ? "light" : "dark";
-        document.documentElement.setAttribute("data-theme", next);
-        try {
-          localStorage.setItem("dth_theme", next);
-        } catch (e) {}
-        updateThemeIcon(next);
-      });
-    }
-  } catch (e) {
-    console.warn("initTheme error:", e);
-  }
-}
-
-function updateThemeIcon(theme) {
-  const btn = document.getElementById("btnThemeToggle");
-  if (!btn) return;
-  btn.innerHTML = theme === "dark" ? '<i class="fa-solid fa-sun" style="color: #fbbf24;"></i>' : '<i class="fa-solid fa-moon"></i>';
-}
 
 // 2. Web Audio Synthesizer ("Ting Ting" Crystal Sound)
 function playSuccessChime() {

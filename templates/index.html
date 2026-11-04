@@ -31,6 +31,8 @@
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
   
   <!-- Main Stylesheet (Blue - White - Black Theme) -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ range(1000, 9999) | random }}">
@@ -81,7 +83,7 @@
         <a href="https://locket.cam/dth206" target="_blank" rel="noopener noreferrer" class="action-btn locket-header-btn" title="Kết bạn Locket với chủ shop nha <3" aria-label="Kết bạn Locket với chủ shop">
           <i class="fa-solid fa-heart" style="color: #ff3366; animation: heartbeat 1.5s infinite; display: inline-block;"></i> <span>Locket Chủ Shop</span>
         </a>
-        <button type="button" class="action-btn theme-toggle-btn" id="btnThemeToggle" title="Chuyển đổi Sáng/Tối">
+        <button type="button" class="action-btn theme-toggle-btn" id="btnThemeToggle" aria-label="Chuyển sang chế độ tối" aria-pressed="false" title="Chuyển sang chế độ tối">
           <i class="fa-solid fa-moon"></i>
         </button>
         

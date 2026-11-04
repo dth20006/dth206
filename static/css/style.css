@@ -2828,6 +2828,10 @@ input, select, textarea {
   transform: rotate(20deg);
   border-color: var(--blue-primary) !important;
 }
+.theme-toggle-btn:focus-visible {
+  outline: 3px solid var(--blue-primary);
+  outline-offset: 3px;
+}
 
 /* Smart URL Doctor Button */
 .btn-clean-link {
