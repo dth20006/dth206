@@ -125,7 +125,7 @@ async function checkPartnerBalance(partner) {
   element.style.color = "";
   element.textContent = "Đang kiểm tra...";
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 5000);
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
 
   try {
     const endpoint = isAutoNhanh ? "/api/admin/autonhanh/balance" : "/api/admin/tangtim/balance";
@@ -141,7 +141,10 @@ async function checkPartnerBalance(partner) {
   } catch (error) {
     element.classList.add("text-danger");
     element.style.color = "#ef4444";
-    element.textContent = "Chưa kết nối API";
+    const message = error.name === "AbortError"
+      ? "quá thời gian chờ"
+      : (error.message || "không rõ nguyên nhân");
+    element.textContent = `Lỗi kết nối / Chưa cấu hình API: ${message}`;
   } finally {
     clearTimeout(timeoutId);
   }
